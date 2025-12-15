@@ -1,4 +1,4 @@
-﻿Public Class MovementSystem
+﻿Public Class PlayerMovementSystem
     Implements ISystem
 
     Private input As InputState
@@ -6,7 +6,7 @@
     Public Sub New(inputState As InputState)
         input = inputState
     End Sub
-    Public Sub Update(world As World, dt As Single)
+    Public Sub Update(world As World, dt As Single) Implements ISystem.Update
         For Each kv In world.Transforms.All
             Dim id = kv.Key
             If world.Movements.HasComponent(id) Then
@@ -30,9 +30,5 @@
 
     Public Sub Draw(world As World) Implements ISystem.Draw
 
-    End Sub
-
-    Private Sub ISystem_Update(world As World, dt As Single) Implements ISystem.Update
-        Update(world, dt)
     End Sub
 End Class

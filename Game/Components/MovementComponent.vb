@@ -1,3 +1,3 @@
 ﻿Public Class MovementComponent
-    Public position As PointF
+    Public speed As Single
 End Class

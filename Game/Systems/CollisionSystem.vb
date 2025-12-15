@@ -1,3 +1,5 @@
-﻿Class CollisionComponent
+﻿Class CollisionSystem
 
 End Class
+
+
