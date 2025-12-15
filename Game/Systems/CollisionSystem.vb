@@ -1,0 +1,3 @@
+﻿Class CollisionComponent
+
+End Class
