@@ -13,8 +13,9 @@ Public Class World
     Public PlayerID As Integer
 
     Public Sub New(g As Graphics, input As InputState)
-        Systems.Add(New PlayerMovementSystem(input))
-        Systems.Add(New EnemyMovementSystem())
+        'Systems.Add(New PlayerMovementSystem(input))
+        'Systems.Add(New EnemyMovementSystem())
+        Systems.Add(New MovementSystem())
         Systems.Add(New RenderSystem(g))
     End Sub
 
@@ -61,9 +62,26 @@ Public Class World
         })
 
         Renders.AddComponent(enemy, New RenderComponent With {
-            .size = 32,
+            .size = 16,
             .brush = Brushes.Red
         })
+    End Sub
+
+    Public Sub CreateBullet(pos As PointF)
+        Dim bullet = EntityManager.CreateEntity()
+
+        Transforms.AddComponent(bullet, New TransformComponent With {
+            .pos = pos
+        })
+        Movements.AddComponent(bullet, New MovementComponent With {
+            .speed = 100.0F,
+            .velocity = New PointF(1, 1),
+            .acceleration = New PointF(0, 0)
+        })
+        Renders.AddComponent(bullet, New RenderComponent With {
+           .size = 16,
+           .brush = Brushes.Red
+       })
     End Sub
 
 End Class

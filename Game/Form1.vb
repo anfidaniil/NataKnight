@@ -6,8 +6,9 @@
         Me.KeyPreview = True
         input = New InputState(False, False, False, False)
         world = New World(Me.CreateGraphics(), input)
-        world.CreatePlayer()
-        world.CreateEnemy()
+        'world.CreatePlayer()
+        'world.CreateEnemy()
+        world.CreateBullet(New PointF(0, 0))
         lastTime = DateTime.Now
         Timer1.Interval = 5
         Timer1.Start()

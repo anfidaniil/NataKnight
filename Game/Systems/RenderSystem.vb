@@ -8,18 +8,6 @@
         g = graphics
     End Sub
 
-    Public Sub Draw(transforms As ComponentStore(Of TransformComponent), renders As ComponentStore(Of RenderComponent))
-        g.Clear(Color.Black)
-        For Each kv In transforms.All
-            Dim id = kv.Key
-            If renders.HasComponent(id) Then
-                Dim t = transforms.GetComponent(id)
-                Dim r = renders.GetComponent(id)
-                g.FillRectangle(r.brush, t.pos.X, t.pos.Y, r.size, r.size)
-            End If
-        Next
-    End Sub
-
     Public Sub Draw(world As World)
         g.Clear(Color.Black)
         For Each kv In world.Transforms.All
