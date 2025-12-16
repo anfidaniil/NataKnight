@@ -16,7 +16,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("Game"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69c40c1edafefba0f55620e12312d5635a63da97"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+240bc8f3bb54e7844030d9acf2597675ae77f8d9"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("Game"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("Game"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0"),  _

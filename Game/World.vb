@@ -5,21 +5,26 @@ Public Class World
 
     Public Transforms As New ComponentStore(Of TransformComponent)
     Public Movements As New ComponentStore(Of MovementComponent)
+    Public Colliders As New ComponentStore(Of BoxCollider)
     Public Renders As New ComponentStore(Of RenderComponent)
     Public Players As New ComponentStore(Of PlayerComponent)
     Public Enemies As New ComponentStore(Of EnemyComponent)
+
+    Public CollisionEvents As New List(Of CollisionEvent)
 
     Private Systems As New List(Of ISystem)
 
     Public PlayerID As Integer
 
-    Public Const MAX_ACCELERATION = 200.0F
+    Public Const MAX_ACCELERATION = 1000.0F
     Public Const MAX_VELOCITY = 200.0F
 
     Public Sub New(g As Graphics, input As InputState)
         Systems.Add(New PlayerMovementSystem(input))
         Systems.Add(New EnemyMovementSystem())
         Systems.Add(New MovementSystem())
+        Systems.Add(New CollisionSystem())
+        Systems.Add(New CollisionHandling())
         Systems.Add(New RenderSystem(g))
     End Sub
 
@@ -33,6 +38,7 @@ Public Class World
         For Each sys In Systems
             sys.Draw(Me)
         Next
+        Renders.GetComponent(PlayerID).brush = Brushes.White
     End Sub
 
     Public Sub CreatePlayer()
@@ -52,6 +58,9 @@ Public Class World
         Renders.AddComponent(player, New RenderComponent With {
             .size = 32,
             .brush = Brushes.White
+        })
+        Colliders.AddComponent(player, New BoxCollider With {
+            .size = 32
         })
         Players.AddComponent(player, New PlayerComponent())
     End Sub
@@ -73,15 +82,19 @@ Public Class World
             .size = 16,
             .brush = Brushes.Red
         })
+        Colliders.AddComponent(enemy, New BoxCollider With {
+            .size = 16
+        })
         Enemies.AddComponent(enemy, New EnemyComponent())
     End Sub
 
-    Public Sub CreateBullet(pos As PointF, pos2 As PointF)
+    Public Sub CreateStain(pos As PointF, pos2 As PointF)
         Dim bullet = EntityManager.CreateEntity()
 
         Dim velocity = New PointF(0.0F, 0.0F)
-        Dim acceleration = New PointF(10.0F, 10.0F)
-
+        Dim acceleration = New PointF(
+           0, 0
+        )
         Transforms.AddComponent(bullet, New TransformComponent With {
             .pos = pos
         })
@@ -93,6 +106,9 @@ Public Class World
            .size = 8,
            .brush = Brushes.Red
        })
+        'Colliders.AddComponent(bullet, New BoxCollider With {
+        '    .size = 8
+        '})
     End Sub
 
 End Class
