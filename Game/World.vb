@@ -9,8 +9,11 @@ Public Class World
     Public Renders As New ComponentStore(Of RenderComponent)
     Public Players As New ComponentStore(Of PlayerComponent)
     Public Enemies As New ComponentStore(Of EnemyComponent)
+    Public Healths As New ComponentStore(Of Health)
+    Public Damages As New ComponentStore(Of DamageComponent)
 
     Public CollisionEvents As New List(Of CollisionEvent)
+    Public EntityDestructionEvents As New List(Of EntityDestructionEvent)
 
     Private Systems As New List(Of ISystem)
 
@@ -25,6 +28,7 @@ Public Class World
         Systems.Add(New MovementSystem())
         Systems.Add(New CollisionSystem())
         Systems.Add(New CollisionHandling())
+        Systems.Add(New DamageSystem())
         Systems.Add(New RenderSystem(g))
     End Sub
 
@@ -32,13 +36,13 @@ Public Class World
         For Each sys In Systems
             sys.Update(Me, dt)
         Next
+        DestructEntities()
     End Sub
 
     Public Sub Draw()
         For Each sys In Systems
             sys.Draw(Me)
         Next
-        Renders.GetComponent(PlayerID).brush = Brushes.White
     End Sub
 
     Public Sub CreatePlayer()
@@ -56,12 +60,14 @@ Public Class World
         })
 
         Renders.AddComponent(player, New RenderComponent With {
-            .size = 32,
+            .size = 16,
             .brush = Brushes.White
         })
         Colliders.AddComponent(player, New BoxCollider With {
-            .size = 32
+            .size = 16
         })
+        Damages.AddComponent(player, New DamageComponent With {
+                             .damage = 1})
         Players.AddComponent(player, New PlayerComponent())
     End Sub
 
@@ -85,30 +91,45 @@ Public Class World
         Colliders.AddComponent(enemy, New BoxCollider With {
             .size = 16
         })
+        Healths.AddComponent(enemy, New Health With {
+                             .health = 100})
+
         Enemies.AddComponent(enemy, New EnemyComponent())
     End Sub
 
-    Public Sub CreateStain(pos As PointF, pos2 As PointF)
+    Public Sub CreateStain(pos As PointF)
         Dim bullet = EntityManager.CreateEntity()
 
-        Dim velocity = New PointF(0.0F, 0.0F)
-        Dim acceleration = New PointF(
-           0, 0
-        )
         Transforms.AddComponent(bullet, New TransformComponent With {
             .pos = pos
-        })
-        Movements.AddComponent(bullet, New MovementComponent With {
-            .velocity = velocity,
-            .acceleration = acceleration
         })
         Renders.AddComponent(bullet, New RenderComponent With {
            .size = 8,
            .brush = Brushes.Red
        })
-        'Colliders.AddComponent(bullet, New BoxCollider With {
-        '    .size = 8
-        '})
     End Sub
 
+    Public Sub DestructEntities()
+        If EntityDestructionEvents.Count = 0 Then Return
+
+        For Each ev In EntityDestructionEvents
+            Dim e = ev.entityID
+
+            ' Remove components from all stores
+            Transforms.RemoveComponent(e)
+            Movements.RemoveComponent(e)
+            Colliders.RemoveComponent(e)
+            Renders.RemoveComponent(e)
+            Players.RemoveComponent(e)
+            Enemies.RemoveComponent(e)
+            Healths.RemoveComponent(e)
+            Damages.RemoveComponent(e)
+
+            ' Remove entity itself
+            EntityManager.RemoveEntity(e)
+            Debug.WriteLine("Destroyed entity: " & e)
+        Next
+
+        EntityDestructionEvents.Clear()
+    End Sub
 End Class

@@ -8,9 +8,9 @@
 
     End Function
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
-        For Each a In world.Transforms.All
-            For Each b In world.Transforms.All
-                If a.Key < b.Key AndAlso world.Colliders.HasComponent(a.Key) AndAlso world.Colliders.HasComponent(b.Key) Then
+        For Each a In world.Colliders.All
+            For Each b In world.Colliders.All
+                If a.Key < b.Key Then
                     If isColliding(
                              pos1:=world.Transforms.GetComponent(a.Key).pos,
                              pos2:=world.Transforms.GetComponent(b.Key).pos,

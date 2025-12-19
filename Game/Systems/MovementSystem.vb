@@ -2,11 +2,11 @@
     Implements ISystem
 
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
-        For Each kv In world.Transforms.All
+        For Each kv In world.Movements.All
             Dim id = kv.Key
-            If world.Movements.HasComponent(id) Then
-                Dim t = kv.Value
-                Dim m = world.Movements.GetComponent(id)
+            If world.Transforms.HasComponent(id) Then
+                Dim m = kv.Value
+                Dim t = world.Transforms.GetComponent(id)
 
                 Dim vx = m.velocity.X + m.acceleration.X * dt
                 Dim vy = m.velocity.Y + m.acceleration.Y * dt
