@@ -11,11 +11,11 @@ Public Class RenderSystem
     End Sub
 
     Public Sub Draw(world As World)
-        g.CompositingMode = Drawing2D.CompositingMode.SourceCopy
+        g.CompositingMode = Drawing2D.CompositingMode.SourceOver
         g.CompositingQuality = Drawing2D.CompositingQuality.HighSpeed
         g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
         g.SmoothingMode = Drawing2D.SmoothingMode.None
-        g.PixelOffsetMode = Drawing2D.PixelOffsetMode.None
+        g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
 
         g.Clear(Color.Black)
 
@@ -23,21 +23,46 @@ Public Class RenderSystem
         Dim camera = world.Cameras.GetComponent(cameraID)
         Dim cameraPos = world.Transforms.GetComponent(cameraID)
 
-        Dim camX As Single = CSng(Math.Floor(cameraPos.pos.X))
-        Dim camY As Single = CSng(Math.Floor(cameraPos.pos.Y))
-
-
+        Dim camX As Single = cameraPos.pos.X
+        Dim camY As Single = cameraPos.pos.Y
 
         g.TranslateTransform(-camX, -camY)
+
         g.SetClip(New Rectangle(
-            CInt(camX),
-            CInt(camY),
-            camera.viewWidth,
-            camera.viewHeight
+            camX - 2,
+            camY - 2,
+            camera.viewWidth + 4,
+            camera.viewHeight + 4
         ))
 
+        Dim firstTileX As Integer = camX \ World.TILE_SIZE
+        Dim firstTileY As Integer = camY \ World.TILE_SIZE
 
-        g.DrawImageUnscaled(world.game.level, 0, 0)
+        Dim lastTileX As Integer = (camX + camera.viewWidth) \ World.TILE_SIZE
+        Dim lastTileY As Integer = (camY + camera.viewHeight) \ World.TILE_SIZE
+
+        ' Safety padding
+        firstTileX -= 1
+        firstTileY -= 1
+        lastTileX += 1
+        lastTileY += 1
+
+        For ty = firstTileY To lastTileY
+            For tx = firstTileX To lastTileX
+
+                Dim tileKey As New Point(tx, ty)
+                If Not world.game.level.ContainsKey(tileKey) Then Continue For
+
+                Dim bmp = world.game.level(tileKey)
+
+                g.DrawImageUnscaled(
+            bmp,
+            tx * World.TILE_SIZE,
+            ty * World.TILE_SIZE
+        )
+            Next
+        Next
+
 
         For Each kv In world.Transforms.All
             Dim id = kv.Key

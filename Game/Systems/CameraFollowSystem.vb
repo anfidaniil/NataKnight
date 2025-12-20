@@ -16,18 +16,12 @@ Public Class CameraFollowSystem
                     Dim targetX = playerPos.pos.X - cam.viewWidth / 2
                     Dim targetY = playerPos.pos.Y - cam.viewHeight / 2
 
-                    Dim a = New PointF(
-                        targetX - t.pos.X,
-                        targetY - t.pos.Y
+                    Dim pos = New PointF(
+                        targetX,
+                        targetY
                     )
-                    If Math.Abs(a.X) < 0.1F Then a.X = 0
-                    If Math.Abs(a.Y) < 0.1F Then a.Y = 0
+                    t.pos = pos
 
-                    Dim norm = NormalisePointFVector(a)
-                    m.acceleration = New PointF(
-                        norm.X * World.MAX_ACCELERATION,
-                        norm.Y * World.MAX_ACCELERATION
-                    )
                 End If
             End If
         Next

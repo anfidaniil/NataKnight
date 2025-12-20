@@ -4,23 +4,50 @@ Public Class Game
     Private world As World
     Private g As Graphics
     Private gameState As GameState
-    Public level As Bitmap
+    Public level As New Dictionary(Of Point, Bitmap)
 
     Public Sub New(g As Graphics, input As InputState)
         Me.world = New World(g, input, Me)
         Me.g = g
         Me.gameState = GameState.Playing
-        level = New Bitmap(New Bitmap(GameResources.test_Map, New Size(256, 256)))
         CreateTestWorld()
     End Sub
 
     Public Sub CreateTestWorld()
-
-
+        CreateLevel()
         world.CreatePlayer()
         world.CreateCamera()
-        CreateEnemiesAroundPoint(0, 0, 2)
-        CreateEnemiesAroundPoint(400, 0, 2)
+        CreateEnemiesAroundPoint(0, 0, 1)
+        CreateEnemiesAroundPoint(400, 0, 1)
+    End Sub
+
+    Public Sub CreateLevel()
+        Dim tileBmp As Bitmap = GameResources.worldTile128
+        For y = 0 To 0
+            For x = 2 To 3
+                level(New Point(x, y)) = tileBmp
+            Next
+        Next
+        For y = 1 To 3
+            For x = 0 To 5
+                level(New Point(x, y)) = tileBmp
+            Next
+        Next
+        For y = 4 To 4
+            For x = 2 To 3
+                level(New Point(x, y)) = tileBmp
+            Next
+        Next
+        For y = 5 To 9
+            For x = 0 To 5
+                level(New Point(x, y)) = tileBmp
+            Next
+        Next
+        For y = 10 To 10
+            For x = 2 To 3
+                level(New Point(x, y)) = tileBmp
+            Next
+        Next
     End Sub
 
     Public Sub GameOver()

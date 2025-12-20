@@ -10,7 +10,7 @@
 
         game = New Game(g, input)
         lastTime = DateTime.Now
-        Timer1.Interval = 40
+        Timer1.Interval = 80
         Timer1.Start()
     End Sub
 

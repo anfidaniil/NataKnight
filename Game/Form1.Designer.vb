@@ -33,7 +33,7 @@ Partial Class Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1008, 681)
+        ClientSize = New Size(704, 441)
         Name = "Form1"
         Text = "Form1"
         ResumeLayout(False)

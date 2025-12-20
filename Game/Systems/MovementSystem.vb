@@ -17,8 +17,8 @@
                 vx *= Math.Max(0, 1 - m.damping * dt)
                 vy *= Math.Max(0, 1 - m.damping * dt)
 
-                If Math.Abs(vx) < 0.1F Then vx = 0
-                If Math.Abs(vy) < 0.1F Then vy = 0
+                If Math.Abs(vx) < 1.0F Then vx = 0
+                If Math.Abs(vy) < 1.0F Then vy = 0
 
                 m.velocity = New PointF(vx, vy)
 
