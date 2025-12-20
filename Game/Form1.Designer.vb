@@ -26,11 +26,14 @@ Partial Class Form1
         Timer1 = New Timer(components)
         SuspendLayout()
         ' 
+        ' Timer1
+        ' 
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(800, 450)
+        ClientSize = New Size(1008, 681)
         Name = "Form1"
         Text = "Form1"
         ResumeLayout(False)

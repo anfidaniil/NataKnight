@@ -7,7 +7,7 @@
         input = New InputState(False, False, False, False)
         game = New Game(Me.CreateGraphics, input)
         lastTime = DateTime.Now
-        Timer1.Interval = 10
+        Timer1.Interval = 50
         Timer1.Start()
     End Sub
 
