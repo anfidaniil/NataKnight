@@ -23,8 +23,9 @@
                 m.velocity = New PointF(vx, vy)
 
                 t.pos = New PointF(
-                    t.pos.X + vx * dt,
-                    t.pos.Y + vy * dt)
+                    CSng(Math.Round(t.pos.X + vx * dt)),
+                    CSng(Math.Round(t.pos.Y + vy * dt))
+                )
             End If
         Next
     End Sub

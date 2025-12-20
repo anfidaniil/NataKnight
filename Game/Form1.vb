@@ -5,9 +5,12 @@
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
         input = New InputState(False, False, False, False)
-        game = New Game(Me.CreateGraphics, input)
+
+        Dim g = Me.CreateGraphics
+
+        game = New Game(g, input)
         lastTime = DateTime.Now
-        Timer1.Interval = 10
+        Timer1.Interval = 40
         Timer1.Start()
     End Sub
 

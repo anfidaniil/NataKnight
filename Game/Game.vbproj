@@ -20,6 +20,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
+    <Compile Update="Systems\GameResources.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GameResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +36,14 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Systems\GameResources.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GameResources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

@@ -15,6 +15,8 @@ Public Class World
     Public Damages As New ComponentStore(Of DamageComponent)
     Public IFrames As New ComponentStore(Of InvincibilityComponent)
 
+    Public Cameras As New ComponentStore(Of CameraComponent)
+
     Public CollisionEvents As New List(Of CollisionEvent)
     Public EntityDestructionEvents As New List(Of EntityDestructionEvent)
 
@@ -22,7 +24,11 @@ Public Class World
 
     Public PlayerID As Integer
 
+    Public Const SCREEN_HEIGHT = 720
+    Public Const SCREEN_WIDTH = 1024
+
     Public Const MAX_ACCELERATION = 1000.0F
+    Public Const MAX_ENEMY_ACCELERATION = 500.0F
     Public Const MAX_VELOCITY = 200.0F
     Public Const IFRAMES_DURATION = 0.1F
     Public DEFAULT_POSITION = New PointF(0, 0)
@@ -30,6 +36,7 @@ Public Class World
     Public Sub New(g As Graphics, input As InputState, game As Game)
         Me.game = game
         Systems.Add(New PlayerMovementSystem(input))
+        Systems.Add(New CameraFollowSystem())
         Systems.Add(New EnemyMovementSystem())
         Systems.Add(New MovementSystem())
 
@@ -38,6 +45,7 @@ Public Class World
         Systems.Add(New CollisionSystem())
         Systems.Add(New DamageSystem())
         Systems.Add(New CollisionResolutionSystem())
+
 
         Systems.Add(New RenderSystem(g))
     End Sub
@@ -53,6 +61,23 @@ Public Class World
         For Each sys In Systems
             sys.Draw(Me)
         Next
+
+
+    End Sub
+
+    Public Sub CreateCamera()
+        Dim camera = EntityManager.CreateEntity()
+        Cameras.AddComponent(camera, New CameraComponent With {
+            .viewHeight = SCREEN_HEIGHT,
+            .viewWidth = SCREEN_WIDTH}
+        )
+        Movements.AddComponent(camera, New MovementComponent With {
+                               .acceleration = New PointF(0, 0),
+                               .velocity = New PointF(0, 0),
+                               .damping = 1.5F}
+                               )
+        Transforms.AddComponent(camera, New TransformComponent With {
+                                .pos = New PointF(200 - SCREEN_WIDTH / 2, 100 - SCREEN_HEIGHT / 2)})
     End Sub
 
     Public Sub CreatePlayer()
@@ -71,7 +96,7 @@ Public Class World
 
         Renders.AddComponent(player, New RenderComponent With {
             .size = 16,
-            .brush = Brushes.White
+            .brush = Brushes.Green
         })
         Colliders.AddComponent(player, New BoxCollider With {
             .size = 16
