@@ -11,7 +11,7 @@
 
 
                 If world.IFrames.HasComponent(kv.entityB) Then
-                    Debug.WriteLine("Entity is invincible")
+                    'Debug.WriteLine("Entity is invincible")
                     Continue For
                 End If
 
@@ -38,7 +38,7 @@
                 Dim dc = world.Damages.GetComponent(kv.entityB)
 
                 If world.IFrames.HasComponent(kv.entityA) Then
-                    Debug.WriteLine("Entity is invincible")
+                    'Debug.WriteLine("Entity is invincible")
                     Return
                 End If
 

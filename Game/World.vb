@@ -14,6 +14,7 @@ Public Class World
     Public Healths As New ComponentStore(Of Health)
     Public Damages As New ComponentStore(Of DamageComponent)
     Public IFrames As New ComponentStore(Of InvincibilityComponent)
+    Public Immovables As New ComponentStore(Of ImmovableComponent)
 
     Public Cameras As New ComponentStore(Of CameraComponent)
 
@@ -24,8 +25,8 @@ Public Class World
 
     Public PlayerID As Integer
 
-    Public Const SCREEN_HEIGHT = 480
-    Public Const SCREEN_WIDTH = 720
+    Public SCREEN_HEIGHT = Form1.Height
+    Public SCREEN_WIDTH = Form1.Width
 
     Public Const MAX_ACCELERATION = 1000.0F
     Public Const MAX_ENEMY_ACCELERATION = 500.0F
@@ -87,7 +88,7 @@ Public Class World
         PlayerID = player
 
         Transforms.AddComponent(player, New TransformComponent With {
-            .pos = New PointF(200, 200)
+            .pos = New PointF(600, 600)
         })
 
         Movements.AddComponent(player, New MovementComponent With {
@@ -151,6 +152,20 @@ Public Class World
            .size = 8,
            .brush = Brushes.Red
        })
+    End Sub
+
+    Public Sub CreateImmovableWall(pos As PointF)
+        Dim wall = EntityManager.CreateEntity()
+
+        Transforms.AddComponent(wall, New TransformComponent With {.pos = pos})
+
+        Colliders.AddComponent(wall, New BoxCollider With {.size = 128})
+        Renders.AddComponent(wall, New RenderComponent With {
+           .size = 128,
+           .brush = Brushes.Blue
+       })
+        Immovables.AddComponent(wall, New ImmovableComponent)
+
     End Sub
 
     Public Sub DestructEntities()

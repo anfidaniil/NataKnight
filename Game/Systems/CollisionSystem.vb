@@ -11,6 +11,10 @@
         For Each a In world.Colliders.All
             For Each b In world.Colliders.All
                 If a.Key < b.Key Then
+                    If world.Immovables.HasComponent(a.Key) And world.Immovables.HasComponent(b.Key) Then
+                        Continue For
+                    End If
+
                     If isColliding(
                              pos1:=world.Transforms.GetComponent(a.Key).pos,
                              pos2:=world.Transforms.GetComponent(b.Key).pos,
@@ -21,7 +25,7 @@
                     .entityA = a.Key,
                     .entityB = b.Key
                 })
-                        Debug.WriteLine("COLLISION")
+                        'Debug.WriteLine("COLLISION")
                     End If
                 End If
             Next

@@ -28,8 +28,9 @@
                     )
                     Dim norm = NormalisePointFVector(a)
                     m.acceleration = New PointF(
-                        norm.X * World.MAX_ACCELERATION * 2,
-                        norm.Y * World.MAX_ACCELERATION * 2)
+                        norm.X * World.MAX_ACCELERATION * 2.0F,
+                        norm.Y * World.MAX_ACCELERATION * 2.0F
+                    )
                 End If
             End If
         Next

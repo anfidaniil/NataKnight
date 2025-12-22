@@ -17,8 +17,8 @@ Public Class RenderSystem
         Dim camera = world.Cameras.GetComponent(cameraID)
         Dim cameraPos = world.Transforms.GetComponent(cameraID)
 
-        Dim camX As Single = cameraPos.pos.X
-        Dim camY As Single = cameraPos.pos.Y
+        Dim camX As Single = CInt(cameraPos.pos.X)
+        Dim camY As Single = CInt(cameraPos.pos.Y)
 
         g.TranslateTransform(-camX, -camY)
 
@@ -64,8 +64,9 @@ Public Class RenderSystem
                 Dim t = kv.Value
                 Dim r = world.Renders.GetComponent(id)
 
-                Dim screenX = t.pos.X
-                Dim screenY = t.pos.Y
+                Dim screenX = CInt(t.pos.X - r.size / 2)
+                Dim screenY = CInt(t.pos.Y - r.size / 2)
+
                 g.FillRectangle(r.brush, screenX, screenY, r.size, r.size)
             End If
         Next
