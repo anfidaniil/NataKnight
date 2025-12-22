@@ -21,7 +21,7 @@
                     .entityA = a.Key,
                     .entityB = b.Key
                 })
-                        Debug.WriteLine("COLLISION")
+                        'Debug.WriteLine("COLLISION")
                     End If
                 End If
             Next

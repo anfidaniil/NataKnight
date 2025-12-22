@@ -15,12 +15,12 @@ Public Class Game
         CreateLevel()
         world.CreatePlayer()
         world.CreateCamera()
-        CreateEnemiesAroundPoint(0, 0, 1)
-        CreateEnemiesAroundPoint(400, 0, 1)
+        CreateEnemiesAroundPoint(0, 0, 4)
+        CreateEnemiesAroundPoint(400, 0, 4)
     End Sub
 
     Public Sub CreateLevel()
-        Dim tileBmp As Bitmap = GameResources.worldTile128
+        Dim tileBmp As Bitmap = My.Resources.GameResources.worldTile128
         For y = 0 To 0
             For x = 2 To 3
                 level(New Point(x, y)) = tileBmp

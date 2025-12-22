@@ -11,20 +11,21 @@
                 Dim vx = m.velocity.X + m.acceleration.X * dt
                 Dim vy = m.velocity.Y + m.acceleration.Y * dt
 
-                vx = Math.Max(-World.MAX_VELOCITY, Math.Min(World.MAX_VELOCITY, vx))
-                vy = Math.Max(-World.MAX_VELOCITY, Math.Min(World.MAX_VELOCITY, vy))
+                vx = Math.Clamp(vx, -World.MAX_VELOCITY, World.MAX_VELOCITY)
+                vy = Math.Clamp(vy, -World.MAX_VELOCITY, World.MAX_VELOCITY)
 
-                vx *= Math.Max(0, 1 - m.damping * dt)
-                vy *= Math.Max(0, 1 - m.damping * dt)
+                Dim dampingFactor As Single = CSng(Math.Exp(-m.damping * dt))
+                vx *= dampingFactor
+                vy *= dampingFactor
 
-                If Math.Abs(vx) < 1.0F Then vx = 0
-                If Math.Abs(vy) < 1.0F Then vy = 0
+                If Math.Abs(vx) < 0.01F Then vx = 0
+                If Math.Abs(vy) < 0.01F Then vy = 0
 
                 m.velocity = New PointF(vx, vy)
 
                 t.pos = New PointF(
-                    CSng(Math.Round(t.pos.X + vx * dt)),
-                    CSng(Math.Round(t.pos.Y + vy * dt))
+                    t.pos.X + vx * dt,
+                    t.pos.Y + vy * dt
                 )
             End If
         Next

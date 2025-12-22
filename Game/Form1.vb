@@ -2,6 +2,18 @@
     Private input As InputState
     Private game As Game
     Private lastTime As DateTime
+
+    Private isDebug As Boolean = True
+    Private count As Integer = 0
+    Private fps As Integer = 0
+    Private lastCheck As Date
+
+    Public Sub CalculateFPS()
+        fps = count
+        count = 0
+        Debug.WriteLine("FPS: " & fps)
+    End Sub
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
         input = New InputState(False, False, False, False)
@@ -20,7 +32,8 @@
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         Dim now = DateTime.Now
-        Dim dt = CSng((now - lastTime).TotalSeconds)
+        Dim dt = (now - lastTime).TotalSeconds
+        dt = Math.Min(dt, 0.05F)
         lastTime = now
 
         game.Update(dt)
@@ -50,6 +63,14 @@
 
         If game IsNot Nothing Then
             game.Draw(e.Graphics)
+        End If
+        count += 1
+
+        If isDebug AndAlso (DateTime.Now - lastCheck).TotalSeconds >= 1 Then
+            fps = count
+            count = 0
+            lastCheck = DateTime.Now
+            Debug.WriteLine("FPS: " & fps)
         End If
     End Sub
 End Class

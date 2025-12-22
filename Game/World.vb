@@ -24,8 +24,8 @@ Public Class World
 
     Public PlayerID As Integer
 
-    Public Const SCREEN_HEIGHT = 480
-    Public Const SCREEN_WIDTH = 720
+    Public SCREEN_HEIGHT = Form1.Height
+    Public SCREEN_WIDTH = Form1.Width
 
     Public Const MAX_ACCELERATION = 1000.0F
     Public Const MAX_ENEMY_ACCELERATION = 500.0F
