@@ -42,19 +42,20 @@ Public Class World
 
     Public Sub New(input As InputState, game As Game)
         Me.game = game
+        Systems.Add(New PlayerAttackSystem(input))
+        Systems.Add(New EnemyAttackSystem)
+
         Systems.Add(New PlayerMovementSystem(input))
         Systems.Add(New CameraFollowSystem())
         Systems.Add(New EnemyMovementSystem())
+
         Systems.Add(New MovementSystem())
 
         Systems.Add(New InvincibilitySystem())
 
-        Systems.Add(New PLayerAttackSystem(input))
-
         Systems.Add(New CollisionSystem())
         Systems.Add(New DamageSystem())
         Systems.Add(New CollisionResolutionSystem())
-
 
         Systems.Add(New RenderSystem())
     End Sub
@@ -150,13 +151,13 @@ Public Class World
                              .damage = 1})
 
         Enemies.AddComponent(enemy, New EnemyComponent())
-        'Attacks.AddComponent(enemy, New AttackComponent With {
-        '    .attack = False,
-        '    .timeRemaining = 0.1F
-        '})
+        Attacks.AddComponent(enemy, New AttackComponent With {
+            .attack = False,
+            .timeRemaining = 3.0F
+        })
     End Sub
 
-    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, parentID As Integer)
+    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer)
         Dim velocity = New PointF(
             targetPos.X - startPos.X,
             targetPos.Y - startPos.Y
@@ -164,8 +165,8 @@ Public Class World
 
         Dim norm = Utils.NormalisePointFVector(velocity)
         norm = New PointF(
-            norm.X * World.MAX_VELOCITY,
-            norm.Y * World.MAX_VELOCITY
+            norm.X * 400.0F,
+            norm.Y * 400.0F
         )
 
         Dim bullet = EntityManager.CreateEntity()
@@ -174,18 +175,19 @@ Public Class World
         Movements.AddComponent(bullet, New MovementComponent With {
             .acceleration = New PointF(0, 0),
             .velocity = norm,
+            .max_velocity = 400.0F,
             .damping = 0.01F
         })
         Renders.AddComponent(bullet, New RenderComponent With {
             .size = 64,
-            .spriteX = 2,
+            .spriteX = 2 + 3 * entityType,
             .spriteY = 2
         })
         Colliders.AddComponent(bullet, New BoxCollider With {.size = 16})
         Damages.AddComponent(bullet, New DamageComponent With {
                              .damage = 10})
 
-        Projectiles.AddComponent(bullet, New ProjectileComponent With {.parentEntityID = parentID, .timeLeft = 10.0F})
+        Projectiles.AddComponent(bullet, New ProjectileComponent With {.entityType = entityType, .timeLeft = 10.0F})
     End Sub
     Public Sub CreateImmovableWall(pos As PointF)
         Dim wall = EntityManager.CreateEntity()

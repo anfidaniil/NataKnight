@@ -1,4 +1,4 @@
 ﻿Public Class ProjectileComponent
-    Public parentEntityID As Integer
+    Public entityType As Integer '0 for enemy, 1 for player
     Public timeLeft As Single
 End Class

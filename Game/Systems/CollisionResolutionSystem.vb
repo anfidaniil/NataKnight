@@ -8,12 +8,18 @@
             End If
 
             If world.Projectiles.HasComponent(ev.entityA) Then
-                If world.Projectiles.GetComponent(ev.entityA).parentEntityID = ev.entityB Then
+                If world.Projectiles.GetComponent(ev.entityA).entityType = 0 And world.Enemies.HasComponent(ev.entityB) Then
+                    Continue For
+                End If
+                If world.Projectiles.GetComponent(ev.entityA).entityType = 1 And world.Players.HasComponent(ev.entityB) Then
                     Continue For
                 End If
             End If
             If world.Projectiles.HasComponent(ev.entityB) Then
-                If world.Projectiles.GetComponent(ev.entityB).parentEntityID = ev.entityA Then
+                If world.Projectiles.GetComponent(ev.entityB).entityType = 0 And world.Enemies.HasComponent(ev.entityA) Then
+                    Continue For
+                End If
+                If world.Projectiles.GetComponent(ev.entityB).entityType = 1 And world.Players.HasComponent(ev.entityA) Then
                     Continue For
                 End If
             End If

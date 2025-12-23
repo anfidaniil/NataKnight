@@ -1,4 +1,4 @@
-﻿Public Class PLayerAttackSystem
+﻿Public Class PlayerAttackSystem
     Implements ISystem
 
     Private input As InputState
@@ -7,7 +7,7 @@
     End Sub
 
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
-        For Each kv In world.Attacks.All
+        For Each kv In world.Players.All
             Dim id = kv.Key
             Dim a = world.Attacks.GetComponent(id)
             If (world.Transforms.HasComponent(id)) Then
@@ -24,7 +24,7 @@
                     )
                     input.cursorPos = mouseWorld
                     a.timeRemaining = 0.1F
-                    world.CreateBullet(t.pos, input.cursorPos, id)
+                    world.CreateBullet(t.pos, input.cursorPos, 1)
                 End If
                 a.timeRemaining -= dt
             End If
