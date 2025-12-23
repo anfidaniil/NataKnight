@@ -14,6 +14,11 @@
                     If world.Immovables.HasComponent(a.Key) And world.Immovables.HasComponent(b.Key) Then
                         Continue For
                     End If
+                    If world.Projectiles.HasComponent(a.Key) And world.Projectiles.HasComponent(b.Key) Then
+                        If world.Projectiles.GetComponent(a.Key).entityType = world.Projectiles.GetComponent(b.Key).entityType Then
+                            Continue For
+                        End If
+                    End If
 
                     If isColliding(
                              pos1:=world.Transforms.GetComponent(a.Key).pos,

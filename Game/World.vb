@@ -221,6 +221,8 @@ Public Class World
             IFrames.RemoveComponent(e)
             Immovables.RemoveComponent(e)
             Cameras.RemoveComponent(e)
+            Attacks.RemoveComponent(e)
+            Projectiles.RemoveComponent(e)
 
             ' Remove entity itself
             EntityManager.RemoveEntity(e)
