@@ -98,11 +98,12 @@ Public Class World
         })
 
         Renders.AddComponent(player, New RenderComponent With {
-            .size = 32,
-            .brush = Brushes.Green
+            .size = 64,
+            .spriteX = 3,
+            .spriteY = 0
         })
         Colliders.AddComponent(player, New BoxCollider With {
-            .size = 32
+            .size = 64
         })
         Healths.AddComponent(player, New Health With {
             .health = 50
@@ -127,11 +128,12 @@ Public Class World
         })
 
         Renders.AddComponent(enemy, New RenderComponent With {
-            .size = 32,
-            .brush = Brushes.Red
+            .size = 64,
+            .spriteX = 3,
+            .spriteY = 1
         })
         Colliders.AddComponent(enemy, New BoxCollider With {
-            .size = 32
+            .size = 64
         })
         Healths.AddComponent(enemy, New Health With {
             .health = 100
@@ -142,28 +144,16 @@ Public Class World
         Enemies.AddComponent(enemy, New EnemyComponent())
     End Sub
 
-    Public Sub CreateStain(pos As PointF)
-        Dim bullet = EntityManager.CreateEntity()
-
-        Transforms.AddComponent(bullet, New TransformComponent With {
-            .pos = pos
-        })
-        Renders.AddComponent(bullet, New RenderComponent With {
-           .size = 8,
-           .brush = Brushes.Red
-       })
-    End Sub
-
     Public Sub CreateImmovableWall(pos As PointF)
         Dim wall = EntityManager.CreateEntity()
 
         Transforms.AddComponent(wall, New TransformComponent With {.pos = pos})
 
         Colliders.AddComponent(wall, New BoxCollider With {.size = 128})
-        Renders.AddComponent(wall, New RenderComponent With {
-           .size = 128,
-           .brush = Brushes.Blue
-       })
+        'Renders.AddComponent(wall, New RenderComponent With {
+        '   .size = 128,
+        '   .brush = Brushes.Blue
+        '})
         Immovables.AddComponent(wall, New ImmovableComponent)
 
     End Sub

@@ -1,4 +1,5 @@
 ﻿Public Class RenderComponent
     Public size As Single
-    Public brush As Brush
+    Public spriteX As Integer
+    Public spriteY As Integer
 End Class

@@ -7,6 +7,7 @@
             If world.Movements.HasComponent(id) Then
                 Dim t = world.Transforms.GetComponent(id)
                 Dim m = world.Movements.GetComponent(id)
+                Dim r = world.Renders.GetComponent(id)
 
                 If world.Enemies.HasComponent(id) Then
                     Dim playerPos = world.Transforms.GetComponent(world.PlayerID)
@@ -21,6 +22,7 @@
                     If Math.Abs(a.Y) < 0.1F Then a.Y = 0
 
                     Dim norm = NormalisePointFVector(a)
+                    UpdateSprite(norm.X, norm.Y, r)
                     m.acceleration = New PointF(
                         norm.X * World.MAX_ENEMY_ACCELERATION,
                         norm.Y * World.MAX_ENEMY_ACCELERATION
@@ -29,6 +31,26 @@
 
             End If
         Next
+    End Sub
+
+    Private Sub UpdateSprite(dx As Integer, dy As Integer, r As RenderComponent)
+
+        If (Math.Abs(dx) >= Math.Abs(dy)) Then
+            If (dx > 0) Then
+                r.spriteX = 4
+            End If
+            If (dx < 0) Then
+                r.spriteX = 2
+            End If
+        Else
+            If (dy < 0) Then
+                r.spriteX = 10
+            End If
+
+            If (dy > 0) Then
+                r.spriteX = 3
+            End If
+        End If
     End Sub
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw

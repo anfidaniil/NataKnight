@@ -67,7 +67,11 @@ Public Class RenderSystem
                 Dim screenX = CInt(t.pos.X - r.size / 2)
                 Dim screenY = CInt(t.pos.Y - r.size / 2)
 
-                g.FillRectangle(r.brush, screenX, screenY, r.size, r.size)
+                Dim src As New Rectangle(r.spriteX * 64, r.spriteY * 64, 64, 64)
+                Dim dst As New Rectangle(screenX, screenY, 64, 64)
+                g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
+
+                'g.FillRectangle(r.brush, screenX, screenY, r.size, r.size)
             End If
         Next
         g.ResetClip()
