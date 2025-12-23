@@ -16,7 +16,7 @@
 
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.KeyPreview = True
-        input = New InputState(False, False, False, False)
+        input = New InputState(False, False, False, False, False, New Point(0, 0))
         Me.SetStyle(
             ControlStyles.AllPaintingInWmPaint Or
             ControlStyles.UserPaint Or
@@ -46,6 +46,7 @@
             Case Keys.A, Keys.Left : input.left = True
             Case Keys.S, Keys.Down : input.down = True
             Case Keys.D, Keys.Right : input.right = True
+            Case Keys.Space : input.fire = True
         End Select
     End Sub
 
@@ -55,6 +56,8 @@
             Case Keys.A, Keys.Left : input.left = False
             Case Keys.S, Keys.Down : input.down = False
             Case Keys.D, Keys.Right : input.right = False
+            Case Keys.Space
+                input.fire = False
         End Select
     End Sub
 

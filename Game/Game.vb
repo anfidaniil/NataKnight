@@ -1,7 +1,7 @@
 ﻿Imports Game.My.Resources
 
 Public Class Game
-    Private world As World
+    Public world As World
     Private gameState As GameState
     Public level As New Dictionary(Of Point, Bitmap)
     Public charSprites As New Bitmap(My.Resources.GameResources.character_sprites, New Size(480 * 2, 160 * 2))
@@ -16,8 +16,8 @@ Public Class Game
         CreateLevel()
         world.CreatePlayer()
         world.CreateCamera()
-        'CreateEnemiesAroundPoint(128, 128, 4)
-        'CreateEnemiesAroundPoint(400, 128, 4)
+        CreateEnemiesAroundPoint(128, 128, 4)
+        CreateEnemiesAroundPoint(400, 128, 4)
     End Sub
 
     Public Sub CreateLevel()

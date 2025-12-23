@@ -7,6 +7,17 @@
                 Continue For
             End If
 
+            If world.Projectiles.HasComponent(ev.entityA) Then
+                If world.Projectiles.GetComponent(ev.entityA).parentEntityID = ev.entityB Then
+                    Continue For
+                End If
+            End If
+            If world.Projectiles.HasComponent(ev.entityB) Then
+                If world.Projectiles.GetComponent(ev.entityB).parentEntityID = ev.entityA Then
+                    Continue For
+                End If
+            End If
+
             Dim tA = world.Transforms.GetComponent(ev.entityA)
             Dim tB = world.Transforms.GetComponent(ev.entityB)
 

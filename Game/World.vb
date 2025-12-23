@@ -15,6 +15,8 @@ Public Class World
     Public Damages As New ComponentStore(Of DamageComponent)
     Public IFrames As New ComponentStore(Of InvincibilityComponent)
     Public Immovables As New ComponentStore(Of ImmovableComponent)
+    Public Attacks As New ComponentStore(Of AttackComponent)
+    Public Projectiles As New ComponentStore(Of ProjectileComponent)
 
     Public Cameras As New ComponentStore(Of CameraComponent)
 
@@ -46,6 +48,8 @@ Public Class World
         Systems.Add(New MovementSystem())
 
         Systems.Add(New InvincibilitySystem())
+
+        Systems.Add(New PLayerAttackSystem(input))
 
         Systems.Add(New CollisionSystem())
         Systems.Add(New DamageSystem())
@@ -111,6 +115,10 @@ Public Class World
         Damages.AddComponent(player, New DamageComponent With {
                              .damage = 1})
         Players.AddComponent(player, New PlayerComponent())
+        Attacks.AddComponent(player, New AttackComponent With {
+            .attack = False,
+            .timeRemaining = 1.0F
+        })
     End Sub
 
     Public Sub CreateEnemy(pos As PointF)
@@ -142,8 +150,43 @@ Public Class World
                              .damage = 1})
 
         Enemies.AddComponent(enemy, New EnemyComponent())
+        'Attacks.AddComponent(enemy, New AttackComponent With {
+        '    .attack = False,
+        '    .timeRemaining = 0.1F
+        '})
     End Sub
 
+    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, parentID As Integer)
+        Dim velocity = New PointF(
+            targetPos.X - startPos.X,
+            targetPos.Y - startPos.Y
+        )
+
+        Dim norm = Utils.NormalisePointFVector(velocity)
+        norm = New PointF(
+            norm.X * World.MAX_VELOCITY,
+            norm.Y * World.MAX_VELOCITY
+        )
+
+        Dim bullet = EntityManager.CreateEntity()
+        Transforms.AddComponent(bullet, New TransformComponent With {
+            .pos = startPos})
+        Movements.AddComponent(bullet, New MovementComponent With {
+            .acceleration = New PointF(0, 0),
+            .velocity = norm,
+            .damping = 0.01F
+        })
+        Renders.AddComponent(bullet, New RenderComponent With {
+            .size = 64,
+            .spriteX = 2,
+            .spriteY = 2
+        })
+        Colliders.AddComponent(bullet, New BoxCollider With {.size = 16})
+        Damages.AddComponent(bullet, New DamageComponent With {
+                             .damage = 10})
+
+        Projectiles.AddComponent(bullet, New ProjectileComponent With {.parentEntityID = parentID, .timeLeft = 10.0F})
+    End Sub
     Public Sub CreateImmovableWall(pos As PointF)
         Dim wall = EntityManager.CreateEntity()
 
@@ -173,6 +216,9 @@ Public Class World
             Enemies.RemoveComponent(e)
             Healths.RemoveComponent(e)
             Damages.RemoveComponent(e)
+            IFrames.RemoveComponent(e)
+            Immovables.RemoveComponent(e)
+            Cameras.RemoveComponent(e)
 
             ' Remove entity itself
             EntityManager.RemoveEntity(e)
