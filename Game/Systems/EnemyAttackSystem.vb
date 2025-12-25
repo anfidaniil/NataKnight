@@ -11,7 +11,7 @@
                     Dim playerPos = world.Transforms.GetComponent(world.PlayerID).pos
 
                     If a.timeRemaining <= 0 Then
-                        a.timeRemaining = 3.0F
+                        a.timeRemaining = a.attackCooldown
                         world.CreateBullet(t.pos, playerPos, 0)
                     End If
                     a.timeRemaining -= dt

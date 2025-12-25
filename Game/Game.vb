@@ -1,8 +1,8 @@
-﻿Imports Game.My.Resources
-
+﻿
 Public Class Game
     Public world As World
-    Private gameState As GameState
+    Public gameOverUI As GameOverScreen
+    Public gameState As GameState
     Public level As New Dictionary(Of Point, Bitmap)
     Public charSprites As New Bitmap(My.Resources.GameResources.character_sprites, New Size(480 * 2, 160 * 2))
 
@@ -62,6 +62,18 @@ Public Class Game
     Public Sub GameOver()
         Debug.WriteLine("GameOver")
         gameState = GameState.GameOver
+        gameOverUI = New GameOverScreen(
+            Form1.Width,
+            Form1.Height,
+            Sub() RestartGame(),
+            Sub() Form1.Close()
+        )
+    End Sub
+
+    Public Sub RestartGame()
+        Me.world = New World(Form1.input, Me)
+        Me.gameState = GameState.Playing
+        CreateTestWorld()
     End Sub
 
     Public Sub CreateEnemiesAroundPoint(posX As Integer, posY As Integer, numEnemies As Integer)
@@ -88,7 +100,9 @@ Public Class Game
             Case GameState.Playing
                 world.Draw(g)
             Case GameState.GameOver
-                g.Clear(Color.Beige)
+                world.Draw(g)
+                gameOverUI.Draw(g, world)
+
         End Select
     End Sub
 End Class
