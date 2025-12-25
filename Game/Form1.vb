@@ -1,5 +1,5 @@
 ﻿Public Class Form1
-    Private input As InputState
+    Public input As InputState
     Private game As Game
     Private lastTime As DateTime
 
@@ -56,9 +56,22 @@
             Case Keys.A, Keys.Left : input.left = False
             Case Keys.S, Keys.Down : input.down = False
             Case Keys.D, Keys.Right : input.right = False
-            Case Keys.Space
-                input.fire = False
+            Case Keys.Space : input.fire = False
         End Select
+    End Sub
+
+    Private Sub Form1_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
+        'Doesn't work when pressing left mouse button
+        'Only works when clicking the right button
+        input.fire = True
+
+        If game.gameState = GameState.GameOver Then
+            game.gameOverUI.HandleMouseClick(e.Location)
+        End If
+    End Sub
+
+    Private Sub Form1_MouseUP(sender As Object, e As MouseEventArgs) Handles Me.MouseUp
+        input.fire = False
     End Sub
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)
@@ -74,6 +87,7 @@
             count = 0
             lastCheck = DateTime.Now
             Debug.WriteLine("FPS: " & fps)
+            Debug.WriteLine("Score: " & game.score)
         End If
     End Sub
 End Class

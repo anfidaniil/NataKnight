@@ -23,7 +23,7 @@
                         mouseScreen.Y + cameraPos.pos.Y
                     )
                     input.cursorPos = mouseWorld
-                    a.timeRemaining = 0.1F
+                    a.timeRemaining = a.attackCooldown
                     world.CreateBullet(t.pos, input.cursorPos, 1)
                 End If
                 a.timeRemaining -= dt

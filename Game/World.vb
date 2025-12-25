@@ -8,17 +8,21 @@ Public Class World
     Public Transforms As New ComponentStore(Of TransformComponent)
     Public Movements As New ComponentStore(Of MovementComponent)
     Public Colliders As New ComponentStore(Of BoxCollider)
+
     Public Renders As New ComponentStore(Of RenderComponent)
+    Public Cameras As New ComponentStore(Of CameraComponent)
     Public Players As New ComponentStore(Of PlayerComponent)
     Public Enemies As New ComponentStore(Of EnemyComponent)
-    Public Healths As New ComponentStore(Of Health)
-    Public Damages As New ComponentStore(Of DamageComponent)
-    Public IFrames As New ComponentStore(Of InvincibilityComponent)
-    Public Immovables As New ComponentStore(Of ImmovableComponent)
-    Public Attacks As New ComponentStore(Of AttackComponent)
     Public Projectiles As New ComponentStore(Of ProjectileComponent)
 
-    Public Cameras As New ComponentStore(Of CameraComponent)
+    Public Healths As New ComponentStore(Of Health)
+
+    Public Damages As New ComponentStore(Of DamageComponent)
+    Public IFrames As New ComponentStore(Of InvincibilityComponent)
+
+    Public Immovables As New ComponentStore(Of ImmovableComponent)
+
+    Public Attacks As New ComponentStore(Of AttackComponent)
 
     Public CollisionEvents As New List(Of CollisionEvent)
     Public EntityDestructionEvents As New List(Of EntityDestructionEvent)
@@ -46,11 +50,10 @@ Public Class World
         Systems.Add(New PlayerMovementSystem(input))
         Systems.Add(New CameraFollowSystem())
         Systems.Add(New EnemyMovementSystem())
+        Systems.Add(New MovementSystem())
 
         Systems.Add(New PlayerAttackSystem(input))
         Systems.Add(New EnemyAttackSystem)
-
-        Systems.Add(New MovementSystem())
 
         Systems.Add(New InvincibilitySystem())
 
@@ -119,6 +122,7 @@ Public Class World
         Players.AddComponent(player, New PlayerComponent())
         Attacks.AddComponent(player, New AttackComponent With {
             .attack = False,
+            .attackCooldown = 0.1F,
             .timeRemaining = 1.0F
         })
     End Sub
@@ -154,6 +158,7 @@ Public Class World
         Enemies.AddComponent(enemy, New EnemyComponent())
         Attacks.AddComponent(enemy, New AttackComponent With {
             .attack = False,
+            .attackCooldown = 3.0F,
             .timeRemaining = 3.0F
         })
     End Sub
