@@ -42,12 +42,13 @@ Public Class World
 
     Public Sub New(input As InputState, game As Game)
         Me.game = game
-        Systems.Add(New PlayerAttackSystem(input))
-        Systems.Add(New EnemyAttackSystem)
 
         Systems.Add(New PlayerMovementSystem(input))
         Systems.Add(New CameraFollowSystem())
         Systems.Add(New EnemyMovementSystem())
+
+        Systems.Add(New PlayerAttackSystem(input))
+        Systems.Add(New EnemyAttackSystem)
 
         Systems.Add(New MovementSystem())
 
