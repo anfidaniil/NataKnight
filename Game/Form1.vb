@@ -87,6 +87,7 @@
             count = 0
             lastCheck = DateTime.Now
             Debug.WriteLine("FPS: " & fps)
+            Debug.WriteLine("Score: " & game.world.Scores.GetComponent(game.world.PlayerID).score)
         End If
     End Sub
 End Class

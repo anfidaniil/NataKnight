@@ -20,41 +20,6 @@ Public Class Game
         CreateEnemiesAroundPoint(400, 128, 4)
     End Sub
 
-    Public Sub CreateLevel()
-        Dim tileBmp As Bitmap = My.Resources.GameResources.worldTile128
-
-        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2, +World.TILE_SIZE / 2))
-        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 10, +World.TILE_SIZE / 2))
-        For y = 0 To 0
-            For x = 1 To 9
-                level(New Point(x, y)) = tileBmp
-                CreateMapCollisionBox(New PointF(World.TILE_SIZE / 2 + World.TILE_SIZE * x, -World.TILE_SIZE / 2))
-            Next
-        Next
-        For y = 1 To 3
-            For x = 0 To 10
-                level(New Point(x, y)) = tileBmp
-            Next
-            CreateMapCollisionBox(New PointF(-World.TILE_SIZE / 2, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
-            CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 11, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
-        Next
-        For y = 4 To 9
-            For x = 0 To 10
-                level(New Point(x, y)) = tileBmp
-            Next
-            CreateMapCollisionBox(New PointF(-World.TILE_SIZE / 2, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
-            CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 11, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
-        Next
-        For y = 10 To 10
-            For x = 1 To 9
-                level(New Point(x, y)) = tileBmp
-                CreateMapCollisionBox(New PointF(World.TILE_SIZE / 2 + World.TILE_SIZE * x, World.TILE_SIZE / 2 + World.TILE_SIZE * (y + 1)))
-            Next
-        Next
-        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2, World.TILE_SIZE / 2 + World.TILE_SIZE * 10))
-        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 10, World.TILE_SIZE / 2 + World.TILE_SIZE * 10))
-    End Sub
-
     Public Sub CreateMapCollisionBox(pos As PointF)
         world.CreateImmovableWall(pos)
     End Sub
@@ -104,5 +69,40 @@ Public Class Game
                 gameOverUI.Draw(g, world)
 
         End Select
+    End Sub
+
+    Public Sub CreateLevel()
+        Dim tileBmp As Bitmap = My.Resources.GameResources.worldTile128
+
+        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2, +World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 10, +World.TILE_SIZE / 2))
+        For y = 0 To 0
+            For x = 1 To 9
+                level(New Point(x, y)) = tileBmp
+                CreateMapCollisionBox(New PointF(World.TILE_SIZE / 2 + World.TILE_SIZE * x, -World.TILE_SIZE / 2))
+            Next
+        Next
+        For y = 1 To 3
+            For x = 0 To 10
+                level(New Point(x, y)) = tileBmp
+            Next
+            CreateMapCollisionBox(New PointF(-World.TILE_SIZE / 2, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
+            CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 11, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
+        Next
+        For y = 4 To 9
+            For x = 0 To 10
+                level(New Point(x, y)) = tileBmp
+            Next
+            CreateMapCollisionBox(New PointF(-World.TILE_SIZE / 2, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
+            CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 11, World.TILE_SIZE / 2 + World.TILE_SIZE * y))
+        Next
+        For y = 10 To 10
+            For x = 1 To 9
+                level(New Point(x, y)) = tileBmp
+                CreateMapCollisionBox(New PointF(World.TILE_SIZE / 2 + World.TILE_SIZE * x, World.TILE_SIZE / 2 + World.TILE_SIZE * (y + 1)))
+            Next
+        Next
+        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2, World.TILE_SIZE / 2 + World.TILE_SIZE * 10))
+        CreateMapCollisionBox(New PointF(+World.TILE_SIZE / 2 + World.TILE_SIZE * 10, World.TILE_SIZE / 2 + World.TILE_SIZE * 10))
     End Sub
 End Class
