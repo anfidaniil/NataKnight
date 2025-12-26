@@ -77,9 +77,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property test_Map() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property level1_map() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("test_Map", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("level1_map", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -87,9 +87,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property worldTile1() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property tiles() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("worldTile1", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("tiles", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

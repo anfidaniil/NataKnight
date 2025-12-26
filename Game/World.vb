@@ -41,7 +41,7 @@ Public Class World
     Public Const IFRAMES_DURATION = 0.1F
     Public DEFAULT_POSITION = New PointF(0, 0)
 
-    Public Const TILE_SIZE As Integer = 128
+    Public Const TILE_SIZE As Integer = 256
 
 
     Public Sub New(input As InputState, game As Game)
@@ -97,7 +97,7 @@ Public Class World
         PlayerID = player
 
         Transforms.AddComponent(player, New TransformComponent With {
-            .pos = New PointF(600, 600)
+            .pos = New PointF(2020, 2020)
         })
 
         Movements.AddComponent(player, New MovementComponent With {
@@ -195,16 +195,15 @@ Public Class World
 
         Projectiles.AddComponent(bullet, New ProjectileComponent With {.entityType = entityType, .timeLeft = 10.0F})
     End Sub
-    Public Sub CreateImmovableWall(pos As PointF)
+    Public Sub CreateImmovableWall(pos As PointF, size As Integer)
         Dim wall = EntityManager.CreateEntity()
 
         Transforms.AddComponent(wall, New TransformComponent With {.pos = pos})
 
-        Colliders.AddComponent(wall, New BoxCollider With {.size = 128})
-        'Renders.AddComponent(wall, New RenderComponent With {
-        '   .size = 128,
-        '   .brush = Brushes.Blue
-        '})
+        Colliders.AddComponent(wall, New BoxCollider With {.size = size})
+        Renders.AddComponent(wall, New RenderComponent With {
+           .size = size
+        })
         Immovables.AddComponent(wall, New ImmovableComponent)
 
     End Sub

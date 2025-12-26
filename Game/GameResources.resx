@@ -121,11 +121,11 @@
   <data name="character_sprites" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Assets\Sprite-0001.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="test_Map" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Assets\test_Map.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="level1_map" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\level1_map.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="worldTile1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Assets\worldTile1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="tiles" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\tiles.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="worldTile128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Assets\worldTile128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

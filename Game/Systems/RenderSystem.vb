@@ -61,6 +61,7 @@ Public Class RenderSystem
         For Each kv In world.Transforms.All
             Dim id = kv.Key
             If world.Renders.HasComponent(id) Then
+
                 Dim t = kv.Value
                 Dim r = world.Renders.GetComponent(id)
 
@@ -69,7 +70,12 @@ Public Class RenderSystem
 
                 Dim src As New Rectangle(r.spriteX * 64, r.spriteY * 64, 64, 64)
                 Dim dst As New Rectangle(screenX, screenY, 64, 64)
-                g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
+                If Not world.Immovables.HasComponent(id) Then
+                    g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
+                Else
+                    'g.FillRectangle(Brushes.Red, screenX, screenY, r.size, r.size)
+                End If
+
 
                 'g.FillRectangle(r.brush, screenX, screenY, r.size, r.size)
             End If
