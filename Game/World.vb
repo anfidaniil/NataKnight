@@ -25,7 +25,7 @@ Public Class World
     Public Attacks As New ComponentStore(Of AttackComponent)
 
     Public CollisionEvents As New List(Of CollisionEvent)
-    Public EntityDestructionEvents As New List(Of EntityDestructionEvent)
+    Public EntityDestructionEvents As New HashSet(Of Integer)
 
     Private Systems As New List(Of ISystem)
 
@@ -211,8 +211,7 @@ Public Class World
     Public Sub DestructEntities()
         If EntityDestructionEvents.Count = 0 Then Return
 
-        For Each ev In EntityDestructionEvents
-            Dim e = ev.entityID
+        For Each e In EntityDestructionEvents
 
             ' Remove components from all stores
             Transforms.RemoveComponent(e)
