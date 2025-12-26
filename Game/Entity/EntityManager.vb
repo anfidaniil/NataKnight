@@ -1,14 +1,16 @@
 ﻿Public Class EntityManager
 
     Private nextId As Integer = 0
-    Private availableAfterDestruction As Queue(Of Integer) = New Queue(Of Integer)
+    Private availableAfterDestruction As Stack(Of Integer) = New Stack(Of Integer)
+    Private destroyed As New HashSet(Of Integer)
 
     Public Entities As New List(Of Integer)
 
     Public Function CreateEntity() As Integer
         Dim id As Integer
         If availableAfterDestruction.Count > 0 Then
-            id = availableAfterDestruction.Dequeue()
+            id = availableAfterDestruction.Pop()
+            destroyed.Remove(id)
         Else
             id = nextId
             nextId += 1
@@ -19,8 +21,14 @@
     End Function
 
     Public Sub RemoveEntity(entityId As Integer)
-        Entities.Remove(entityId)
-        availableAfterDestruction.Enqueue(entityId)
+        If destroyed.Contains(entityId) Then
+            Throw New Exception($"Entity {entityId} destroyed twice")
+        End If
+
+        If Entities.Remove(entityId) Then
+            destroyed.Add(entityId)
+            availableAfterDestruction.Push(entityId)
+        End If
     End Sub
 
     Public Function Exists(entityId As Integer) As Boolean

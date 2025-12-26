@@ -75,9 +75,6 @@ Public Class RenderSystem
                 Else
                     'g.FillRectangle(Brushes.Red, screenX, screenY, r.size, r.size)
                 End If
-
-
-                'g.FillRectangle(r.brush, screenX, screenY, r.size, r.size)
             End If
         Next
         g.ResetClip()

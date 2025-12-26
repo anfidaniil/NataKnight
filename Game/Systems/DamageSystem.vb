@@ -44,11 +44,8 @@
                 )
 
                 If hc.health < 0 Then
-                    world.EntityDestructionEvents.Add(
-                        New EntityDestructionEvent With {
-                            .entityID = ev.entityB
-                        }
-                    )
+                    world.EntityDestructionEvents.Add(ev.entityB)
+
                     If world.Projectiles.HasComponent(ev.entityA) Then
                         If world.Projectiles.GetComponent(ev.entityA).entityType = 1 Then
                             world.game.score = world.game.score + 1
@@ -69,11 +66,8 @@
                 hc.health = hc.health - dc.damage
 
                 If hc.health < 0 Then
-                    world.EntityDestructionEvents.Add(
-                        New EntityDestructionEvent With {
-                            .entityID = ev.entityA
-                        }
-                    )
+                    world.EntityDestructionEvents.Add(ev.entityA)
+
                     If world.Projectiles.HasComponent(ev.entityB) Then
                         If world.Projectiles.GetComponent(ev.entityB).entityType = 1 Then
                             world.game.score = world.game.score + 1
@@ -83,19 +77,11 @@
             End If
 
             If (world.Projectiles.HasComponent(ev.entityA)) Then
-                world.EntityDestructionEvents.Add(
-                        New EntityDestructionEvent With {
-                            .entityID = ev.entityA
-                        }
-                    )
+                world.EntityDestructionEvents.Add(ev.entityA)
             End If
 
             If (world.Projectiles.HasComponent(ev.entityB)) Then
-                world.EntityDestructionEvents.Add(
-                    New EntityDestructionEvent With {
-                        .entityID = ev.entityB
-                    }
-                )
+                world.EntityDestructionEvents.Add(ev.entityB)
             End If
         Next
     End Sub
