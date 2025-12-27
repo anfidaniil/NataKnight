@@ -9,14 +9,16 @@
 
         buttons.Add(New UIButton With {
             .bounds = New Rectangle(centerX - buttonWidth / 2 - 20, centerY, buttonWidth, buttonHeight),
-            .text = "Start New Game",
-            .onClick = restart
-        })
-        buttons.Add(New UIButton With {
-            .bounds = New Rectangle(centerX + buttonWidth / 2 + 20, centerY, buttonWidth, buttonHeight),
             .text = "Continue",
             .onClick = continueAction
         })
+
+        buttons.Add(New UIButton With {
+            .bounds = New Rectangle(centerX + buttonWidth / 2 + 20, centerY, buttonWidth, buttonHeight),
+            .text = "Start New Game",
+            .onClick = restart
+        })
+
         buttons.Add(New UIButton With {
             .bounds = New Rectangle(centerX, centerY + 90, buttonWidth, buttonHeight),
             .text = "Quit",
