@@ -156,10 +156,6 @@ Public Class Game
         Return tile128
     End Function
     Public Sub CreateLevel()
-        If level.Count > 0 Then
-            Debug.WriteLine("Level already created")
-            Return
-        End If
         For i = 0 To 15
             For j = 0 To 15
                 If i = 0 And j > 3 And j < 13 Then

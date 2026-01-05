@@ -60,9 +60,6 @@
         If dx = 1 And dy = -1 Then
             r.spriteX = 6
         End If
-        If dx = 0 And dy = 0 Then
-            r.spriteX = 3
-        End If
         If dx = -1 And dy = 0 Then
             r.spriteX = 0
         End If
