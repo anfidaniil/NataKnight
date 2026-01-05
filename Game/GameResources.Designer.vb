@@ -67,6 +67,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend Shared ReadOnly Property bluecart() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("bluecart", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend Shared ReadOnly Property character_sprites() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("character_sprites", resourceCulture)
@@ -77,9 +87,29 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend Shared ReadOnly Property greencart() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("greencart", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend Shared ReadOnly Property level1_map() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("level1_map", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property redcart() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("redcart", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

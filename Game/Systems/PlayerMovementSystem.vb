@@ -28,7 +28,7 @@
                         dy
                     )
                     Dim norm = NormalisePointFVector(a)
-                    UpdateSprite(norm.X, norm.Y, r)
+                    UpdateSprite(a.X, a.Y, r)
                     m.acceleration = New PointF(
                         norm.X * World.MAX_ACCELERATION * 2.0F,
                         norm.Y * World.MAX_ACCELERATION * 2.0F
@@ -39,23 +39,31 @@
     End Sub
 
     Private Sub UpdateSprite(dx As Integer, dy As Integer, r As RenderComponent)
-
-        If (Math.Abs(dx) >= Math.Abs(dy)) Then
-            If (dx > 0) Then
-                r.spriteX = 4
-            End If
-            If (dx < 0) Then
-                r.spriteX = 2
-            End If
-        Else
-            If (dy < 0) Then
-                r.spriteX = 10
-            End If
-
-            If (dy > 0) Then
-                r.spriteX = 3
-            End If
+        If dx = 0 And dy = 1 Then
+            r.spriteX = 3
         End If
+        If dx = 1 And dy = 1 Then
+            r.spriteX = 4
+        End If
+        If dx = -1 And dy = 1 Then
+            r.spriteX = 2
+        End If
+        If dx = 1 And dy = 0 Then
+            r.spriteX = 1
+        End If
+        If dx = -1 And dy = -1 Then
+            r.spriteX = 5
+        End If
+        If dx = 0 And dy = -1 Then
+            r.spriteX = 10
+        End If
+        If dx = 1 And dy = -1 Then
+            r.spriteX = 6
+        End If
+        If dx = -1 And dy = 0 Then
+            r.spriteX = 0
+        End If
+
     End Sub
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw
