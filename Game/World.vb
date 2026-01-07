@@ -42,6 +42,7 @@ Public Class World
     Public DEFAULT_POSITION = New PointF(0, 0)
 
     Public Const TILE_SIZE As Integer = 256
+    Public Const GAME_NAME = "GAME NAME"
 
 
     Public Sub New(input As InputState, game As Game)

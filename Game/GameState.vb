@@ -1,4 +1,5 @@
 ﻿Public Enum GameState
+    Starting
     Menu
     Playing
     GameOver

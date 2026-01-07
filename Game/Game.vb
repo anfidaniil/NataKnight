@@ -6,6 +6,7 @@ Public Class Game
     Public world As World
     Public gameOverUI As GameOverScreen
     Public menuScreen As MenuScreen
+    Public startingMenuScreen As StartScreen
     Public gameState As GameState
 
     Public level As New Dictionary(Of Point, Bitmap)
@@ -20,13 +21,19 @@ Public Class Game
     Public Sub New(input As InputState)
         Me.world = New World(input, Me)
         CreateTestWorld()
-        Me.gameState = GameState.Menu
+        Me.gameState = GameState.Starting
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
             Sub() Form1.Close(),
             Sub() gameState = GameState.Playing
+        )
+        startingMenuScreen = New StartScreen(
+            Form1.Width,
+            Form1.Height,
+            Sub() StartNewGame(),
+            Sub() Form1.Close()
         )
 
     End Sub
@@ -86,6 +93,8 @@ Public Class Game
 
     Public Sub Draw(g As Graphics)
         Select Case gameState
+            Case GameState.Starting
+                startingMenuScreen.Draw(g, world)
             Case GameState.Menu
                 world.Draw(g)
                 menuScreen.Draw(g, world)
