@@ -30,10 +30,6 @@
             Form1.Height
         )
         End Using
-        g.DrawImageUnscaled(My.Resources.GameResources.redcart, New Point(
-            (Form1.Width - 720) / 2,
-            (Form1.Height - 480) / 2
-        ))
 
         Using font As New Font("Arial", 24, FontStyle.Bold)
             Dim text = world.GAME_NAME
