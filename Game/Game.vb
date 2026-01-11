@@ -11,11 +11,9 @@ Public Class Game
 
     Public level As New Dictionary(Of Point, Bitmap)
 
-    Dim tileMap As Bitmap = My.Resources.GameResources.tiles
-
-    Public level1 As New Bitmap(My.Resources.GameResources.level1_map, New Size(2048, 2048))
+    Public level1 As New Bitmap(My.Resources.GameResources.level1_map)
     Public wallPositions As New List(Of Point)
-    Public charSprites As New Bitmap(My.Resources.GameResources.character_sprites, New Size(480 * 2, 160 * 2))
+    Public charSprites As New Bitmap(My.Resources.GameResources.character_sprites)
     Public score As Integer = 0
 
     Public Sub New(input As InputState)
@@ -121,23 +119,6 @@ Public Class Game
         End Select
     End Sub
 
-    Private Function GetSpriteFromPosition(x As Integer, y As Integer) As Bitmap
-        Dim sprite As New Rectangle(32 * x, 32 * y, 32, 32)
-        Dim tileSize As Integer = 64
-
-        Dim tile As New Bitmap(tileSize, tileSize, Imaging.PixelFormat.Format32bppArgb)
-
-        Using g As Graphics = Graphics.FromImage(tile)
-            g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
-            g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
-
-            g.DrawImage(tileMap, New Rectangle(0, 0, tileSize, tileSize), sprite, GraphicsUnit.Pixel)
-        End Using
-
-        Return tile
-
-    End Function
-
     Private Function GetTileFromPosition(x As Integer, y As Integer) As Bitmap
         Dim sprite As New Rectangle(128 * x, 128 * y, 128, 128)
         Dim tileSize As Integer = 256
@@ -153,30 +134,6 @@ Public Class Game
 
         Return tile
 
-    End Function
-
-    Private Function Create128TileFromSprites(
-        pos As Point,
-        sprite1 As Bitmap,
-        sprite2 As Bitmap,
-        sprite3 As Bitmap,
-        sprite4 As Bitmap
-    ) As Bitmap
-        Dim tileSize As Integer = 128
-
-        Dim tile128 As New Bitmap(tileSize, tileSize, Imaging.PixelFormat.Format32bppArgb)
-
-        Using g As Graphics = Graphics.FromImage(tile128)
-            g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
-            g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
-
-            g.DrawImage(sprite1, 0, 0)
-            g.DrawImage(sprite2, 0, 64)
-            g.DrawImage(sprite3, 64, 0)
-            g.DrawImage(sprite4, 64, 64)
-        End Using
-
-        Return tile128
     End Function
     Public Sub CreateLevel()
         For i = 0 To 15

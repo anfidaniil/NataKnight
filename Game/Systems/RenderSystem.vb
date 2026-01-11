@@ -68,7 +68,7 @@ Public Class RenderSystem
                 Dim screenX = CInt(t.pos.X - r.size / 2)
                 Dim screenY = CInt(t.pos.Y - r.size / 2)
 
-                Dim src As New Rectangle(r.spriteX * 64, r.spriteY * 64, 64, 64)
+                Dim src As New Rectangle(r.spriteX * 32, r.spriteY * 32, 32, 32)
                 Dim dst As New Rectangle(screenX, screenY, 64, 64)
                 If Not world.Immovables.HasComponent(id) Then
                     g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
