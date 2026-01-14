@@ -29,8 +29,13 @@
 
             Dim posA = tA.pos
             Dim posB = tB.pos
-            Dim sA = world.Colliders.GetComponent(ev.entityA).size
-            Dim sB = world.Colliders.GetComponent(ev.entityB).size
+            Dim s1 = world.Colliders.GetComponent(ev.entityA)
+            Dim s2 = world.Colliders.GetComponent(ev.entityB)
+
+            Dim s1a = s1.sA
+            Dim s2a = s2.sA
+            Dim s1b = s1.sB
+            Dim s2b = s2.sB
 
             Dim newX_A = posA.X
             Dim newY_A = posA.Y
@@ -39,8 +44,8 @@
 
             Dim dx = posA.X - posB.X
             Dim dy = posA.Y - posB.Y
-            Dim overlapX = (sA + sB) / 2 - Math.Abs(dx)
-            Dim overlapY = (sA + sB) / 2 - Math.Abs(dy)
+            Dim overlapX = (s1a + s2a) / 2 - Math.Abs(dx)
+            Dim overlapY = (s1b + s2b) / 2 - Math.Abs(dy)
 
             If world.Immovables.HasComponent(ev.entityA) Then
                 If overlapX < overlapY Then

@@ -1,3 +1,4 @@
 ﻿Public Class BoxCollider
-    Public size As Integer
+    Public sA As Integer
+    Public sB As Integer
 End Class

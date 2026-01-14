@@ -73,7 +73,13 @@ Public Class RenderSystem
                 If Not world.Immovables.HasComponent(id) Then
                     g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
                 Else
-                    'g.FillRectangle(Brushes.Red, screenX, screenY, r.size, r.size)
+                    'g.DrawRectangle(
+                    '    Pens.Red,
+                    '    collider.Pos.X - collider.Size.X / 2,
+                    '    collider.Pos.Y - collider.Size.Y / 2,
+                    '    collider.Size.X,
+                    '    collider.Size.Y
+                    ')
                 End If
             End If
         Next
