@@ -67,16 +67,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property bluecart() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("bluecart", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
         Friend Shared ReadOnly Property btnCONTINUAR() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("btnCONTINUAR", resourceCulture)
@@ -110,6 +100,16 @@ Namespace My.Resources
         Friend Shared ReadOnly Property character_sprites() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("character_sprites", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property ddd() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ddd", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
