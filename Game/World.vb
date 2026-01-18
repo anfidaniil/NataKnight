@@ -25,6 +25,7 @@ Public Class World
     Public Attacks As New ComponentStore(Of AttackComponent)
 
     Public CollisionEvents As New List(Of CollisionEvent)
+    Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
     Public EntityDestructionEvents As New HashSet(Of Integer)
 
     Private Systems As New List(Of ISystem)

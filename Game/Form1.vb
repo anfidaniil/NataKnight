@@ -3,7 +3,7 @@
     Private game As Game
     Private lastTime As DateTime
 
-    Private isDebug As Boolean = True
+    Private isDebug As Boolean = False
     Private count As Integer = 0
     Private fps As Integer = 0
     Private lastCheck As Date
