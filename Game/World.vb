@@ -25,6 +25,7 @@ Public Class World
     Public Attacks As New ComponentStore(Of AttackComponent)
 
     Public CollisionEvents As New List(Of CollisionEvent)
+    Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
     Public EntityDestructionEvents As New HashSet(Of Integer)
 
     Private Systems As New List(Of ISystem)
@@ -113,7 +114,8 @@ Public Class World
             .spriteY = 0
         })
         Colliders.AddComponent(player, New BoxCollider With {
-            .size = 64
+            .sA = 64,
+            .sB = 64
         })
         Healths.AddComponent(player, New Health With {
             .health = 50
@@ -148,7 +150,8 @@ Public Class World
             .spriteY = 1
         })
         Colliders.AddComponent(enemy, New BoxCollider With {
-            .size = 64
+            .sA = 64,
+            .sB = 64
         })
         Healths.AddComponent(enemy, New Health With {
             .health = 100
@@ -190,21 +193,27 @@ Public Class World
             .spriteX = 2 + 3 * entityType,
             .spriteY = 2
         })
-        Colliders.AddComponent(bullet, New BoxCollider With {.size = 16})
+        Colliders.AddComponent(bullet, New BoxCollider With {
+            .sA = 16,
+            .sB = 16
+        })
         Damages.AddComponent(bullet, New DamageComponent With {
                              .damage = 10})
 
         Projectiles.AddComponent(bullet, New ProjectileComponent With {.entityType = entityType, .timeLeft = 10.0F})
     End Sub
-    Public Sub CreateImmovableWall(pos As PointF, size As Integer)
+    Public Sub CreateImmovableWall(pos As PointF, size As Point)
         Dim wall = EntityManager.CreateEntity()
 
         Transforms.AddComponent(wall, New TransformComponent With {.pos = pos})
 
-        Colliders.AddComponent(wall, New BoxCollider With {.size = size})
-        Renders.AddComponent(wall, New RenderComponent With {
-           .size = size
+        Colliders.AddComponent(wall, New BoxCollider With {
+            .sA = size.X,
+            .sB = size.Y
         })
+        'Renders.AddComponent(wall, New RenderComponent With {
+        '   .size = size.X
+        '})
         Immovables.AddComponent(wall, New ImmovableComponent)
 
     End Sub

@@ -65,6 +65,13 @@
 
                 hc.health = hc.health - dc.damage
 
+                world.IFrames.AddComponent(
+                    ev.entityA,
+                    New InvincibilityComponent With {
+                        .timeRemaining = World.IFRAMES_DURATION
+                    }
+                )
+
                 If hc.health < 0 Then
                     world.EntityDestructionEvents.Add(ev.entityA)
 

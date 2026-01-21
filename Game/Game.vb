@@ -68,7 +68,7 @@ Public Class Game
         world.Update(0.01)
     End Sub
 
-    Public Sub CreateMapCollisionBox(pos As PointF, size As Integer)
+    Public Sub CreateMapCollisionBox(pos As PointF, size As Point)
         world.CreateImmovableWall(pos, size)
     End Sub
 
@@ -147,41 +147,73 @@ Public Class Game
     Public Sub CreateLevel()
         For i = 0 To 15
             For j = 0 To 15
-                If i = 0 And j > 3 And j < 13 Then
-                    CreateMapCollisionBox(New PointF(World.TILE_SIZE + 128, j * World.TILE_SIZE), World.TILE_SIZE)
-                End If
-                If i = 15 And j > 3 And j < 13 Then
-                    CreateMapCollisionBox(New PointF(World.TILE_SIZE * i - World.TILE_SIZE / 2, j * World.TILE_SIZE), World.TILE_SIZE)
-                End If
-                If j = 0 And i > 3 And i < 13 Then
-                    CreateMapCollisionBox(New PointF(i * World.TILE_SIZE, World.TILE_SIZE + 128), World.TILE_SIZE)
-                End If
-                If j = 15 And i > 3 And i < 13 Then
-                    CreateMapCollisionBox(New PointF(World.TILE_SIZE * i, World.TILE_SIZE * j - World.TILE_SIZE / 2), World.TILE_SIZE)
-                End If
+                'If i = 0 And j > 3 And j < 13 Then
+                '    CreateMapCollisionBox(New PointF(World.TILE_SIZE + 128, j * World.TILE_SIZE), World.TILE_SIZE)
+                'End If
+                'If i = 15 And j > 3 And j < 13 Then
+                '    CreateMapCollisionBox(New PointF(World.TILE_SIZE * i - World.TILE_SIZE / 2, j * World.TILE_SIZE), World.TILE_SIZE)
+                'End If
+                'If j = 0 And i > 3 And i < 13 Then
+                '    CreateMapCollisionBox(New PointF(i * World.TILE_SIZE, World.TILE_SIZE + 128), World.TILE_SIZE)
+                'End If
+                'If j = 15 And i > 3 And i < 13 Then
+                '    CreateMapCollisionBox(New PointF(World.TILE_SIZE * i, World.TILE_SIZE * j - World.TILE_SIZE / 2), World.TILE_SIZE)
+                'End If
 
                 level(New Point(i, j)) = GetTileFromPosition(i, j)
             Next
-            'Left-Upper Corner
-            CreateMapCollisionBox(New Point(576, 960), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(704, 832), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(832, 704), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(960, 576), World.TILE_SIZE / 2)
-            'Right-Upper Corner
-            CreateMapCollisionBox(New Point(3520, 960), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(3392, 832), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(3264, 704), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(3136, 576), World.TILE_SIZE / 2)
-            'Left-Down Corner
-            CreateMapCollisionBox(New Point(960, 3520), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(832, 3392), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(704, 3264), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(576, 3136), World.TILE_SIZE / 2)
-            'Right-Down Corner
-            CreateMapCollisionBox(New Point(3136, 3520), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(3264, 3392), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(3392, 3264), World.TILE_SIZE / 2)
-            CreateMapCollisionBox(New Point(3520, 3136), World.TILE_SIZE / 2)
+
         Next
+        Dim T As Integer = World.TILE_SIZE
+        Dim H As Integer = T \ 2
+        CreateMapCollisionBox(
+        New PointF(
+            T + H,                 ' center X = left wall column
+            T * 4 + (T * 9) / 2    ' center Y
+        ),
+        New Point(T, T * 9)
+        )
+        CreateMapCollisionBox(
+            New PointF(
+                T * 15 - H,
+                T * 4 + (T * 9) / 2
+            ),
+            New Point(T, T * 9)
+        )
+        CreateMapCollisionBox(
+            New PointF(
+                T * 4 + (T * 9) / 2,
+                T + H
+            ),
+            New Point(T * 9, T)
+        )
+        CreateMapCollisionBox(
+            New PointF(
+                T * 4 + (T * 9) / 2,
+                T * 15 - H
+            ),
+            New Point(T * 9, T)
+        )
+
+        'Left-Upper Corner
+        CreateMapCollisionBox(New Point(576, 960), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(704, 832), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(832, 704), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(960, 576), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        'Right-Upper Corner
+        CreateMapCollisionBox(New Point(3520, 960), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(3392, 832), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(3264, 704), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(3136, 576), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        'Left-Down Corner
+        CreateMapCollisionBox(New Point(960, 3520), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(832, 3392), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(704, 3264), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(576, 3136), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        'Right-Down Corner
+        CreateMapCollisionBox(New Point(3136, 3520), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(3264, 3392), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(3392, 3264), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+        CreateMapCollisionBox(New Point(3520, 3136), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
     End Sub
 End Class
