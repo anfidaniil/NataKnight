@@ -37,8 +37,9 @@
             .spriteY = 3
         })
 
-        world.Colliders.AddComponent(entity, New BoxCollider With {
-            .size = 32
+        world.Colliders.AddComponent(entity, New RectangleCollider With {
+            .sA = 64,
+            .sB = 64
         })
 
         world.Buffs.AddComponent(entity, New HealthBuff With {

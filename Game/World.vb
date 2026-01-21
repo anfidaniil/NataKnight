@@ -9,7 +9,7 @@ Public Class World
 
     Public Transforms As New ComponentStore(Of TransformComponent)
     Public Movements As New ComponentStore(Of MovementComponent)
-    Public Colliders As New ComponentStore(Of BoxCollider)
+    Public Colliders As New ComponentStore(Of RectangleCollider)
 
     Public Renders As New ComponentStore(Of RenderComponent)
     Public Cameras As New ComponentStore(Of CameraComponent)
@@ -123,7 +123,7 @@ Public Class World
             .spriteX = 3,
             .spriteY = 0
         })
-        Colliders.AddComponent(player, New BoxCollider With {
+        Colliders.AddComponent(player, New RectangleCollider With {
             .sA = 64,
             .sB = 64
         })
@@ -159,7 +159,7 @@ Public Class World
             .spriteX = 3,
             .spriteY = 1
         })
-        Colliders.AddComponent(enemy, New BoxCollider With {
+        Colliders.AddComponent(enemy, New RectangleCollider With {
             .sA = 64,
             .sB = 64
         })
@@ -203,7 +203,7 @@ Public Class World
             .spriteX = 2 + 3 * entityType,
             .spriteY = 2
         })
-        Colliders.AddComponent(bullet, New BoxCollider With {
+        Colliders.AddComponent(bullet, New RectangleCollider With {
             .sA = 16,
             .sB = 16
         })
@@ -217,7 +217,7 @@ Public Class World
 
         Transforms.AddComponent(wall, New TransformComponent With {.pos = pos})
 
-        Colliders.AddComponent(wall, New BoxCollider With {
+        Colliders.AddComponent(wall, New RectangleCollider With {
             .sA = size.X,
             .sB = size.Y
         })
