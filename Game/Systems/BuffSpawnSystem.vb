@@ -38,8 +38,8 @@
         })
 
         world.Colliders.AddComponent(entity, New RectangleCollider With {
-            .sA = 32,
-            .sB = 32
+            .sA = 64,
+            .sB = 64
         })
 
         world.Buffs.AddComponent(entity, New HealthBuff With {
