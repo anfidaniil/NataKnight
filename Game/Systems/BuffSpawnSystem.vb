@@ -2,7 +2,7 @@
     Implements ISystem
 
     Private spawnTimer As Single = 0
-    Private spawnInterval As Single = 10.0F
+    Private spawnInterval As Single = 15.0F
     Private maxBuffs As Integer = 5
     Private rng As New Random()
 
@@ -38,8 +38,8 @@
         })
 
         world.Colliders.AddComponent(entity, New RectangleCollider With {
-            .sA = 64,
-            .sB = 64
+            .sA = 32,
+            .sB = 32
         })
 
         world.Buffs.AddComponent(entity, New HealthBuff With {
