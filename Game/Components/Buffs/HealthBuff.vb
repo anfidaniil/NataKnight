@@ -6,4 +6,5 @@
     Public Sub New()
         Me.type = BuffType.HealthRegen
     End Sub
+
 End Class

@@ -33,7 +33,12 @@
                 If healthBuff IsNot Nothing AndAlso world.Healths.HasComponent(playerID) Then
                     Dim hp = world.Healths.GetComponent(playerID)
                     hp.health += healthBuff.healthRegen
-                    Debug.WriteLine("Curado! Vida atual: " & hp.health)
+
+                    If hp.health > hp.maxHealth Then
+                        hp.health = hp.maxHealth
+                    End If
+
+                    Debug.WriteLine("Curado! Vida: " & hp.health & "/" & hp.maxHealth)
                 End If
         End Select
 

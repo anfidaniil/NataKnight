@@ -138,6 +138,11 @@ Public Class World
             .attackCooldown = 0.1F,
             .timeRemaining = 1.0F
         })
+
+        Healths.AddComponent(player, New Health With {
+            .health = 100,
+            .maxHealth = 100
+        })
     End Sub
 
     Public Sub CreateEnemy(pos As PointF)
