@@ -67,19 +67,18 @@ Public Class World
         Systems.Add(New CollisionSystem())
         Systems.Add(New DamageSystem())
         Systems.Add(New CollisionResolutionSystem())
-
         Systems.Add(New BuffApplicationSystem())
+
+        Systems.Add(New EntityDestructionSystem())
 
         Systems.Add(New RenderSystem())
         Systems.Add(New WaveSystem())
-        Systems.Add(New BuffsSpawnSystem())
     End Sub
 
     Public Sub Update(dt As Single)
         For Each sys In Systems
             sys.Update(Me, dt)
         Next
-        DestructEntities()
     End Sub
 
     Public Sub Draw(g)
@@ -232,38 +231,8 @@ Public Class World
 
     End Sub
 
-    Public Sub DestructEntities()
-        If EntityDestructionEvents.Count = 0 Then Return
 
-        For Each e In EntityDestructionEvents
-
-            ' Remove components from all stores
-            Transforms.RemoveComponent(e)
-            Movements.RemoveComponent(e)
-            Colliders.RemoveComponent(e)
-            Renders.RemoveComponent(e)
-            Players.RemoveComponent(e)
-            Enemies.RemoveComponent(e)
-            Healths.RemoveComponent(e)
-            Damages.RemoveComponent(e)
-            IFrames.RemoveComponent(e)
-            Immovables.RemoveComponent(e)
-            Cameras.RemoveComponent(e)
-            Attacks.RemoveComponent(e)
-            Projectiles.RemoveComponent(e)
-            Buffs.RemoveComponent(e)
-
-            ' Remove entity itself
-            EntityManager.RemoveEntity(e)
-            If (e = PlayerID) Then
-                OnPlayerDestruction()
-            End If
-            'Debug.WriteLine("Destroyed entity: " & e)
-        Next
-        EntityDestructionEvents.Clear()
-    End Sub
-
-    Private Sub OnPlayerDestruction()
+    Public Sub OnPlayerDestruction()
         game.GameOver()
     End Sub
 End Class
