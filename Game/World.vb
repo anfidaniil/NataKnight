@@ -9,13 +9,14 @@ Public Class World
 
     Public Transforms As New ComponentStore(Of TransformComponent)
     Public Movements As New ComponentStore(Of MovementComponent)
-    Public Colliders As New ComponentStore(Of BoxCollider)
+    Public Colliders As New ComponentStore(Of RectangleCollider)
 
     Public Renders As New ComponentStore(Of RenderComponent)
     Public Cameras As New ComponentStore(Of CameraComponent)
     Public Players As New ComponentStore(Of PlayerComponent)
     Public Enemies As New ComponentStore(Of EnemyComponent)
     Public Projectiles As New ComponentStore(Of ProjectileComponent)
+    Public Buffs As New ComponentStore(Of BuffComponent)
 
     Public Healths As New ComponentStore(Of Health)
 
@@ -25,7 +26,6 @@ Public Class World
     Public Immovables As New ComponentStore(Of ImmovableComponent)
 
     Public Attacks As New ComponentStore(Of AttackComponent)
-
 
     Public CollisionEvents As New List(Of CollisionEvent)
     Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
@@ -62,12 +62,17 @@ Public Class World
 
         Systems.Add(New InvincibilitySystem())
 
+        Systems.Add(New BuffsSpawnSystem())
+
         Systems.Add(New CollisionSystem())
         Systems.Add(New DamageSystem())
         Systems.Add(New CollisionResolutionSystem())
 
+        Systems.Add(New BuffApplicationSystem())
+
         Systems.Add(New RenderSystem())
         Systems.Add(New WaveSystem())
+        Systems.Add(New BuffsSpawnSystem())
     End Sub
 
     Public Sub Update(dt As Single)
@@ -117,12 +122,9 @@ Public Class World
             .spriteX = 3,
             .spriteY = 0
         })
-        Colliders.AddComponent(player, New BoxCollider With {
+        Colliders.AddComponent(player, New RectangleCollider With {
             .sA = 64,
             .sB = 64
-        })
-        Healths.AddComponent(player, New Health With {
-            .health = 50
         })
         Damages.AddComponent(player, New DamageComponent With {
                              .damage = 1})
@@ -131,6 +133,11 @@ Public Class World
             .attack = False,
             .attackCooldown = 0.1F,
             .timeRemaining = 1.0F
+        })
+
+        Healths.AddComponent(player, New Health With {
+            .health = 100,
+            .maxHealth = 100
         })
     End Sub
 
@@ -153,21 +160,24 @@ Public Class World
             .spriteX = 3,
             .spriteY = 1
         })
-        Colliders.AddComponent(enemy, New BoxCollider With {
+        Colliders.AddComponent(enemy, New RectangleCollider With {
             .sA = 64,
             .sB = 64
         })
-        Healths.AddComponent(enemy, New Health With {
-            .health = 100
-        })
         Damages.AddComponent(enemy, New DamageComponent With {
-                             .damage = 1})
+            .damage = 2
+        })
 
         Enemies.AddComponent(enemy, New EnemyComponent())
         Attacks.AddComponent(enemy, New AttackComponent With {
             .attack = False,
             .attackCooldown = 3.0F,
             .timeRemaining = 3.0F
+        })
+
+        Healths.AddComponent(enemy, New Health With {
+            .health = 40,
+            .maxHealth = 40
         })
     End Sub
 
@@ -197,7 +207,7 @@ Public Class World
             .spriteX = 2 + 3 * entityType,
             .spriteY = 2
         })
-        Colliders.AddComponent(bullet, New BoxCollider With {
+        Colliders.AddComponent(bullet, New RectangleCollider With {
             .sA = 16,
             .sB = 16
         })
@@ -211,7 +221,7 @@ Public Class World
 
         Transforms.AddComponent(wall, New TransformComponent With {.pos = pos})
 
-        Colliders.AddComponent(wall, New BoxCollider With {
+        Colliders.AddComponent(wall, New RectangleCollider With {
             .sA = size.X,
             .sB = size.Y
         })
@@ -241,6 +251,7 @@ Public Class World
             Cameras.RemoveComponent(e)
             Attacks.RemoveComponent(e)
             Projectiles.RemoveComponent(e)
+            Buffs.RemoveComponent(e)
 
             ' Remove entity itself
             EntityManager.RemoveEntity(e)

@@ -144,23 +144,10 @@ Public Class Game
     Public Sub CreateLevel()
         For i = 0 To 15
             For j = 0 To 15
-                'If i = 0 And j > 3 And j < 13 Then
-                '    CreateMapCollisionBox(New PointF(World.TILE_SIZE + 128, j * World.TILE_SIZE), World.TILE_SIZE)
-                'End If
-                'If i = 15 And j > 3 And j < 13 Then
-                '    CreateMapCollisionBox(New PointF(World.TILE_SIZE * i - World.TILE_SIZE / 2, j * World.TILE_SIZE), World.TILE_SIZE)
-                'End If
-                'If j = 0 And i > 3 And i < 13 Then
-                '    CreateMapCollisionBox(New PointF(i * World.TILE_SIZE, World.TILE_SIZE + 128), World.TILE_SIZE)
-                'End If
-                'If j = 15 And i > 3 And i < 13 Then
-                '    CreateMapCollisionBox(New PointF(World.TILE_SIZE * i, World.TILE_SIZE * j - World.TILE_SIZE / 2), World.TILE_SIZE)
-                'End If
-
                 level(New Point(i, j)) = GetTileFromPosition(i, j)
             Next
-
         Next
+
         Dim T As Integer = World.TILE_SIZE
         Dim H As Integer = T \ 2
         CreateMapCollisionBox(
