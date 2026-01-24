@@ -219,6 +219,11 @@ Public Class World
             .health = 40,
             .maxHealth = 40
         })
+        AudioSources.AddComponent(enemy, New AudioSourceComponent With {
+             .soundId = New List(Of String) From {"footsteps_1", "footsteps_2", "footsteps_3", "footsteps_4"},
+             .volume = 0.5F
+        })
+        AudioTriggers.AddComponent(enemy, New AudioTriggerComponent With {.playRequested = False})
     End Sub
 
     Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer)
