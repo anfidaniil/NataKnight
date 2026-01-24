@@ -1,6 +1,8 @@
 ﻿Imports System.Drawing
+
 Public Class DamageSystem
     Implements ISystem
+
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
         For Each ev In world.CollisionEvents
 
@@ -9,44 +11,27 @@ Public Class DamageSystem
             End If
 
             If world.Projectiles.HasComponent(ev.entityA) Then
-                If world.Projectiles.GetComponent(ev.entityA).entityType = 0 And world.Enemies.HasComponent(ev.entityB) Then
-                    Continue For
-                End If
-                If world.Projectiles.GetComponent(ev.entityA).entityType = 1 And world.Players.HasComponent(ev.entityB) Then
-                    Continue For
-                End If
+                If world.Projectiles.GetComponent(ev.entityA).entityType = 0 And world.Enemies.HasComponent(ev.entityB) Then Continue For
+                If world.Projectiles.GetComponent(ev.entityA).entityType = 1 And world.Players.HasComponent(ev.entityB) Then Continue For
             End If
             If world.Projectiles.HasComponent(ev.entityB) Then
-                If world.Projectiles.GetComponent(ev.entityB).entityType = 0 And world.Enemies.HasComponent(ev.entityA) Then
-                    Continue For
-                End If
-                If world.Projectiles.GetComponent(ev.entityB).entityType = 1 And world.Players.HasComponent(ev.entityA) Then
-                    Continue For
-                End If
+                If world.Projectiles.GetComponent(ev.entityB).entityType = 0 And world.Enemies.HasComponent(ev.entityA) Then Continue For
+                If world.Projectiles.GetComponent(ev.entityB).entityType = 1 And world.Players.HasComponent(ev.entityA) Then Continue For
             End If
 
             If world.Damages.HasComponent(ev.entityA) And world.Healths.HasComponent(ev.entityB) Then
                 Dim hc = world.Healths.GetComponent(ev.entityB)
                 Dim dc = world.Damages.GetComponent(ev.entityA)
 
-
-                If world.IFrames.HasComponent(ev.entityB) Then
-                    'Debug.WriteLine("Entity is invincible")
-                    Continue For
-                End If
+                If world.IFrames.HasComponent(ev.entityB) Then Continue For
 
                 hc.health = hc.health - dc.damage
 
                 If ev.entityB = world.PlayerID Then
-                    OnPlayerReceiveDamage(world, ev.entityB)
+                    world.UpdatePlayerHealthBar()
                 End If
 
-                world.IFrames.AddComponent(
-                    ev.entityB,
-                    New InvincibilityComponent With {
-                        .timeRemaining = World.IFRAMES_DURATION
-                    }
-                )
+                world.IFrames.AddComponent(ev.entityB, New InvincibilityComponent With {.timeRemaining = World.IFRAMES_DURATION})
 
                 If hc.health < 0 Then
                     world.EntityDestructionEvents.Add(ev.entityB)
@@ -63,23 +48,15 @@ Public Class DamageSystem
                 Dim hc = world.Healths.GetComponent(ev.entityA)
                 Dim dc = world.Damages.GetComponent(ev.entityB)
 
-                If world.IFrames.HasComponent(ev.entityA) Then
-                    'Debug.WriteLine("Entity is invincible")
-                    Return
-                End If
+                If world.IFrames.HasComponent(ev.entityA) Then Continue For
 
                 hc.health = hc.health - dc.damage
 
                 If ev.entityA = world.PlayerID Then
-                    OnPlayerReceiveDamage(world, ev.entityA)
+                    world.UpdatePlayerHealthBar()
                 End If
 
-                world.IFrames.AddComponent(
-                    ev.entityA,
-                    New InvincibilityComponent With {
-                        .timeRemaining = World.IFRAMES_DURATION
-                    }
-                )
+                world.IFrames.AddComponent(ev.entityA, New InvincibilityComponent With {.timeRemaining = World.IFRAMES_DURATION})
 
                 If hc.health < 0 Then
                     world.EntityDestructionEvents.Add(ev.entityA)
@@ -100,36 +77,6 @@ Public Class DamageSystem
                 world.EntityDestructionEvents.Add(ev.entityB)
             End If
         Next
-    End Sub
-
-    Private Sub OnPlayerReceiveDamage(world As World, playerID As Integer)
-        If Not world.HealthBars.HasComponent(playerID) OrElse Not world.Healths.HasComponent(playerID) Then
-            Return
-        End If
-
-        Dim hb = world.HealthBars.GetComponent(playerID)
-        Dim hp = world.Healths.GetComponent(playerID)
-
-        If hp.maxHealth <= 0 Then hp.maxHealth = 100
-
-        Dim barWidth As Integer = hb.fullHealthSprite.Width
-        Dim barHeight As Integer = hb.fullHealthSprite.Height
-
-        Dim healthPercentage As Single = Math.Max(0, CSng(hp.health) / CSng(hp.maxHealth))
-        Dim visibleWidth As Integer = CInt(healthPercentage * barWidth)
-
-        Using g As Graphics = Graphics.FromImage(hb.currentHealthSprite)
-            g.Clear(Color.Transparent)
-
-            g.DrawImage(hb.emptyHealthSprite, 0, 0, barWidth, barHeight)
-
-            If visibleWidth > 0 Then
-                Dim srcRect As New Rectangle(0, 0, visibleWidth, barHeight)
-                Dim destRect As New Rectangle(0, 0, visibleWidth, barHeight)
-
-                g.DrawImage(hb.fullHealthSprite, destRect, srcRect, GraphicsUnit.Pixel)
-            End If
-        End Using
     End Sub
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw

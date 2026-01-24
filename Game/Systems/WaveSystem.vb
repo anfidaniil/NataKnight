@@ -121,7 +121,10 @@ Public Class WaveSystem
 
             Dim text As String = "RONDA " & roundNumber
 
-            Using font As New Font("Arial", 40, FontStyle.Bold)
+            Dim uiScale As Single = Math.Max(1.0F, Form1.Width / 1280.0F)
+            Dim fontSize As Single = 40.0F * uiScale
+
+            Using font As New Font("Arial", fontSize, FontStyle.Bold)
                 Dim textSize = g.MeasureString(text, font)
 
                 Dim state = g.Save()
@@ -140,9 +143,11 @@ Public Class WaveSystem
 
                 alpha = Math.Max(0, Math.Min(255, alpha))
 
+                Dim shadowOffset As Integer = CInt(4 * uiScale)
+
                 Using shadowBrush As New SolidBrush(Color.FromArgb(alpha, Color.Black))
                     Using textBrush As New SolidBrush(Color.FromArgb(alpha, Color.White))
-                        g.DrawString(text, font, shadowBrush, xPos + 4, yPos + 4)
+                        g.DrawString(text, font, shadowBrush, xPos + shadowOffset, yPos + shadowOffset)
                         g.DrawString(text, font, textBrush, xPos, yPos)
                     End Using
                 End Using
