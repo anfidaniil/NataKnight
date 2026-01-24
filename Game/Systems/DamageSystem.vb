@@ -29,65 +29,69 @@
                 Dim dc = world.Damages.GetComponent(ev.entityA)
 
 
-                If world.IFrames.HasComponent(ev.entityB) Then
-                    'Debug.WriteLine("Entity is invincible")
-                    Continue For
-                End If
+                If Not world.IFrames.HasComponent(ev.entityB) Then
+                    hc.health = hc.health - dc.damage
 
-                hc.health = hc.health - dc.damage
+                    world.IFrames.AddComponent(
+                        ev.entityB,
+                        New InvincibilityComponent With {
+                            .timeRemaining = World.IFRAMES_DURATION
+                        }
+                    )
 
-                world.IFrames.AddComponent(
-                    ev.entityB,
-                    New InvincibilityComponent With {
-                        .timeRemaining = World.IFRAMES_DURATION
-                    }
-                )
+                    If hc.health < 0 Then
+                        world.EntityDestructionEvents.Add(ev.entityB)
 
-                If hc.health < 0 Then
-                    world.EntityDestructionEvents.Add(ev.entityB)
-
-                    If world.Projectiles.HasComponent(ev.entityA) Then
-                        If world.Projectiles.GetComponent(ev.entityA).entityType = 1 Then
-                            world.game.score = world.game.score + 1
+                        If world.Projectiles.HasComponent(ev.entityA) Then
+                            If world.Projectiles.GetComponent(ev.entityA).entityType = 1 Then
+                                world.game.score = world.game.score + 1
+                            End If
                         End If
                     End If
                 End If
+
+
             End If
 
             If world.Damages.HasComponent(ev.entityB) And world.Healths.HasComponent(ev.entityA) Then
                 Dim hc = world.Healths.GetComponent(ev.entityA)
                 Dim dc = world.Damages.GetComponent(ev.entityB)
 
-                If world.IFrames.HasComponent(ev.entityA) Then
-                    'Debug.WriteLine("Entity is invincible")
-                    Return
-                End If
+                If Not world.IFrames.HasComponent(ev.entityA) Then
+                    hc.health = hc.health - dc.damage
 
-                hc.health = hc.health - dc.damage
+                    world.IFrames.AddComponent(
+                        ev.entityA,
+                        New InvincibilityComponent With {
+                            .timeRemaining = World.IFRAMES_DURATION
+                        }
+                    )
 
-                world.IFrames.AddComponent(
-                    ev.entityA,
-                    New InvincibilityComponent With {
-                        .timeRemaining = World.IFRAMES_DURATION
-                    }
-                )
+                    If hc.health < 0 Then
+                        world.EntityDestructionEvents.Add(ev.entityA)
 
-                If hc.health < 0 Then
-                    world.EntityDestructionEvents.Add(ev.entityA)
-
-                    If world.Projectiles.HasComponent(ev.entityB) Then
-                        If world.Projectiles.GetComponent(ev.entityB).entityType = 1 Then
-                            world.game.score = world.game.score + 1
+                        If world.Projectiles.HasComponent(ev.entityB) Then
+                            If world.Projectiles.GetComponent(ev.entityB).entityType = 1 Then
+                                world.game.score = world.game.score + 1
+                            End If
                         End If
                     End If
                 End If
+
+
             End If
 
             If (world.Projectiles.HasComponent(ev.entityA)) Then
+                If world.AudioTriggers.HasComponent(ev.entityA) Then
+                    world.AudioTriggers.GetComponent(ev.entityA).playRequested = True
+                End If
                 world.EntityDestructionEvents.Add(ev.entityA)
             End If
 
             If (world.Projectiles.HasComponent(ev.entityB)) Then
+                If world.AudioTriggers.HasComponent(ev.entityB) Then
+                    world.AudioTriggers.GetComponent(ev.entityB).playRequested = True
+                End If
                 world.EntityDestructionEvents.Add(ev.entityB)
             End If
         Next
