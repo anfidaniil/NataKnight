@@ -34,6 +34,9 @@ Public Class World
     Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
     Public EntityDestructionEvents As New HashSet(Of Integer)
 
+    Public AudioSources As New ComponentStore(Of AudioSourceComponent)
+    Public AudioTriggers As New ComponentStore(Of AudioTriggerComponent)
+
     Private Systems As New List(Of ISystem)
 
     Public PlayerID As Integer
@@ -71,6 +74,7 @@ Public Class World
         Systems.Add(New DamageSystem())
         Systems.Add(New CollisionResolutionSystem())
         Systems.Add(New BuffApplicationSystem())
+        'Systems.Add(New AudioSystem())
 
         Systems.Add(New EntityDestructionSystem())
 
@@ -235,6 +239,12 @@ Public Class World
                              .damage = 10})
 
         Projectiles.AddComponent(bullet, New ProjectileComponent With {.entityType = entityType, .timeLeft = 10.0F})
+
+        'When we'll have sounds we would add those components
+        'AudioSources.AddComponent(bullet, New AudioSourceComponent With {
+        '     .soundId = "explosion", .volume = 1.0F
+        '})
+        'AudioTriggers.AddComponent(bullet, New AudioTriggerComponent With {.playRequested = False})
     End Sub
     Public Sub CreateImmovableWall(pos As PointF, size As Point)
         Dim wall = EntityManager.CreateEntity()

@@ -17,7 +17,15 @@ Public Class Game
     Public charSprites As New Bitmap(My.Resources.GameResources.character_sprites)
     Public score As Integer = 0
 
+    Private Sub InitializeSounds()
+        AudioEngine.Initialize()
+        'AudioEngine.LoadSound("explosion", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.explosion))
+        'AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.guitar_0001))
+        'AudioEngine.PlayLoop("music", 1.0F)
+    End Sub
     Public Sub New(input As InputState)
+        'InitializeSounds()
+
         Me.world = New World(input, Me)
         CreateTestWorld()
         Me.gameState = GameState.Starting

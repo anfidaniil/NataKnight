@@ -33,7 +33,7 @@ Public Class DamageSystem
 
                 If Not world.IFrames.HasComponent(ev.entityB) Then
                     hc.health = hc.health - dc.damage
-
+        
                     If ev.entityB = world.PlayerID Then
                         world.UpdatePlayerHealthBar()
                     End If
@@ -55,6 +55,8 @@ Public Class DamageSystem
                         End If
                     End If
                 End If
+
+
             End If
 
             If world.Damages.HasComponent(ev.entityB) And world.Healths.HasComponent(ev.entityA) Then
@@ -85,13 +87,21 @@ Public Class DamageSystem
                         End If
                     End If
                 End If
+
+
             End If
 
             If (world.Projectiles.HasComponent(ev.entityA)) Then
+                If world.AudioTriggers.HasComponent(ev.entityA) Then
+                    world.AudioTriggers.GetComponent(ev.entityA).playRequested = True
+                End If
                 world.EntityDestructionEvents.Add(ev.entityA)
             End If
 
             If (world.Projectiles.HasComponent(ev.entityB)) Then
+                If world.AudioTriggers.HasComponent(ev.entityB) Then
+                    world.AudioTriggers.GetComponent(ev.entityB).playRequested = True
+                End If
                 world.EntityDestructionEvents.Add(ev.entityB)
             End If
         Next
