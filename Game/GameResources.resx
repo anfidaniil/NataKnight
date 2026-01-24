@@ -172,4 +172,34 @@
   <data name="worldTile128" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Assets\worldTile128.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bulletimpact-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\bulletimpact-1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bulletimpact-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\bulletimpact-2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="bulletimpact-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\bulletimpact-3.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="button-3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\button-3.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="explosion-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\explosion-1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="footsteps-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\footsteps-1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="game-over-deep-male-voice" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\game-over-deep-male-voice.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="shoot-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\shoot-1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ui-click-1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\ui-click-1.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="video-game-menu-click-sounds" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\video-game-menu-click-sounds.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
