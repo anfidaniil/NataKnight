@@ -1,5 +1,8 @@
-﻿Public Class DamageSystem
+﻿Imports System.Drawing
+
+Public Class DamageSystem
     Implements ISystem
+
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
         For Each ev In world.CollisionEvents
 
@@ -28,9 +31,12 @@
                 Dim hc = world.Healths.GetComponent(ev.entityB)
                 Dim dc = world.Damages.GetComponent(ev.entityA)
 
-
                 If Not world.IFrames.HasComponent(ev.entityB) Then
                     hc.health = hc.health - dc.damage
+        
+                    If ev.entityB = world.PlayerID Then
+                        world.UpdatePlayerHealthBar()
+                    End If
 
                     world.IFrames.AddComponent(
                         ev.entityB,
@@ -59,6 +65,10 @@
 
                 If Not world.IFrames.HasComponent(ev.entityA) Then
                     hc.health = hc.health - dc.damage
+
+                    If ev.entityA = world.PlayerID Then
+                        world.UpdatePlayerHealthBar()
+                    End If
 
                     world.IFrames.AddComponent(
                         ev.entityA,

@@ -1,8 +1,11 @@
-﻿Imports System.Reflection.Emit
+﻿Imports System.Drawing
+Imports System.Reflection.Emit
 
 Public Class RenderSystem
-
     Implements ISystem
+
+    Public Sub Update(world As World, dt As Single) Implements ISystem.Update
+    End Sub
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw
         g.CompositingMode = Drawing2D.CompositingMode.SourceOver
@@ -31,11 +34,9 @@ Public Class RenderSystem
 
         Dim firstTileX As Integer = camX \ World.TILE_SIZE
         Dim firstTileY As Integer = camY \ World.TILE_SIZE
-
         Dim lastTileX As Integer = (camX + camera.viewWidth) \ World.TILE_SIZE
         Dim lastTileY As Integer = (camY + camera.viewHeight) \ World.TILE_SIZE
 
-        ' Safety padding
         firstTileX -= 1
         firstTileY -= 1
         lastTileX += 1
@@ -43,20 +44,13 @@ Public Class RenderSystem
 
         For ty = firstTileY To lastTileY
             For tx = firstTileX To lastTileX
-
                 Dim tileKey As New Point(tx, ty)
-                If Not world.game.level.ContainsKey(tileKey) Then Continue For
-
-                Dim bmp = world.game.level(tileKey)
-
-                g.DrawImageUnscaled(
-            bmp,
-            tx * World.TILE_SIZE,
-            ty * World.TILE_SIZE
-        )
+                If world.game.level.ContainsKey(tileKey) Then
+                    Dim bmp = world.game.level(tileKey)
+                    g.DrawImageUnscaled(bmp, tx * World.TILE_SIZE, ty * World.TILE_SIZE)
+                End If
             Next
         Next
-
 
         For Each kv In world.Transforms.All
             Dim id = kv.Key
@@ -70,16 +64,9 @@ Public Class RenderSystem
 
                 Dim src As New Rectangle(r.spriteX * 32, r.spriteY * 32, 32, 32)
                 Dim dst As New Rectangle(screenX, screenY, 64, 64)
+
                 If Not world.Immovables.HasComponent(id) Then
                     g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
-                Else
-                    'g.DrawRectangle(
-                    '    Pens.Red,
-                    '    collider.Pos.X - collider.Size.X / 2,
-                    '    collider.Pos.Y - collider.Size.Y / 2,
-                    '    collider.Size.X,
-                    '    collider.Size.Y
-                    ')
                 End If
             End If
         Next
@@ -93,9 +80,33 @@ Public Class RenderSystem
             Dim size = g.MeasureString(text, font)
             g.DrawString(text, font, Brushes.Gray, (Form1.Width - size.Width) - 40, 20)
         End Using
+
+        If world.HealthBars.HasComponent(world.PlayerID) Then
+            Dim hb = world.HealthBars.GetComponent(world.PlayerID)
+
+            If hb.currentHealthSprite IsNot Nothing Then
+
+                Dim scale As Single = 2.0F
+
+                If Form1.WindowState = FormWindowState.Maximized OrElse Form1.Width > 1400 Then
+                    scale = 4.0F
+                End If
+
+                Dim finalWidth As Integer = CInt(hb.currentHealthSprite.Width * scale)
+                Dim finalHeight As Integer = CInt(hb.currentHealthSprite.Height * scale)
+
+                Dim padding As Integer = If(scale > 2.0F, 40, 20)
+
+                g.DrawImage(
+                    hb.currentHealthSprite,
+                    padding,
+                    padding,
+                    finalWidth,
+                    finalHeight
+                )
+            End If
+        End If
+
     End Sub
 
-    Public Sub Update(world As World, dt As Single) Implements ISystem.Update
-
-    End Sub
 End Class

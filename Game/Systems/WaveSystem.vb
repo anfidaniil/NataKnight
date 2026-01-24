@@ -127,8 +127,8 @@ Public Class WaveSystem
                 Dim state = g.Save()
                 g.ResetTransform()
 
-                Dim xPos As Single = CSng((world.SCREEN_WIDTH - textSize.Width) / 2)
-                Dim yPos As Single = CSng(world.SCREEN_HEIGHT / 4)
+                Dim xPos As Single = CSng((Form1.Width - textSize.Width) / 2)
+                Dim yPos As Single = CSng(Form1.Height / 4)
 
                 Dim alpha As Integer = 255
 

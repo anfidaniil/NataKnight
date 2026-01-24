@@ -53,7 +53,7 @@
                     hp.health = hp.maxHealth
                 End If
 
-                Debug.WriteLine("HP: " & hp.health)
+                world.UpdatePlayerHealthBar()
         End Select
 
         buff.isConsumed = True

@@ -1,4 +1,6 @@
-﻿Imports System.Numerics
+﻿Imports System.IO
+Imports System.Numerics
+Imports System.Drawing
 
 Public Class World
     Public game As Game
@@ -19,6 +21,7 @@ Public Class World
     Public Buffs As New ComponentStore(Of BuffComponent)
 
     Public Healths As New ComponentStore(Of Health)
+    Public HealthBars As New ComponentStore(Of HealthBarComponent)
 
     Public Damages As New ComponentStore(Of DamageComponent)
     Public IFrames As New ComponentStore(Of InvincibilityComponent)
@@ -138,9 +141,27 @@ Public Class World
             .timeRemaining = 1.0F
         })
 
+        Transforms.AddComponent(player, New TransformComponent With {.pos = New PointF(2020, 2020)})
+        Movements.AddComponent(player, New MovementComponent With {.damping = 2.0F})
+        Renders.AddComponent(player, New RenderComponent With {.size = 64, .spriteX = 3, .spriteY = 0})
+        Colliders.AddComponent(player, New RectangleCollider With {.sA = 64, .sB = 64})
+        Players.AddComponent(player, New PlayerComponent())
+        Damages.AddComponent(player, New DamageComponent With {.damage = 1})
+        Attacks.AddComponent(player, New AttackComponent With {.attack = False, .attackCooldown = 0.1F, .timeRemaining = 1.0F})
+
         Healths.AddComponent(player, New Health With {
             .health = 100,
             .maxHealth = 100
+        })
+
+        Dim full = New Bitmap(My.Resources.GameResources.FullHealth)
+        Dim empty = New Bitmap(My.Resources.GameResources.emptyhealth)
+        Dim current As New Bitmap(My.Resources.GameResources.FullHealth)
+        HealthBars.AddComponent(player, New HealthBarComponent With {
+            .fullHealthSprite = full,
+            .emptyHealthSprite = empty,
+            .currentHealthSprite = current,
+            .position = New PointF(20, 20)
         })
     End Sub
 
@@ -244,5 +265,31 @@ Public Class World
 
     Public Sub OnPlayerDestruction()
         game.GameOver()
+    End Sub
+
+    Public Sub UpdatePlayerHealthBar()
+        If Not HealthBars.HasComponent(PlayerID) OrElse Not Healths.HasComponent(PlayerID) Then Return
+
+        Dim hb = HealthBars.GetComponent(PlayerID)
+        Dim hp = Healths.GetComponent(PlayerID)
+
+        If hp.maxHealth <= 0 Then hp.maxHealth = 100
+
+        Dim barWidth As Integer = hb.fullHealthSprite.Width
+        Dim barHeight As Integer = hb.fullHealthSprite.Height
+        Dim healthPercentage As Single = Math.Max(0, CSng(hp.health) / CSng(hp.maxHealth))
+        Dim visibleWidth As Integer = CInt(healthPercentage * barWidth)
+
+        Using g As Graphics = Graphics.FromImage(hb.currentHealthSprite)
+            g.Clear(Color.Transparent)
+
+            g.DrawImage(hb.emptyHealthSprite, 0, 0, barWidth, barHeight)
+
+            If visibleWidth > 0 Then
+                Dim srcRect As New Rectangle(0, 0, visibleWidth, barHeight)
+                Dim destRect As New Rectangle(0, 0, visibleWidth, barHeight)
+                g.DrawImage(hb.fullHealthSprite, destRect, srcRect, GraphicsUnit.Pixel)
+            End If
+        End Using
     End Sub
 End Class
