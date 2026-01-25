@@ -1,6 +1,7 @@
 ﻿
 Imports System.Drawing.Imaging
 Imports System.Security.Policy
+Imports SharpDX.Multimedia
 
 Public Class Game
     Public world As World
@@ -19,30 +20,42 @@ Public Class Game
 
     Private Sub InitializeSounds()
         AudioEngine.Initialize()
-        'AudioEngine.LoadSound("explosion", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.explosion))
+        AudioEngine.LoadSound("bulletImpact1", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.bulletimpact1))
+        AudioEngine.LoadSound("bulletImpact2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.bulletimpact2))
+        AudioEngine.LoadSound("button_ui_1", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.button_ui_1))
+        AudioEngine.LoadSound("button_ui_2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.button_ui_2))
+        AudioEngine.LoadSound("footsteps_1", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.footstep_1))
+        AudioEngine.LoadSound("footsteps_2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.footstep_2))
+        AudioEngine.LoadSound("footsteps_3", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.footstep_3))
+        AudioEngine.LoadSound("footsteps_4", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.footstep_4))
+
+        AudioEngine.LoadSound("shoot1", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot0))
+        AudioEngine.LoadSound("shoot2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot2))
+        AudioEngine.LoadSound("shoot3", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot3))
+        AudioEngine.LoadSound("shoot4", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot4))
         'AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.guitar_0001))
         'AudioEngine.PlayLoop("music", 1.0F)
     End Sub
     Public Sub New(input As InputState)
-        'InitializeSounds()
+        InitializeSounds()
 
         Me.world = New World(input, Me)
+
         CreateTestWorld()
         Me.gameState = GameState.Starting
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close(),
-            Sub() gameState = GameState.Playing
+            Sub() Quit(),
+            Sub() Restart()
         )
         startingMenuScreen = New StartScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close()
+            Sub() Quit()
         )
-
     End Sub
 
     Public Sub ChangeCameraView()
@@ -55,20 +68,23 @@ Public Class Game
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close(),
-            Sub() gameState = GameState.Playing
+            Sub() Quit(),
+            Sub() Restart()
         )
 
         startingMenuScreen = New StartScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close()
+            Sub() Quit()
         )
     End Sub
 
     Public Sub CreateTestWorld()
         CreateLevel()
+
+        world.CreateButton()
+        world.CreatePlayerShootingSound()
         world.CreatePlayer()
         world.CreateCamera()
     End Sub
@@ -84,7 +100,7 @@ Public Class Game
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close()
+            Sub() Quit()
         )
     End Sub
 
@@ -92,8 +108,26 @@ Public Class Game
         Me.world = New World(Form1.input, Me)
         Me.gameState = GameState.Playing
         Me.score = 0
+
         CreateTestWorld()
+        If world.AudioTriggers.HasComponent(world.BtnId) Then
+            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+        End If
         Debug.WriteLine("Starting New Game")
+    End Sub
+
+    Public Sub Restart()
+        If world.AudioTriggers.HasComponent(world.BtnId) Then
+            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+        End If
+        gameState = GameState.Playing
+    End Sub
+
+    Public Sub Quit()
+        If world.AudioTriggers.HasComponent(world.BtnId) Then
+            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+        End If
+        Form1.Close()
     End Sub
 
     Public Sub CreateEnemiesAroundPoint(posX As Integer, posY As Integer, numEnemies As Integer)

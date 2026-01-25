@@ -23,6 +23,16 @@
                     If input.left Then dx -= 1
                     If input.right Then dx += 1
 
+                    If (dx <> 0 Or dy <> 0) Then
+                        Dim trig = world.AudioTriggers.GetComponent(world.PlayerID)
+
+                        If trig.cooldown <= 0F Then
+                            trig.playRequested = True
+                            trig.cooldown = 0.2F
+                        Else
+                            trig.cooldown -= dt
+                        End If
+                    End If
                     Dim a = New PointF(
                         dx,
                         dy

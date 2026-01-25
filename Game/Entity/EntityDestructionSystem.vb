@@ -23,6 +23,8 @@ Public Class EntityDestructionSystem
             world.Attacks.RemoveComponent(e)
             world.Projectiles.RemoveComponent(e)
             world.Buffs.RemoveComponent(e)
+            world.AudioSources.RemoveComponent(e)
+            world.AudioTriggers.RemoveComponent(e)
             world.HealthBars.RemoveComponent(e)
 
             ' Remove entity itself

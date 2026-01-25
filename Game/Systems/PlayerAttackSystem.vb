@@ -24,6 +24,8 @@
                     )
                     input.cursorPos = mouseWorld
                     a.timeRemaining = a.attackCooldown
+
+                    world.AudioTriggers.GetComponent(world.ShootSounds).playRequested = True
                     world.CreateBullet(t.pos, input.cursorPos, 1)
                 End If
                 a.timeRemaining -= dt
