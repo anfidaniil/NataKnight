@@ -45,31 +45,37 @@ Public Class TutorialScreen
             .sprite = Nothing
         })
 
-        Dim startSprite As Bitmap = Nothing
-        Dim rawImg = My.Resources.GameResources.btnNOVOJOGO
-        If rawImg IsNot Nothing Then
-            startSprite = New Bitmap(rawImg.Width, rawImg.Height \ 3)
-            Using g As Graphics = Graphics.FromImage(startSprite)
-                g.DrawImage(rawImg, New Rectangle(0, 0, startSprite.Width, startSprite.Height),
-                            New Rectangle(0, 0, rawImg.Width, rawImg.Height \ 3),
-                            GraphicsUnit.Pixel)
-            End Using
-        End If
-
         buttons.Add(New UIButtonStartNewGame With {
             .bounds = New Rectangle(startX + btnW + spacing, btnY, btnW, btnH),
             .text = "",
-            .onClick = Sub() game.StartNewGame(),
-            .sprite = startSprite
+            .onClick = Sub() game.StartNewGame()
         })
     End Sub
 
-    Public Sub Draw(g As Graphics, screenWidth As Integer, screenHeight As Integer)
-        If imgTutorialBG IsNot Nothing Then
-            g.DrawImage(imgTutorialBG, 0, 0, screenWidth, screenHeight)
+    Public Sub Draw(g As Graphics, world As World)
+        g.Clear(Color.Black)
+
+        Dim imgRatio As Single = world.game.bgc.Width / world.game.bgc.Height
+        Dim formRatio As Single = Form1.Width / Form1.Height
+
+        Dim drawW As Integer
+        Dim drawH As Integer
+        Dim screenWidth = Form1.Width
+        Dim screenHeight = Form1.Height
+
+        If formRatio > imgRatio Then
+            drawH = Form1.Height
+            drawW = CInt(Form1.Height * imgRatio)
         Else
-            g.Clear(Color.FromArgb(20, 20, 40))
+            drawW = Form1.Width
+            drawH = CInt(Form1.Width / imgRatio)
         End If
+
+        ' Center the image
+        Dim x As Integer = (Form1.Width - drawW) \ 2
+        Dim y As Integer = (Form1.Height - drawH) \ 2
+
+        g.DrawImage(world.game.bgc, x, y, drawW, drawH)
 
         If cards.Count = 0 Then Return
 
@@ -83,7 +89,7 @@ Public Class TutorialScreen
         Dim cardW As Integer = CInt(currentCard.Width * scale)
         Dim cardH As Integer = CInt(currentCard.Height * scale)
         Dim centerX As Integer = (screenWidth - cardW) \ 2
-        Dim centerY As Integer = CInt(screenHeight * 0.1) ' Posição Alta
+        Dim centerY As Integer = CInt(screenHeight * 0.1)
 
         If currentIndex > 0 Then
             Dim prevX As Integer = centerX - cardW - 50
@@ -101,11 +107,18 @@ Public Class TutorialScreen
         rightArrowRect = New Rectangle(screenWidth - 100, centerY + (cardH \ 2) - 25, 50, 50)
 
         If currentIndex > 0 Then
-            g.FillPolygon(Brushes.White, {New Point(leftArrowRect.Right, leftArrowRect.Top), New Point(leftArrowRect.Left, leftArrowRect.Top + 25), New Point(leftArrowRect.Right, leftArrowRect.Bottom)})
+            g.FillPolygon(
+                Brushes.White, {
+                New Point(leftArrowRect.Right, leftArrowRect.Top),
+                New Point(leftArrowRect.Left, leftArrowRect.Top + 25),
+                New Point(leftArrowRect.Right, leftArrowRect.Bottom)})
         End If
 
         If currentIndex < cards.Count - 1 Then
-            g.FillPolygon(Brushes.White, {New Point(rightArrowRect.Left, rightArrowRect.Top), New Point(rightArrowRect.Right, rightArrowRect.Top + 25), New Point(rightArrowRect.Left, rightArrowRect.Bottom)})
+            g.FillPolygon(Brushes.White, {
+                New Point(rightArrowRect.Left, rightArrowRect.Top),
+                New Point(rightArrowRect.Right, rightArrowRect.Top + 25),
+                New Point(rightArrowRect.Left, rightArrowRect.Bottom)})
         End If
 
         For Each btn In buttons

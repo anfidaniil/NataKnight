@@ -67,14 +67,6 @@ Public Class StartScreen
 
             If (btn.sprite IsNot Nothing) Then
                 g.DrawImage(btn.sprite, btn.bounds)
-                If btn.text = "Tutorial" Then
-                    Using font As New Font("Arial", 16, FontStyle.Bold)
-                        Dim size = g.MeasureString(btn.text, font)
-                        g.DrawString(btn.text, font, Brushes.White,
-                           btn.bounds.X + (btn.bounds.Width - size.Width) \ 2,
-                           btn.bounds.Y + (btn.bounds.Height - size.Height) \ 2)
-                    End Using
-                End If
             Else
                 g.FillRectangle(Brushes.DarkGray, btn.bounds)
                 g.DrawRectangle(Pens.White, btn.bounds)

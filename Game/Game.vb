@@ -51,7 +51,7 @@ Public Class Game
         Dim cam = world.Cameras.GetComponent(id)
         cam.viewHeight = Form1.Height
         cam.viewWidth = Form1.Width
-
+        Me.tutorialScreen = New TutorialScreen(Me)
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
@@ -134,7 +134,7 @@ Public Class Game
                 world.Draw(g)
                 gameOverUI.Draw(g, world)
             Case gameState.Tutorial
-                tutorialScreen.Draw(g, Form1.Width, Form1.Height)
+                tutorialScreen.Draw(g, world)
 
         End Select
     End Sub
