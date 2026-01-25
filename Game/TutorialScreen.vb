@@ -92,7 +92,7 @@ Public Class TutorialScreen
 
         Dim btnY As Integer = screenHeight - 100
         Dim btnW As Integer = 200
-        Dim btnH As Integer = 60
+        Dim btnH As Integer = 50
 
         btnBackRect = New Rectangle(centerX, btnY, btnW, btnH)
         If imgBtnBack IsNot Nothing Then
