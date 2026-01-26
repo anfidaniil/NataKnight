@@ -26,9 +26,10 @@ Public Class StartScreen
             .text = "Continue",
             .onClick = restart
         })
-        buttons.Add(New UIButton With {
+
+        buttons.Add(New UIButtonTutorial With {
             .bounds = New Rectangle(centerX + (buttonWidth \ 2) + 20, centerY + buttonHeight + 20, buttonWidth, buttonHeight),
-            .text = "Tutorial",
+            .text = "",
             .onClick = tutorial
         })
     End Sub

@@ -12,6 +12,9 @@ Public Class TutorialScreen
     Private leftArrowRect As Rectangle
     Private rightArrowRect As Rectangle
     Private imgTutorialBG As Bitmap
+    Private imgArrowLeft As Bitmap
+    Private imgArrowRight As Bitmap
+    Private imgBtnBack As Bitmap
 
     Public Sub New(gameInstance As Game)
         Me.game = gameInstance
@@ -25,6 +28,10 @@ Public Class TutorialScreen
         cards.Add(New UICard(My.Resources.GameResources.movementCART))
         cards.Add(New UICard(My.Resources.GameResources.tiroCART))
         cards.Add(New UICard(My.Resources.GameResources.menuCART))
+
+        imgArrowLeft = My.Resources.GameResources.btnESQUERDA
+        imgArrowRight = My.Resources.GameResources.btnDIREITA
+        imgBtnBack = My.Resources.GameResources.btnVOLTAR
     End Sub
 
     Private Sub InitializeButtons()
@@ -40,10 +47,11 @@ Public Class TutorialScreen
 
         buttons.Add(New UIButtonQuit With {
             .bounds = New Rectangle(startX, btnY, btnW, btnH),
-            .text = "Voltar",
+            .text = "",
             .onClick = Sub() game.gameState = GameState.Starting,
-            .sprite = Nothing
+            .sprite = imgBtnBack
         })
+
 
         buttons.Add(New UIButtonStartNewGame With {
             .bounds = New Rectangle(startX + btnW + spacing, btnY, btnW, btnH),
@@ -106,19 +114,12 @@ Public Class TutorialScreen
         leftArrowRect = New Rectangle(50, centerY + (cardH \ 2) - 25, 50, 50)
         rightArrowRect = New Rectangle(screenWidth - 100, centerY + (cardH \ 2) - 25, 50, 50)
 
-        If currentIndex > 0 Then
-            g.FillPolygon(
-                Brushes.White, {
-                New Point(leftArrowRect.Right, leftArrowRect.Top),
-                New Point(leftArrowRect.Left, leftArrowRect.Top + 25),
-                New Point(leftArrowRect.Right, leftArrowRect.Bottom)})
+        If currentIndex > 0 AndAlso imgArrowLeft IsNot Nothing Then
+            g.DrawImage(imgArrowLeft, leftArrowRect)
         End If
 
-        If currentIndex < cards.Count - 1 Then
-            g.FillPolygon(Brushes.White, {
-                New Point(rightArrowRect.Left, rightArrowRect.Top),
-                New Point(rightArrowRect.Right, rightArrowRect.Top + 25),
-                New Point(rightArrowRect.Left, rightArrowRect.Bottom)})
+        If currentIndex < cards.Count - 1 AndAlso imgArrowRight IsNot Nothing Then
+            g.DrawImage(imgArrowRight, rightArrowRect)
         End If
 
         For Each btn In buttons

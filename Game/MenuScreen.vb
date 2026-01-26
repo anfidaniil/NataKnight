@@ -3,6 +3,7 @@
     Dim buttonWidth = 200
     Dim buttonHeight = 50
 
+
     Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action, continueAction As Action)
         Dim centerX = (screenWidth - buttonWidth) \ 2
         Dim centerY = screenHeight \ 2
