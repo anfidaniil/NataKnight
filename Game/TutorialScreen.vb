@@ -11,10 +11,13 @@ Public Class TutorialScreen
     Private btnLeft As UIButtonArrowLeft
     Private btnRight As UIButtonArrowRight
 
+    Public BackAction As Action
+
     Private imgTutorialBG As Bitmap
 
     Public Sub New(gameInstance As Game)
         Me.game = gameInstance
+        BackAction = Sub() game.gameState = GameState.Starting
         LoadResources()
         InitializeButtons()
     End Sub
@@ -39,42 +42,32 @@ Public Class TutorialScreen
 
         Dim arrowY As Integer = CInt(screenH * 0.4)
 
-        btnLeft = New UIButtonArrowLeft()
-        btnLeft.bounds = New Rectangle(50, arrowY, 50, 50)
-        btnLeft.onClick = Sub()
-                              If currentIndex > 0 Then currentIndex -= 1
-                          End Sub
+        btnLeft = New UIButtonArrowLeft With {
+            .bounds = New Rectangle(50, arrowY, 50, 50),
+            .onClick = Sub()
+                           If currentIndex > 0 Then currentIndex -= 1
+                       End Sub
+        }
         buttons.Add(btnLeft)
 
-        btnRight = New UIButtonArrowRight()
-        btnRight.bounds = New Rectangle(screenW - 100, arrowY, 50, 50)
-        btnRight.onClick = Sub()
-                               If currentIndex < cards.Count - 1 Then currentIndex += 1
-                           End Sub
+        btnRight = New UIButtonArrowRight With {
+            .bounds = New Rectangle(screenW - 100, arrowY, 50, 50),
+            .onClick = Sub()
+                           If currentIndex < cards.Count - 1 Then currentIndex += 1
+                       End Sub
+        }
         buttons.Add(btnRight)
 
         buttons.Add(New UIButtonGoBack With {
             .bounds = New Rectangle(startX, btnY, btnW, btnH),
             .text = "",
-            .onClick = Sub() game.gameState = GameState.Starting
+            .onClick = Sub() BackAction?.Invoke()
         })
-
-        Dim startSprite As Bitmap = Nothing
-        Dim rawImg = My.Resources.GameResources.btnNOVOJOGO
-        If rawImg IsNot Nothing Then
-            startSprite = New Bitmap(rawImg.Width, rawImg.Height \ 3)
-            Using g As Graphics = Graphics.FromImage(startSprite)
-                g.DrawImage(rawImg, New Rectangle(0, 0, startSprite.Width, startSprite.Height),
-                            New Rectangle(0, 0, rawImg.Width, rawImg.Height \ 3),
-                            GraphicsUnit.Pixel)
-            End Using
-        End If
 
         buttons.Add(New UIButtonStartNewGame With {
             .bounds = New Rectangle(startX + btnW + spacing, btnY, btnW, btnH),
             .text = "",
-            .onClick = Sub() game.StartNewGame(),
-            .sprite = startSprite
+            .onClick = Sub() game.StartNewGame()
         })
     End Sub
 

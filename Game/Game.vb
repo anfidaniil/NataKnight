@@ -34,7 +34,10 @@ Public Class Game
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() gameState = GameState.Tutorial,
+            Sub()
+                tutorialScreen.BackAction = Sub() gameState = GameState.Menu
+                gameState = GameState.Tutorial
+            End Sub,
             Sub() gameState = GameState.Playing,
             Sub() gameState = GameState.Starting
         )
@@ -43,7 +46,11 @@ Public Class Game
             Form1.Height,
             Sub() StartNewGame(),
             Sub() Form1.Close(),
-            Sub() gameState = GameState.Tutorial
+            Sub()
+
+                tutorialScreen.BackAction = Sub() gameState = GameState.Starting
+                gameState = GameState.Tutorial
+            End Sub
         )
     End Sub
 
@@ -58,7 +65,10 @@ Public Class Game
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() gameState = GameState.Tutorial,
+            Sub()
+                tutorialScreen.BackAction = Sub() gameState = GameState.Menu
+                gameState = GameState.Tutorial
+            End Sub,
             Sub() gameState = GameState.Playing,
             Sub() gameState = GameState.Starting
         )
@@ -68,7 +78,10 @@ Public Class Game
             Form1.Height,
             Sub() StartNewGame(),
             Sub() Form1.Close(),
-            Sub() gameState = GameState.Tutorial
+            Sub()
+                tutorialScreen.BackAction = Sub() gameState = GameState.Starting
+                gameState = GameState.Tutorial
+            End Sub
         )
     End Sub
 

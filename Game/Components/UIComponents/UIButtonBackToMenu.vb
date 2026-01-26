@@ -1,10 +1,11 @@
 ﻿Imports System.Drawing
+Imports System.Reflection.Metadata
 
 Public Class UIButtonBackToMenu
     Inherits UIButton
 
     Public Sub New()
-        Dim btn = New Bitmap(My.Resources.GameResources.btnVOLTAR)
+        Dim btn = New Bitmap(My.Resources.GameResources.btnVOLTARAOMENU_export)
 
         If btn IsNot Nothing Then
             Dim spriteRect As New Rectangle(0, 0, 200, 50)
