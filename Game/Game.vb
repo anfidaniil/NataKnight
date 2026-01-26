@@ -144,19 +144,6 @@ Public Class Game
         End Select
     End Sub
 
-    'Public Sub HandleMouseClick(location As Point)
-    '    Select Case gameState
-    '        Case GameState.Tutorial
-    '            tutorialScreen.HandleClick(location)
-    '        Case GameState.Starting
-    '            startingMenuScreen.HandleMouseClick(location)
-    '        Case GameState.Menu
-    '            menuScreen.HandleMouseClick(location)
-    '        Case GameState.GameOver
-    '            gameOverUI.HandleMouseClick(location)
-    '    End Select
-    'End Sub
-
     Private Function GetTileFromPosition(x As Integer, y As Integer) As Bitmap
         Dim sprite As New Rectangle(128 * x, 128 * y, 128, 128)
         Dim tileSize As Integer = 256

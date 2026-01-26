@@ -72,7 +72,6 @@
 
     Public Sub HandleMouseClick(mousePos As Point)
         For Each btn In buttons
-            Debug.WriteLine(btn.text)
             If btn.bounds.Contains(mousePos) Then
                 btn.onClick?.Invoke()
             End If
