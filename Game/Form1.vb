@@ -88,9 +88,9 @@
     End Sub
 
     Private Sub Form1_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
-        'Doesn't work when pressing left mouse button
-        'Only works when clicking the right button
-        input.fire = True
+        If e.Button = MouseButtons.Left Then
+            input.fire = True
+        End If
 
         Select Case game.gameState
             Case GameState.GameOver
@@ -105,7 +105,9 @@
     End Sub
 
     Private Sub Form1_MouseUP(sender As Object, e As MouseEventArgs) Handles Me.MouseUp
-        input.fire = False
+        If e.Button = MouseButtons.Left Then
+            input.fire = False
+        End If
     End Sub
 
     Protected Overrides Sub OnPaint(e As PaintEventArgs)

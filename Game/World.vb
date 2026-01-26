@@ -30,16 +30,20 @@ Public Class World
 
     Public Attacks As New ComponentStore(Of AttackComponent)
 
+    Public AudioSources As New ComponentStore(Of AudioSourceComponent)
+    Public AudioTriggers As New ComponentStore(Of AudioTriggerComponent)
+
     Public CollisionEvents As New List(Of CollisionEvent)
     Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
     Public EntityDestructionEvents As New HashSet(Of Integer)
 
-    Public AudioSources As New ComponentStore(Of AudioSourceComponent)
-    Public AudioTriggers As New ComponentStore(Of AudioTriggerComponent)
+
 
     Private Systems As New List(Of ISystem)
 
     Public PlayerID As Integer
+    Public BtnId As Integer
+    Public ShootSounds As Integer
 
     Public SCREEN_HEIGHT = Form1.Height
     Public SCREEN_WIDTH = Form1.Width
@@ -53,6 +57,9 @@ Public Class World
 
     Public Const TILE_SIZE As Integer = 256
     Public Const GAME_NAME = "GAME NAME"
+
+    Public Const MIN_AUDIO_DIST = 50.0F
+    Public Const MAX_AUDIO_DIST = 600.0F
 
 
     Public Sub New(input As InputState, game As Game)
@@ -74,12 +81,13 @@ Public Class World
         Systems.Add(New DamageSystem())
         Systems.Add(New CollisionResolutionSystem())
         Systems.Add(New BuffApplicationSystem())
-        'Systems.Add(New AudioSystem())
+        Systems.Add(New AudioSystem())
 
         Systems.Add(New EntityDestructionSystem())
 
         Systems.Add(New RenderSystem())
         Systems.Add(New WaveSystem())
+
     End Sub
 
     Public Sub Update(dt As Single)
@@ -93,6 +101,30 @@ Public Class World
             sys.Draw(Me, g)
         Next
     End Sub
+
+    Public Sub CreatePlayerShootingSound()
+        Dim shootSounds = EntityManager.CreateEntity()
+        Me.ShootSounds = shootSounds
+
+        AudioSources.AddComponent(shootSounds, New AudioSourceComponent With {
+             .soundId = New List(Of String) From {"shoot1", "shoot2", "shoot3", "shoot4"},
+             .volume = 0.05F
+        })
+        AudioTriggers.AddComponent(shootSounds, New AudioTriggerComponent With {.playRequested = False})
+    End Sub
+
+
+    Public Sub CreateButton()
+        Dim btn = EntityManager.CreateEntity()
+        BtnId = btn
+
+        AudioSources.AddComponent(btn, New AudioSourceComponent With {
+             .soundId = New List(Of String) From {"button_ui_1", "button_ui_2"},
+             .volume = 0.5F
+        })
+        AudioTriggers.AddComponent(btn, New AudioTriggerComponent With {.playRequested = False})
+    End Sub
+
 
     Public Sub CreateCamera()
         Dim camera = EntityManager.CreateEntity()
@@ -163,6 +195,14 @@ Public Class World
             .currentHealthSprite = current,
             .position = New PointF(20, 20)
         })
+
+        AudioSources.AddComponent(player, New AudioSourceComponent With {
+             .soundId = New List(Of String) From {"footsteps_1", "footsteps_2", "footsteps_3", "footsteps_4"},
+             .volume = 0.5F
+        })
+        AudioTriggers.AddComponent(player, New AudioTriggerComponent With {.playRequested = False})
+
+
     End Sub
 
     Public Sub CreateEnemy(pos As PointF)
@@ -203,6 +243,11 @@ Public Class World
             .health = 40,
             .maxHealth = 40
         })
+        AudioSources.AddComponent(enemy, New AudioSourceComponent With {
+             .soundId = New List(Of String) From {"footsteps_1", "footsteps_2", "footsteps_3", "footsteps_4"},
+             .volume = 0.5F
+        })
+        AudioTriggers.AddComponent(enemy, New AudioTriggerComponent With {.playRequested = False})
     End Sub
 
     Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer)
@@ -241,10 +286,11 @@ Public Class World
         Projectiles.AddComponent(bullet, New ProjectileComponent With {.entityType = entityType, .timeLeft = 10.0F})
 
         'When we'll have sounds we would add those components
-        'AudioSources.AddComponent(bullet, New AudioSourceComponent With {
-        '     .soundId = "explosion", .volume = 1.0F
-        '})
-        'AudioTriggers.AddComponent(bullet, New AudioTriggerComponent With {.playRequested = False})
+        AudioSources.AddComponent(bullet, New AudioSourceComponent With {
+             .soundId = New List(Of String) From {"bulletImpact1", "bulletImpact2"},
+             .volume = 0.5F
+        })
+        AudioTriggers.AddComponent(bullet, New AudioTriggerComponent With {.playRequested = False})
     End Sub
     Public Sub CreateImmovableWall(pos As PointF, size As Point)
         Dim wall = EntityManager.CreateEntity()

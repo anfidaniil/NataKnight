@@ -65,7 +65,8 @@ Public Class WaveSystem
                             enemiesSpawnedInThisRound += 1
                             spawnTimer = SPAWN_DELAY
                         Else
-                            Debug.Assert(False, "Tentativa de spawn sem jogador vivo")
+                            Return
+                            Debug.WriteLine("Tentativa de spawn sem jogador vivo")
                         End If
 
                     Else

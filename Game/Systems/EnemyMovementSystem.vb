@@ -14,6 +14,17 @@
                     Dim x = playerPos.pos.X
                     Dim y = playerPos.pos.Y
 
+                    If world.AudioTriggers.HasComponent(id) Then
+                        Dim trig = world.AudioTriggers.GetComponent(id)
+
+                        If trig.cooldown <= 0F Then
+                            trig.playRequested = True
+                            trig.cooldown = 0.2F
+                        Else
+                            trig.cooldown -= dt
+                        End If
+                    End If
+
                     Dim a = New PointF(
                         x - t.pos.X,
                         y - t.pos.Y
