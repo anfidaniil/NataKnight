@@ -4,11 +4,21 @@ Public Class UIButtonArrowRight
     Inherits UIButton
 
     Public Sub New()
-        Dim rawImg = My.Resources.GameResources.btnDIREITA
+        Dim btn = My.Resources.GameResources.btnDIREITA
 
-        If rawImg IsNot Nothing Then
-            Me.sprite = rawImg
-            Me.bounds = New Rectangle(0, 0, rawImg.Width, rawImg.Height)
+        If btn IsNot Nothing Then
+            Dim spriteRect As New Rectangle(0, 0, btn.Width, btn.Height)
+
+            Dim btnFrame As New Bitmap(50, 50, Imaging.PixelFormat.Format32bppArgb)
+
+            Using g As Graphics = Graphics.FromImage(btnFrame)
+                g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+                g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
+
+                g.DrawImage(btn, New Rectangle(0, 0, 50, 50), spriteRect, GraphicsUnit.Pixel)
+            End Using
+
+            Me.sprite = btnFrame
         End If
     End Sub
 End Class
