@@ -107,24 +107,11 @@ Public Class World
         Me.ShootSounds = shootSounds
 
         AudioSources.AddComponent(shootSounds, New AudioSourceComponent With {
-             .soundId = New List(Of String) From {"shoot1", "shoot2", "shoot3", "shoot4"},
-             .volume = 0.05F
+             .soundId = New List(Of String) From {"shoot3", "shoot4"},
+             .volume = 0.025F
         })
         AudioTriggers.AddComponent(shootSounds, New AudioTriggerComponent With {.playRequested = False})
     End Sub
-
-
-    Public Sub CreateButton()
-        Dim btn = EntityManager.CreateEntity()
-        BtnId = btn
-
-        AudioSources.AddComponent(btn, New AudioSourceComponent With {
-             .soundId = New List(Of String) From {"button_ui_1", "button_ui_2"},
-             .volume = 0.5F
-        })
-        AudioTriggers.AddComponent(btn, New AudioTriggerComponent With {.playRequested = False})
-    End Sub
-
 
     Public Sub CreateCamera()
         Dim camera = EntityManager.CreateEntity()
@@ -169,17 +156,9 @@ Public Class World
         Players.AddComponent(player, New PlayerComponent())
         Attacks.AddComponent(player, New AttackComponent With {
             .attack = False,
-            .attackCooldown = 0.1F,
-            .timeRemaining = 1.0F
+            .attackCooldown = 0.5F,
+            .timeRemaining = 0.1F
         })
-
-        Transforms.AddComponent(player, New TransformComponent With {.pos = New PointF(2020, 2020)})
-        Movements.AddComponent(player, New MovementComponent With {.damping = 2.0F})
-        Renders.AddComponent(player, New RenderComponent With {.size = 64, .spriteX = 3, .spriteY = 0})
-        Colliders.AddComponent(player, New RectangleCollider With {.sA = 64, .sB = 64})
-        Players.AddComponent(player, New PlayerComponent())
-        Damages.AddComponent(player, New DamageComponent With {.damage = 1})
-        Attacks.AddComponent(player, New AttackComponent With {.attack = False, .attackCooldown = 0.1F, .timeRemaining = 1.0F})
 
         Healths.AddComponent(player, New Health With {
             .health = 100,
@@ -288,7 +267,7 @@ Public Class World
         'When we'll have sounds we would add those components
         AudioSources.AddComponent(bullet, New AudioSourceComponent With {
              .soundId = New List(Of String) From {"bulletImpact1", "bulletImpact2"},
-             .volume = 0.5F
+             .volume = 0.35F
         })
         AudioTriggers.AddComponent(bullet, New AudioTriggerComponent With {.playRequested = False})
     End Sub

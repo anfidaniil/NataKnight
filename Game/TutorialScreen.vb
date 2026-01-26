@@ -45,6 +45,7 @@ Public Class TutorialScreen
         btnLeft = New UIButtonArrowLeft With {
             .bounds = New Rectangle(50, arrowY, 50, 50),
             .onClick = Sub()
+                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                            If currentIndex > 0 Then currentIndex -= 1
                        End Sub
         }
@@ -53,6 +54,7 @@ Public Class TutorialScreen
         btnRight = New UIButtonArrowRight With {
             .bounds = New Rectangle(screenW - 100, arrowY, 50, 50),
             .onClick = Sub()
+                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                            If currentIndex < cards.Count - 1 Then currentIndex += 1
                        End Sub
         }
@@ -61,13 +63,19 @@ Public Class TutorialScreen
         buttons.Add(New UIButtonGoBack With {
             .bounds = New Rectangle(startX, btnY, btnW, btnH),
             .text = "",
-            .onClick = Sub() BackAction?.Invoke()
+            .onClick = Sub()
+                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                           BackAction?.Invoke()
+                       End Sub
         })
 
         buttons.Add(New UIButtonStartNewGame With {
             .bounds = New Rectangle(startX + btnW + spacing, btnY, btnW, btnH),
             .text = "",
-            .onClick = Sub() game.StartNewGame()
+            .onClick = Sub()
+                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                           game.StartNewGame()
+                       End Sub
         })
     End Sub
 

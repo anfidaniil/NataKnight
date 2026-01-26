@@ -58,9 +58,7 @@ Public Class Game
             Sub() StartNewGame(),
             Sub() Quit(),
             Sub()
-                If world.AudioTriggers.HasComponent(world.BtnId) Then
-                    world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-                End If
+                AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                 tutorialScreen.BackAction = Sub() gameState = GameState.Starting
                 gameState = GameState.Tutorial
             End Sub
@@ -89,9 +87,7 @@ Public Class Game
             Sub() StartNewGame(),
             Sub() Quit(),
             Sub()
-                If world.AudioTriggers.HasComponent(world.BtnId) Then
-                    world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-                End If
+                AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                 tutorialScreen.BackAction = Sub() gameState = GameState.Starting
                 gameState = GameState.Tutorial
             End Sub
@@ -101,7 +97,6 @@ Public Class Game
     Public Sub CreateTestWorld()
         CreateLevel()
 
-        world.CreateButton()
         world.CreatePlayerShootingSound()
         world.CreatePlayer()
         world.CreateCamera()
@@ -118,7 +113,8 @@ Public Class Game
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Quit()
+            Sub() Quit(),
+            Sub() GoToStartingScreen()
         )
     End Sub
 
@@ -128,37 +124,27 @@ Public Class Game
         Me.score = 0
 
         CreateTestWorld()
-        If world.AudioTriggers.HasComponent(world.BtnId) Then
-            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-        End If
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         Debug.WriteLine("Starting New Game")
     End Sub
 
     Public Sub Restart()
-        If world.AudioTriggers.HasComponent(world.BtnId) Then
-            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-        End If
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         gameState = GameState.Playing
     End Sub
 
     Public Sub Quit()
-        If world.AudioTriggers.HasComponent(world.BtnId) Then
-            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-        End If
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         Form1.Close()
     End Sub
                                             
     Public Sub GoToStartingScreen()
-        If world.AudioTriggers.HasComponent(world.BtnId) Then
-            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-        End If
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         gameState = GameState.Starting
     End Sub
                                         
     Public Sub GoBackFromTutorialToGame()
-        If world.AudioTriggers.HasComponent(world.BtnId) Then
-            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
-        End If
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         tutorialScreen.BackAction = Sub() gameState = GameState.Menu
         gameState = GameState.Tutorial
     End Sub

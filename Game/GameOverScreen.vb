@@ -6,7 +6,7 @@ Public Class GameOverScreen
     Dim buttonWidth = 200
     Dim buttonHeight = 50
 
-    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action)
+    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action, go_back As Action)
         Dim centerX = (screenWidth - buttonWidth) \ 2
         Dim centerY = screenHeight \ 2
 
@@ -20,6 +20,11 @@ Public Class GameOverScreen
             .bounds = New Rectangle(centerX + buttonWidth / 2 + 20, centerY, buttonWidth, buttonHeight),
             .text = "Quit",
             .onClick = quit
+        })
+        buttons.Add(New UIButtonBackToMenu With {
+            .bounds = New Rectangle(centerX, centerY + 90, buttonWidth, buttonHeight),
+            .text = "Go to Menu",
+            .onClick = go_back
         })
     End Sub
 
