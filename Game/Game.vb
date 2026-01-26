@@ -1,5 +1,4 @@
-﻿
-Imports System.Drawing.Imaging
+﻿Imports System.Drawing.Imaging
 Imports System.Security.Policy
 Imports SharpDX.Multimedia
 
@@ -8,6 +7,7 @@ Public Class Game
     Public gameOverUI As GameOverScreen
     Public menuScreen As MenuScreen
     Public startingMenuScreen As StartScreen
+    Public tutorialScreen As TutorialScreen
     Public gameState As GameState
 
     Public level As New Dictionary(Of Point, Bitmap)
@@ -40,21 +40,30 @@ Public Class Game
         InitializeSounds()
 
         Me.world = New World(input, Me)
-
+        Me.tutorialScreen = New TutorialScreen(Me)
+    
         CreateTestWorld()
         Me.gameState = GameState.Starting
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Quit(),
-            Sub() Restart()
+            Sub() GoBackFromTutorialToGame(),
+            Sub() Restart(),
+            Sub() GoToStartingScreen()
         )
         startingMenuScreen = New StartScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Quit()
+            Sub() Quit(),
+            Sub()
+                If world.AudioTriggers.HasComponent(world.BtnId) Then
+                    world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+                End If
+                tutorialScreen.BackAction = Sub() gameState = GameState.Starting
+                gameState = GameState.Tutorial
+            End Sub
         )
     End Sub
 
@@ -63,20 +72,29 @@ Public Class Game
         Dim cam = world.Cameras.GetComponent(id)
         cam.viewHeight = Form1.Height
         cam.viewWidth = Form1.Width
+        Me.tutorialScreen = New TutorialScreen(Me)
 
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Quit(),
-            Sub() Restart()
+            Sub() GoBackFromTutorialToGame(),
+            Sub() Restart(),
+            Sub() GoToStartingScreen()
         )
 
         startingMenuScreen = New StartScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Quit()
+            Sub() Quit(),
+            Sub()
+                If world.AudioTriggers.HasComponent(world.BtnId) Then
+                    world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+                End If
+                tutorialScreen.BackAction = Sub() gameState = GameState.Starting
+                gameState = GameState.Tutorial
+            End Sub
         )
     End Sub
 
@@ -129,6 +147,21 @@ Public Class Game
         End If
         Form1.Close()
     End Sub
+                                            
+    Public Sub GoToStartingScreen()
+        If world.AudioTriggers.HasComponent(world.BtnId) Then
+            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+        End If
+        gameState = GameState.Starting
+    End Sub
+                                        
+    Public Sub GoBackFromTutorialToGame()
+        If world.AudioTriggers.HasComponent(world.BtnId) Then
+            world.AudioTriggers.GetComponent(world.BtnId).playRequested = True
+        End If
+        tutorialScreen.BackAction = Sub() gameState = GameState.Menu
+        gameState = GameState.Tutorial
+    End Sub
 
     Public Sub CreateEnemiesAroundPoint(posX As Integer, posY As Integer, numEnemies As Integer)
         For i = 1 To numEnemies
@@ -143,10 +176,14 @@ Public Class Game
         Select Case gameState
             Case GameState.Menu
 
+            Case GameState.Tutorial
+
             Case GameState.Playing
                 world.Update(dt)
                 world.CollisionEvents.Clear()
             Case GameState.GameOver
+
+            Case GameState.Starting
 
         End Select
     End Sub
@@ -163,6 +200,8 @@ Public Class Game
             Case GameState.GameOver
                 world.Draw(g)
                 gameOverUI.Draw(g, world)
+            Case GameState.Tutorial
+                tutorialScreen.Draw(g, world)
 
         End Select
     End Sub

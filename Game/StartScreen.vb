@@ -5,21 +5,37 @@ Public Class StartScreen
     Dim buttonWidth = 200
     Dim buttonHeight = 50
 
-    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action)
+    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action, tutorial As Action)
         Dim centerX = (screenWidth - buttonWidth) \ 2
         Dim centerY = screenHeight \ 2
 
+        Dim gap As Integer = 10
+
+
         buttons.Add(New UIButtonStartNewGame With {
-            .bounds = New Rectangle(centerX - buttonWidth / 2 - 20, centerY, buttonWidth, buttonHeight),
-            .text = "Start New Game",
+            .bounds = New Rectangle(centerX - (buttonWidth \ 2) - gap, centerY, buttonWidth, buttonHeight),
+            .text = "",
             .onClick = restart
         })
 
+        buttons.Add(New UIButtonTutorial With {
+            .bounds = New Rectangle(centerX + (buttonWidth \ 2) + gap, centerY, buttonWidth, buttonHeight),
+            .text = "",
+            .onClick = tutorial
+        })
+
         buttons.Add(New UIButtonQuit With {
-            .bounds = New Rectangle(centerX + buttonWidth / 2 + 20, centerY, buttonWidth, buttonHeight),
-            .text = "Quit",
+            .bounds = New Rectangle(centerX, centerY + buttonHeight + 20, buttonWidth, buttonHeight),
+            .text = "",
             .onClick = quit
         })
+
+        ' Botão Continuar (Desativado)
+        ' buttons.Add(New UIButtonContinue With {
+        '     .bounds = New Rectangle(centerX, centerY + (buttonHeight * 2) + 40, buttonWidth, buttonHeight),
+        '     .text = "Continue",
+        '     .onClick = restart
+        ' })
     End Sub
 
     Public Sub Draw(g As Graphics, world As World)

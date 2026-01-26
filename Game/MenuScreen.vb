@@ -3,26 +3,35 @@
     Dim buttonWidth = 200
     Dim buttonHeight = 50
 
-    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action, continueAction As Action)
-        Dim centerX = (screenWidth - buttonWidth) \ 2
+
+    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, tutorial As Action, continueAction As Action, backToMenu As Action)
+        Dim centerX = screenWidth \ 2
         Dim centerY = screenHeight \ 2
 
+        Dim gap = 20
+
         buttons.Add(New UIButtonContinue With {
-            .bounds = New Rectangle(centerX - buttonWidth / 2 - 20, centerY, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(centerX - buttonWidth - gap, centerY, buttonWidth, buttonHeight),
             .text = "Continue",
             .onClick = continueAction
         })
 
         buttons.Add(New UIButtonStartNewGame With {
-            .bounds = New Rectangle(centerX + buttonWidth / 2 + 20, centerY, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(centerX + gap, centerY, buttonWidth, buttonHeight),
             .text = "Start New Game",
             .onClick = restart
         })
 
-        buttons.Add(New UIButtonQuit With {
-            .bounds = New Rectangle(centerX, centerY + 90, buttonWidth, buttonHeight),
-            .text = "Quit",
-            .onClick = quit
+        buttons.Add(New UIButtonTutorial With {
+            .bounds = New Rectangle(centerX - buttonWidth - gap, centerY + 90, buttonWidth, buttonHeight),
+            .text = "Tutorial",
+            .onClick = tutorial
+        })
+
+        buttons.Add(New UIButtonBackToMenu With {
+            .bounds = New Rectangle(centerX + gap, centerY + 90, buttonWidth, buttonHeight),
+            .text = "Menu",
+            .onClick = backToMenu
         })
     End Sub
 
@@ -38,7 +47,7 @@
         End Using
 
         Using font As New Font("Arial", 24, FontStyle.Bold)
-            Dim text = "GAME NAME"
+            Dim text = "PAUSA"
             Dim size = g.MeasureString(text, font)
             g.DrawString(text, font, Brushes.White,
                 (Form1.Width - size.Width) / 2, 100)

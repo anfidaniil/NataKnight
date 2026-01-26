@@ -3,4 +3,5 @@
     Menu
     Playing
     GameOver
+    Tutorial
 End Enum
