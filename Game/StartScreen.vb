@@ -4,8 +4,11 @@ Public Class StartScreen
     Public buttons As New List(Of UIButton)
     Dim buttonWidth = 200
     Dim buttonHeight = 50
+    Private imgBackground As Bitmap
 
     Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action, tutorial As Action)
+        imgBackground = My.Resources.GameResources.MAINmenu
+
         Dim centerX = (screenWidth - buttonWidth) \ 2
         Dim centerY = screenHeight \ 2
 
