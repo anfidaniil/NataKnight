@@ -34,15 +34,16 @@ Public Class Game
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close(),
-            Sub() gameState = GameState.Playing
+            Sub() gameState = GameState.Tutorial,
+            Sub() gameState = GameState.Playing,
+            Sub() gameState = GameState.Starting
         )
         startingMenuScreen = New StartScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
             Sub() Form1.Close(),
-            Sub() gameState = gameState.Tutorial
+            Sub() gameState = GameState.Tutorial
         )
     End Sub
 
@@ -52,12 +53,14 @@ Public Class Game
         cam.viewHeight = Form1.Height
         cam.viewWidth = Form1.Width
         Me.tutorialScreen = New TutorialScreen(Me)
+
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
             Sub() StartNewGame(),
-            Sub() Form1.Close(),
-            Sub() gameState = GameState.Playing
+            Sub() gameState = GameState.Tutorial,
+            Sub() gameState = GameState.Playing,
+            Sub() gameState = GameState.Starting
         )
 
         startingMenuScreen = New StartScreen(
@@ -65,7 +68,7 @@ Public Class Game
             Form1.Height,
             Sub() StartNewGame(),
             Sub() Form1.Close(),
-            Sub() gameState = gameState.Tutorial
+            Sub() gameState = GameState.Tutorial
         )
     End Sub
 
@@ -111,12 +114,14 @@ Public Class Game
         Select Case gameState
             Case GameState.Menu
 
-            Case gameState.Tutorial
+            Case GameState.Tutorial
 
             Case GameState.Playing
                 world.Update(dt)
                 world.CollisionEvents.Clear()
             Case GameState.GameOver
+
+            Case GameState.Starting
 
         End Select
     End Sub
@@ -133,20 +138,24 @@ Public Class Game
             Case GameState.GameOver
                 world.Draw(g)
                 gameOverUI.Draw(g, world)
-            Case gameState.Tutorial
+            Case GameState.Tutorial
                 tutorialScreen.Draw(g, world)
 
         End Select
     End Sub
 
-    Public Sub HandleMouseClick(location As Point)
-        Select Case gameState
-            Case gameState.Tutorial
-                tutorialScreen.HandleClick(location)
-            Case GameState.Starting
-                startingMenuScreen.HandleMouseClick(location)
-        End Select
-    End Sub
+    'Public Sub HandleMouseClick(location As Point)
+    '    Select Case gameState
+    '        Case GameState.Tutorial
+    '            tutorialScreen.HandleClick(location)
+    '        Case GameState.Starting
+    '            startingMenuScreen.HandleMouseClick(location)
+    '        Case GameState.Menu
+    '            menuScreen.HandleMouseClick(location)
+    '        Case GameState.GameOver
+    '            gameOverUI.HandleMouseClick(location)
+    '    End Select
+    'End Sub
 
     Private Function GetTileFromPosition(x As Integer, y As Integer) As Bitmap
         Dim sprite As New Rectangle(128 * x, 128 * y, 128, 128)

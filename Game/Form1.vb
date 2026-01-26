@@ -92,18 +92,28 @@
         'Only works when clicking the right button
         input.fire = True
 
-        If game.gameState = GameState.GameOver Then
-            game.gameOverUI.HandleMouseClick(e.Location)
-        End If
-        If game.gameState = GameState.Menu Then
-            game.menuScreen.HandleMouseClick(e.Location)
-        End If
-        If game.gameState = GameState.Starting Then
-            game.startingMenuScreen.HandleMouseClick(e.Location)
-        End If
-        If game.gameState = GameState.Tutorial Then
-            game.tutorialScreen.HandleClick(e.Location)
-        End If
+        Select Case game.gameState
+            Case GameState.GameOver
+                game.gameOverUI.HandleMouseClick(e.Location)
+            Case GameState.Menu
+                game.menuScreen.HandleMouseClick(e.Location)
+            Case GameState.Starting
+                game.startingMenuScreen.HandleMouseClick(e.Location)
+            Case GameState.Tutorial
+                game.tutorialScreen.HandleClick(e.Location)
+        End Select
+        'If game.gameState = GameState.GameOver Then
+        '    game.gameOverUI.HandleMouseClick(e.Location)
+        'End If
+        'If game.gameState = GameState.Menu Then
+        '    game.menuScreen.HandleMouseClick(e.Location)
+        'End If
+        'If game.gameState = GameState.Starting Then
+        '    game.startingMenuScreen.HandleMouseClick(e.Location)
+        'End If
+        'If game.gameState = GameState.Tutorial Then
+        '    game.tutorialScreen.HandleClick(e.Location)
+        'End If
     End Sub
 
     Private Sub Form1_MouseUP(sender As Object, e As MouseEventArgs) Handles Me.MouseUp
