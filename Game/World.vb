@@ -52,7 +52,7 @@ Public Class World
     Public DEFAULT_POSITION = New PointF(0, 0)
 
     Public Const TILE_SIZE As Integer = 256
-    Public Const GAME_NAME = "GAME NAME"
+    Public Const GAME_NAME = "NATA KNIGHT"
 
     Public Const MIN_AUDIO_DIST = 50.0F
     Public Const MAX_AUDIO_DIST = 600.0F
