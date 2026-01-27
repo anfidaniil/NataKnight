@@ -48,9 +48,6 @@ Public Class World
     Public SCREEN_HEIGHT = Form1.Height
     Public SCREEN_WIDTH = Form1.Width
 
-    Public Const MAX_ACCELERATION = 1000.0F
-    Public Const MAX_ENEMY_ACCELERATION = 500.0F
-
     Public Const IFRAMES_DURATION = 0.1F
     Public DEFAULT_POSITION = New PointF(0, 0)
 
@@ -139,7 +136,8 @@ Public Class World
             .velocity = New PointF(0F, 0F),
             .acceleration = New PointF(0F, 0F),
             .damping = 2.0F,
-            .max_velocity = 300.0F
+            .max_velocity = 300.0F,
+            .max_acceleration = 1000.0F
         })
 
         Renders.AddComponent(player, New RenderComponent With {
@@ -196,7 +194,8 @@ Public Class World
             .velocity = New PointF(0F, 0F),
             .acceleration = New PointF(0F, 0F),
             .damping = 1.0F,
-            .max_velocity = 250.0F
+            .max_velocity = 250.0F,
+            .max_acceleration = 500.0F
         })
 
         Renders.AddComponent(enemy, New RenderComponent With {

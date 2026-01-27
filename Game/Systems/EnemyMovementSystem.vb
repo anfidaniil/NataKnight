@@ -35,8 +35,8 @@
                     Dim norm = NormalisePointFVector(a)
                     UpdateSprite(norm.X, norm.Y, r)
                     m.acceleration = New PointF(
-                        norm.X * World.MAX_ENEMY_ACCELERATION,
-                        norm.Y * World.MAX_ENEMY_ACCELERATION
+                        norm.X * m.max_acceleration,
+                        norm.Y * m.max_acceleration
                     )
                 End If
 
