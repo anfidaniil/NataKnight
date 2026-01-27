@@ -70,7 +70,13 @@ Public Class Game
         Dim cam = world.Cameras.GetComponent(id)
         cam.viewHeight = Form1.Height
         cam.viewWidth = Form1.Width
-        Me.tutorialScreen = New TutorialScreen(Me)
+
+        Dim savedPage As Integer = 0
+        If Me.tutorialScreen IsNot Nothing Then
+            savedPage = Me.tutorialScreen.currentIndex
+        End If
+
+        Me.tutorialScreen = New TutorialScreen(Me, savedPage)
 
         menuScreen = New MenuScreen(
             Form1.Width,

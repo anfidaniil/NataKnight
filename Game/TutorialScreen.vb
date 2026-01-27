@@ -6,7 +6,7 @@ Public Class TutorialScreen
 
     Private cards As New List(Of UICard)
     Public buttons As New List(Of UIButton)
-    Private currentIndex As Integer = 0
+    Public currentIndex As Integer = 0
 
     Private btnLeft As UIButtonArrowLeft
     Private btnRight As UIButtonArrowRight
@@ -15,8 +15,9 @@ Public Class TutorialScreen
 
     Private imgTutorialBG As Bitmap
 
-    Public Sub New(gameInstance As Game)
+    Public Sub New(gameInstance As Game, Optional startPage As Integer = 0)
         Me.game = gameInstance
+        Me.currentIndex = startPage
         BackAction = Sub() game.gameState = GameState.Starting
         LoadResources()
         InitializeButtons()
