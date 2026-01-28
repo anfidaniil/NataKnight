@@ -43,7 +43,7 @@ Public Class World
 
     Public PlayerID As Integer = -1
     Public BtnId As Integer
-    Public ShootSounds As Integer
+    Public ShootSounds As Integer = -1
 
     Public SCREEN_HEIGHT = Form1.Height
     Public SCREEN_WIDTH = Form1.Width

@@ -1,11 +1,11 @@
 ﻿<Serializable>
 Public Class MovementSave
-    Public vX As Single
-    Public vY As Single
-    Public aX As Single
-    Public aY As Single
-    Public max_velocity As Single
-    Public max_acceleration As Single
-    Public damping As Single
+    Public Property vX As Single
+    Public Property vY As Single
+    Public Property aX As Single
+    Public Property aY As Single
+    Public Property max_velocity As Single
+    Public Property max_acceleration As Single
+    Public Property damping As Single
 End Class
 

@@ -1,7 +1,7 @@
 ﻿<Serializable>
 Public Class RenderSave
-    Public size As Single
-    Public spriteX As Integer
-    Public spriteY As Integer
+    Public Property size As Single
+    Public Property spriteX As Integer
+    Public Property spriteY As Integer
 
 End Class

@@ -1,4 +1,4 @@
 ﻿<Serializable>
 Public Class DamageSave
-    Public damage As Integer
+    Public Property damage As Integer
 End Class

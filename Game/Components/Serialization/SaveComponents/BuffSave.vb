@@ -1,5 +1,5 @@
 ﻿<Serializable>
 Public Class BuffSave
-    Public type As BuffType
-    Public isConsumed As Boolean = False
+    Public Property type As BuffType
+    Public Property isConsumed As Boolean = False
 End Class

@@ -1,5 +1,5 @@
 ﻿<Serializable>
 Public Class RectangleColliderSave
-    Public sA As Integer
-    Public sB As Integer
+    Public Property sA As Integer
+    Public Property sB As Integer
 End Class

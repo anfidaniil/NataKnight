@@ -1,6 +1,6 @@
 ﻿<Serializable>
 Public Class AttackSave
-    Public timeRemaining As Single
-    Public attackCooldown As Single
-    Public attack As Boolean
+    Public Property timeRemaining As Single
+    Public Property attackCooldown As Single
+    Public Property attack As Boolean
 End Class

@@ -1,5 +1,5 @@
 ﻿<Serializable>
 Public Class CameraSave
-    Public viewWidth As Integer
-    Public viewHeight As Integer
+    Public Property viewWidth As Integer
+    Public Property viewHeight As Integer
 End Class

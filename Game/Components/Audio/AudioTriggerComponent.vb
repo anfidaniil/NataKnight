@@ -1,5 +1,5 @@
 ﻿<Serializable>
 Public Class AudioTriggerComponent
-    Public playRequested As Boolean = False
-    Public cooldown As Single = 0
+    Public Property playRequested As Boolean = False
+    Public Property cooldown As Single = 0
 End Class
