@@ -70,8 +70,7 @@ Public Class Game
             Sub() GoToStartingScreen()
         )
         startingMenuScreen = New StartScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() Quit(),
             Sub()
@@ -105,8 +104,7 @@ Public Class Game
         )
 
         startingMenuScreen = New StartScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() Quit(),
             Sub()
