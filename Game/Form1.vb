@@ -35,11 +35,6 @@
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Nata Knight"
 
-        Me.WindowState = FormWindowState.Normal
-        ' Usamos ClientSize para que a área de jogo seja 1920x1080 (excluindo bordas)
-        Me.ClientSize = New Size(1920, 1080)
-        Me.CenterToScreen()
-
         Me.KeyPreview = True
         input = New InputState(False, False, False, False, False, New Point(0, 0))
         Me.SetStyle(

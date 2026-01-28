@@ -1,14 +1,21 @@
 ﻿Public Class MenuScreen
     Public buttons As New List(Of UIButton)
-    Dim buttonWidth = 200
-    Dim buttonHeight = 50
+    Private game As Game
 
+    Public Sub New(gameInstance As Game, restart As Action, tutorial As Action, continueAction As Action, backToMenu As Action)
+        Me.game = gameInstance
 
-    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, tutorial As Action, continueAction As Action, backToMenu As Action)
-        Dim centerX = screenWidth \ 2
-        Dim centerY = screenHeight \ 2
+        Dim screenW As Integer = Form1.Width
+        Dim screenH As Integer = Form1.Height
+        Dim scale As Single = game.GetUIElementScale()
 
-        Dim gap = 20
+        Dim buttonWidth As Integer = CInt(200 * scale)
+        Dim buttonHeight As Integer = CInt(50 * scale)
+        Dim gap As Integer = CInt(20 * scale)
+        Dim rowGap As Integer = CInt(90 * scale)
+
+        Dim centerX As Integer = screenW \ 2
+        Dim centerY As Integer = screenH \ 2
 
         buttons.Add(New UIButtonContinue With {
             .bounds = New Rectangle(centerX - buttonWidth - gap, centerY, buttonWidth, buttonHeight),
@@ -23,19 +30,22 @@
         })
 
         buttons.Add(New UIButtonTutorial With {
-            .bounds = New Rectangle(centerX - buttonWidth - gap, centerY + 90, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(centerX - buttonWidth - gap, centerY + rowGap, buttonWidth, buttonHeight),
             .text = "Tutorial",
             .onClick = tutorial
         })
 
         buttons.Add(New UIButtonBackToMenu With {
-            .bounds = New Rectangle(centerX + gap, centerY + 90, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(centerX + gap, centerY + rowGap, buttonWidth, buttonHeight),
             .text = "Menu",
             .onClick = backToMenu
         })
     End Sub
 
     Public Sub Draw(g As Graphics, world As World)
+        g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
+
         Using overlayBrush As New SolidBrush(Color.FromArgb(150, 0, 0, 0))
             g.FillRectangle(
             overlayBrush,

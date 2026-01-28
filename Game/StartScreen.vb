@@ -10,23 +10,18 @@ Public Class StartScreen
         Dim screenW As Integer = Form1.Width
         Dim screenH As Integer = Form1.Height
 
-        ' MOD: Usa a escala centralizada (Game.GetUIElementScale)
         Dim scale As Single = game.GetUIElementScale()
 
-        ' MOD: Aplica a escala aos tamanhos
         Dim buttonWidth As Integer = CInt(200 * scale)
         Dim buttonHeight As Integer = CInt(50 * scale)
-        Dim gap As Integer = CInt(10 * scale)        ' Espaço horizontal entre botões de cima
-        Dim verticalGap As Integer = CInt(20 * scale) ' Espaço vertical para o botão Sair
+        Dim gap As Integer = CInt(10 * scale)
+        Dim verticalGap As Integer = CInt(20 * scale)
 
-        ' Ponto central exato do ecrã
         Dim totalGroupWidth As Integer = (buttonWidth * 2) + gap
-        ' Altura = 2 linhas de botões + o espaço vertical
         Dim totalGroupHeight As Integer = (buttonHeight * 2) + verticalGap
 
         Dim offsetY As Integer = CInt(50 * scale)
 
-        ' 4. Calcular Ponto de Início (Canto Superior Esquerdo do Grupo) para ficar Centrado
         Dim startX As Integer = (screenW - totalGroupWidth) \ 2
         Dim startY As Integer = (screenH - totalGroupHeight) \ 2 + offsetY
 

@@ -62,8 +62,7 @@ Public Class Game
         CreateTestWorld()
         Me.gameState = GameState.Starting
         menuScreen = New MenuScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() GoBackFromTutorialToGame(),
             Sub() Restart(),
@@ -95,8 +94,7 @@ Public Class Game
         Me.tutorialScreen = New TutorialScreen(Me, savedPage)
 
         menuScreen = New MenuScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() GoBackFromTutorialToGame(),
             Sub() Restart(),
