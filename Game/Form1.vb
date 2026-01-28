@@ -31,7 +31,9 @@
         End If
     End Sub
 
-
+    Public Sub OnClose() Handles Me.Closed
+        GameStateSerialization.SaveToFile(game, "data.json")
+    End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Nata Knight"
         Me.KeyPreview = True

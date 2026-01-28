@@ -4,6 +4,7 @@ Imports SharpDX.Multimedia
 
 Public Class Game
     Public world As World
+    Public input As InputState
     Public gameOverUI As GameOverScreen
     Public menuScreen As MenuScreen
     Public startingMenuScreen As StartScreen
@@ -38,12 +39,17 @@ Public Class Game
     End Sub
     Public Sub New(input As InputState)
         InitializeSounds()
+        Me.input = input
 
-        Me.world = New World(input, Me)
+        Try
+            GameStateSerialization.LoadFromFile(Me, "data.json")
+        Catch ex As Exception
+            Me.gameState = GameState.Starting
+            Me.world = New World(input, Me)
+            Debug.WriteLine(ex.Message)
+        End Try
+
         Me.tutorialScreen = New TutorialScreen(Me)
-    
-        CreateTestWorld()
-        Me.gameState = GameState.Starting
         menuScreen = New MenuScreen(
             Form1.Width,
             Form1.Height,
@@ -135,6 +141,7 @@ Public Class Game
 
     Public Sub Quit()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+        GameStateSerialization.SaveToFile(Me, "data.json")
         Form1.Close()
     End Sub
                                             

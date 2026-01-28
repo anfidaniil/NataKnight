@@ -20,6 +20,15 @@
         Return id
     End Function
 
+    Public Function CreateEntityWithId(id As Integer) As Integer
+        Entities.Add(id)
+        If id >= nextId Then
+            nextId = id + 1
+        End If
+        Return id
+    End Function
+
+
     Public Sub RemoveEntity(entityId As Integer)
         If destroyed.Contains(entityId) Then
             Throw New Exception($"Entity {entityId} destroyed twice")
