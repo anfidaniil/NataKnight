@@ -8,11 +8,12 @@
                 Dim a = world.Attacks.GetComponent(id)
                 If world.Transforms.HasComponent(id) And world.Transforms.HasComponent(world.PlayerID) Then
                     Dim t = world.Transforms.GetComponent(id)
+                    Dim m = world.Movements.GetComponent(id)
                     Dim playerPos = world.Transforms.GetComponent(world.PlayerID).pos
 
                     If a.timeRemaining <= 0 Then
                         a.timeRemaining = a.attackCooldown
-                        world.CreateBullet(t.pos, playerPos, 0)
+                        world.CreateBullet(t.pos, playerPos, 0, m.velocity)
                     End If
                     a.timeRemaining -= dt
                 End If

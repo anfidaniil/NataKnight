@@ -7,7 +7,7 @@ Public Class World
 
     Public EntityManager As New EntityManager()
 
-    Public WaveData As New WaveComponent()
+    Public WaveData As New ComponentStore(Of WaveComponent)
 
     Public Transforms As New ComponentStore(Of TransformComponent)
     Public Movements As New ComponentStore(Of MovementComponent)
@@ -37,13 +37,11 @@ Public Class World
     Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
     Public EntityDestructionEvents As New HashSet(Of Integer)
 
-
-
     Private Systems As New List(Of ISystem)
 
-    Public PlayerID As Integer
+    Public PlayerID As Integer = -1
     Public BtnId As Integer
-    Public ShootSounds As Integer
+    Public ShootSounds As Integer = -1
 
     Public SCREEN_HEIGHT = Form1.Height
     Public SCREEN_WIDTH = Form1.Width
@@ -125,61 +123,60 @@ Public Class World
     End Sub
 
     Public Sub CreatePlayer()
-        Dim player = EntityManager.CreateEntity()
-        PlayerID = player
+        If (PlayerID = -1) Then
+            Dim player = EntityManager.CreateEntity()
+            PlayerID = player
 
-        Transforms.AddComponent(player, New TransformComponent With {
-            .pos = New PointF(2020, 2020)
-        })
+            Transforms.AddComponent(player, New TransformComponent With {
+                .pos = New PointF(2020, 2020)
+            })
 
-        Movements.AddComponent(player, New MovementComponent With {
-            .velocity = New PointF(0F, 0F),
-            .acceleration = New PointF(0F, 0F),
-            .damping = 2.0F,
-            .max_velocity = 300.0F,
-            .max_acceleration = 1000.0F
-        })
+            Movements.AddComponent(player, New MovementComponent With {
+                .velocity = New PointF(0F, 0F),
+                .acceleration = New PointF(0F, 0F),
+                .damping = 2.0F,
+                .max_velocity = 300.0F,
+                .max_acceleration = 1000.0F
+            })
 
-        Renders.AddComponent(player, New RenderComponent With {
-            .size = 64,
-            .spriteX = 3,
-            .spriteY = 0
-        })
-        Colliders.AddComponent(player, New RectangleCollider With {
-            .sA = 64,
-            .sB = 64
-        })
-        Damages.AddComponent(player, New DamageComponent With {
-                             .damage = 1})
-        Players.AddComponent(player, New PlayerComponent())
-        Attacks.AddComponent(player, New AttackComponent With {
-            .attack = False,
-            .attackCooldown = 0.5F,
-            .timeRemaining = 0.1F
-        })
+            Renders.AddComponent(player, New RenderComponent With {
+                .size = 64,
+                .spriteX = 3,
+                .spriteY = 0
+            })
+            Colliders.AddComponent(player, New RectangleCollider With {
+                .sA = 64,
+                .sB = 64
+            })
+            Damages.AddComponent(player, New DamageComponent With {
+                                 .damage = 1})
+            Players.AddComponent(player, New PlayerComponent())
+            Attacks.AddComponent(player, New AttackComponent With {
+                .attack = False,
+                .attackCooldown = 0.5F,
+                .timeRemaining = 0.1F
+            })
 
-        Healths.AddComponent(player, New Health With {
-            .health = 100,
-            .maxHealth = 100
-        })
+            Healths.AddComponent(player, New Health With {
+                .health = 100,
+                .maxHealth = 100
+            })
+            AudioSources.AddComponent(PlayerID, New AudioSourceComponent With {
+                 .soundId = New List(Of String) From {"footsteps_1", "footsteps_2", "footsteps_3", "footsteps_4"},
+                 .volume = 0.5F
+            })
+            AudioTriggers.AddComponent(PlayerID, New AudioTriggerComponent With {.playRequested = False})
+        End If
 
         Dim full = New Bitmap(My.Resources.GameResources.FullHealth)
         Dim empty = New Bitmap(My.Resources.GameResources.emptyhealth)
         Dim current As New Bitmap(My.Resources.GameResources.FullHealth)
-        HealthBars.AddComponent(player, New HealthBarComponent With {
+        HealthBars.AddComponent(PlayerID, New HealthBarComponent With {
             .fullHealthSprite = full,
             .emptyHealthSprite = empty,
             .currentHealthSprite = current,
             .position = New PointF(20, 20)
         })
-
-        AudioSources.AddComponent(player, New AudioSourceComponent With {
-             .soundId = New List(Of String) From {"footsteps_1", "footsteps_2", "footsteps_3", "footsteps_4"},
-             .volume = 0.5F
-        })
-        AudioTriggers.AddComponent(player, New AudioTriggerComponent With {.playRequested = False})
-
-
     End Sub
 
     Public Sub CreateEnemy(pos As PointF)
@@ -229,7 +226,7 @@ Public Class World
         AudioTriggers.AddComponent(enemy, New AudioTriggerComponent With {.playRequested = False})
     End Sub
 
-    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer)
+    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer, v0 As PointF)
         Dim velocity = New PointF(
             targetPos.X - startPos.X,
             targetPos.Y - startPos.Y
@@ -237,8 +234,8 @@ Public Class World
 
         Dim norm = Utils.NormalisePointFVector(velocity)
         norm = New PointF(
-            norm.X * 400.0F,
-            norm.Y * 400.0F
+            norm.X * 600.0F + v0.X,
+            norm.Y * 600.0F + v0.Y
         )
 
         Dim bullet = EntityManager.CreateEntity()

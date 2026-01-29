@@ -11,6 +11,7 @@
             Dim id = kv.Key
             Dim a = world.Attacks.GetComponent(id)
             If (world.Transforms.HasComponent(id)) Then
+                Dim m = world.Movements.GetComponent(id)
                 Dim t = world.Transforms.GetComponent(id)
                 If input.fire = True And a.timeRemaining <= 0 Then
                     Dim mouseScreen As Point = Form1.PointToClient(Cursor.Position)
@@ -26,7 +27,7 @@
                     a.timeRemaining = a.attackCooldown
 
                     world.AudioTriggers.GetComponent(world.ShootSounds).playRequested = True
-                    world.CreateBullet(t.pos, input.cursorPos, 1)
+                    world.CreateBullet(t.pos, input.cursorPos, 1, m.velocity)
                 End If
                 a.timeRemaining -= dt
             End If

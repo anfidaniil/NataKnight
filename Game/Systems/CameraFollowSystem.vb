@@ -13,8 +13,8 @@ Public Class CameraFollowSystem
 
                     Dim cam = world.Cameras.GetComponent(camera)
 
-                    Dim targetX = playerPos.pos.X - cam.viewWidth / 2
-                    Dim targetY = playerPos.pos.Y - cam.viewHeight / 2
+                    Dim targetX = playerPos.pos.X - cam.viewWidth \ 2
+                    Dim targetY = playerPos.pos.Y - cam.viewHeight \ 2
 
                     Dim pos = New PointF(
                         targetX,

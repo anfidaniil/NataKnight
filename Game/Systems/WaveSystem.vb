@@ -8,46 +8,44 @@ Public Class WaveSystem
     Private Const SAFE_MIN As Integer = 1300
     Private Const SAFE_MAX As Integer = 2800
 
-    Private currentState As WaveState = WaveState.FadingIn
-
-    Private roundNumber As Integer = 1
     Private targetEnemies As Integer = 5
-    Private enemiesSpawnedInThisRound As Integer = 0
+
     Private rng As New Random()
 
     Private opacity As Single = 0
     Private fadeSpeed As Single = 1.5F
     Private holdTimer As Single = 0
     Private holdDuration As Single = 2.0F
-    Private showTextDuration As Single = 2.0F
 
     Private spawnTimer As Single = 0
     Private Const SPAWN_DELAY As Single = 0.5F
 
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
+        Dim wdID = world.WaveData.All.First().Key
+        Dim wd = world.WaveData.GetComponent(wdID)
 
-        Select Case currentState
+        Select Case wd.State
 
             Case WaveState.FadingIn
                 opacity += fadeSpeed * dt
                 If opacity >= 1.0F Then
                     opacity = 1.0F
-                    currentState = WaveState.Holding
+                    wd.State = WaveState.Holding
                     holdTimer = holdDuration
                 End If
 
             Case WaveState.Holding
                 holdTimer -= dt
                 If holdTimer <= 0 Then
-                    currentState = WaveState.FadingOut
+                    wd.State = WaveState.FadingOut
                 End If
 
             Case WaveState.FadingOut
                 opacity -= fadeSpeed * dt
                 If opacity <= 0.0F Then
                     opacity = 0.0F
-                    currentState = WaveState.Spawning
-                    enemiesSpawnedInThisRound = 0
+                    wd.State = WaveState.Spawning
+                    wd.EnemiesSpawned = 0
                     spawnTimer = 0
                 End If
 
@@ -55,14 +53,14 @@ Public Class WaveSystem
                 spawnTimer -= dt
 
                 If spawnTimer <= 0 Then
-                    If enemiesSpawnedInThisRound < targetEnemies Then
+                    If wd.EnemiesSpawned < targetEnemies Then
                         If world.Players.HasComponent(world.PlayerID) AndAlso world.Transforms.HasComponent(world.PlayerID) Then
 
                             Dim playerPos = world.Transforms.GetComponent(world.PlayerID).pos
                             Dim spawnPos = GetRandomSpawnPos(playerPos)
                             world.CreateEnemy(spawnPos)
 
-                            enemiesSpawnedInThisRound += 1
+                            wd.EnemiesSpawned += 1
                             spawnTimer = SPAWN_DELAY
                         Else
                             Return
@@ -70,26 +68,27 @@ Public Class WaveSystem
                         End If
 
                     Else
-                        currentState = WaveState.Playing
+                        wd.State = WaveState.Playing
                     End If
                 End If
 
             Case WaveState.Playing
                 If world.Enemies.All.Count = 0 Then
-                    StartNextRound()
+                    StartNextRound(world)
                 End If
 
         End Select
 
     End Sub
 
-    Private Sub StartNextRound()
-        roundNumber += 1
+    Private Sub StartNextRound(world As World)
+        Dim wd = world.WaveData.All?.First().Key
+        world.WaveData.GetComponent(wd).RoundNumber += 1
 
-        Dim calculatedEnemies = 5 + (roundNumber - 1)
+        Dim calculatedEnemies = 5 + (world.WaveData.GetComponent(wd).RoundNumber - 1)
         targetEnemies = Math.Min(calculatedEnemies, 25)
 
-        currentState = WaveState.FadingIn
+        world.WaveData.GetComponent(wd).State = WaveState.FadingIn
     End Sub
 
     Private Function GetRandomSpawnPos(playerPos As PointF) As PointF
@@ -116,11 +115,14 @@ Public Class WaveSystem
     End Function
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw
+        Dim wd = world.WaveData.All?.First().Key
+        Dim currentState = world.WaveData.GetComponent(wd).State
+
         If currentState = WaveState.FadingIn OrElse
            currentState = WaveState.Holding OrElse
            currentState = WaveState.FadingOut Then
 
-            Dim text As String = "RONDA " & roundNumber
+            Dim text As String = "RONDA " & world.WaveData.GetComponent(wd).RoundNumber
 
             Using font As New Font("Arial", 40, FontStyle.Bold)
                 Dim textSize = g.MeasureString(text, font)
