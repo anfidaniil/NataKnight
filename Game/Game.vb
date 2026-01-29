@@ -39,6 +39,23 @@ Public Class Game
         'AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.guitar_0001))
         'AudioEngine.PlayLoop("music", 1.0F)
     End Sub
+
+    Public Function GetCardScale() As Single
+        Dim baseHeight As Single = 720.0F
+        Dim currentHeight As Single = Form1.Height
+        Return Math.Max(0.5F, currentHeight / baseHeight)
+    End Function
+
+    Public Function GetUIElementScale() As Single
+        Dim currentHeight As Single = Form1.Height
+
+        If currentHeight > 1200 Then
+            Return currentHeight / 720.0F
+        Else
+            Return currentHeight / 900.0F
+        End If
+    End Function
+
     Public Sub New(input As InputState)
         InitializeSounds()
         Me.input = input
@@ -64,16 +81,14 @@ Public Class Game
 
         Me.tutorialScreen = New TutorialScreen(Me)
         menuScreen = New MenuScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() GoBackFromTutorialToGame(),
             Sub() Restart(),
             Sub() GoToStartingScreen()
         )
         startingMenuScreen = New StartScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() Quit(),
             Sub()
@@ -89,11 +104,16 @@ Public Class Game
         Dim cam = world.Cameras.GetComponent(id)
         cam.viewHeight = Form1.Height
         cam.viewWidth = Form1.Width
-        Me.tutorialScreen = New TutorialScreen(Me)
+
+        Dim savedPage As Integer = 0
+        If Me.tutorialScreen IsNot Nothing Then
+            savedPage = Me.tutorialScreen.currentIndex
+        End If
+
+        Me.tutorialScreen = New TutorialScreen(Me, savedPage)
 
         menuScreen = New MenuScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() GoBackFromTutorialToGame(),
             Sub() Restart(),
@@ -101,8 +121,7 @@ Public Class Game
         )
 
         startingMenuScreen = New StartScreen(
-            Form1.Width,
-            Form1.Height,
+            Me,
             Sub() StartNewGame(),
             Sub() Quit(),
             Sub()

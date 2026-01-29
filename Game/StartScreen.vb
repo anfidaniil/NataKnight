@@ -2,30 +2,45 @@
 
 Public Class StartScreen
     Public buttons As New List(Of UIButton)
-    Dim buttonWidth = 200
-    Dim buttonHeight = 50
+    Private game As Game
 
-    Public Sub New(screenWidth As Integer, screenHeight As Integer, restart As Action, quit As Action, tutorial As Action)
-        Dim centerX = (screenWidth - buttonWidth) \ 2
-        Dim centerY = screenHeight \ 2
+    Public Sub New(gameInstance As Game, restart As Action, quit As Action, tutorial As Action)
+        Me.game = gameInstance
 
-        Dim gap As Integer = 10
+        Dim screenW As Integer = Form1.Width
+        Dim screenH As Integer = Form1.Height
+
+        Dim scale As Single = game.GetUIElementScale()
+
+        Dim buttonWidth As Integer = CInt(200 * scale)
+        Dim buttonHeight As Integer = CInt(50 * scale)
+        Dim gap As Integer = CInt(10 * scale)
+        Dim verticalGap As Integer = CInt(20 * scale)
+
+        Dim totalGroupWidth As Integer = (buttonWidth * 2) + gap
+        Dim totalGroupHeight As Integer = (buttonHeight * 2) + verticalGap
+
+        Dim offsetY As Integer = CInt(50 * scale)
+
+        Dim startX As Integer = (screenW - totalGroupWidth) \ 2
+        Dim startY As Integer = (screenH - totalGroupHeight) \ 2 + offsetY
 
 
         buttons.Add(New UIButtonStartNewGame With {
-            .bounds = New Rectangle(centerX - (buttonWidth \ 2) - gap, centerY, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(startX, startY, buttonWidth, buttonHeight),
             .text = "",
             .onClick = restart
         })
 
         buttons.Add(New UIButtonTutorial With {
-            .bounds = New Rectangle(centerX + (buttonWidth \ 2) + gap, centerY, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(startX + buttonWidth + gap, startY, buttonWidth, buttonHeight),
             .text = "",
             .onClick = tutorial
         })
 
+        Dim centerX As Integer = screenW \ 2
         buttons.Add(New UIButtonQuit With {
-            .bounds = New Rectangle(centerX, centerY + buttonHeight + 20, buttonWidth, buttonHeight),
+            .bounds = New Rectangle(centerX - (buttonWidth \ 2), startY + buttonHeight + verticalGap, buttonWidth, buttonHeight),
             .text = "",
             .onClick = quit
         })
@@ -40,6 +55,9 @@ Public Class StartScreen
 
     Public Sub Draw(g As Graphics, world As World)
         g.Clear(Color.Black)
+
+        g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
 
         Dim imgRatio As Single = world.game.bgc.Width / world.game.bgc.Height
         Dim formRatio As Single = Form1.Width / Form1.Height

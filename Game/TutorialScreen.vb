@@ -6,7 +6,7 @@ Public Class TutorialScreen
 
     Private cards As New List(Of UICard)
     Public buttons As New List(Of UIButton)
-    Private currentIndex As Integer = 0
+    Public currentIndex As Integer = 0
 
     Private btnLeft As UIButtonArrowLeft
     Private btnRight As UIButtonArrowRight
@@ -15,8 +15,9 @@ Public Class TutorialScreen
 
     Private imgTutorialBG As Bitmap
 
-    Public Sub New(gameInstance As Game)
+    Public Sub New(gameInstance As Game, Optional startPage As Integer = 0)
         Me.game = gameInstance
+        Me.currentIndex = startPage
         BackAction = Sub() game.gameState = GameState.Starting
         LoadResources()
         InitializeButtons()
@@ -33,17 +34,21 @@ Public Class TutorialScreen
     Private Sub InitializeButtons()
         Dim screenW As Integer = Form1.Width
         Dim screenH As Integer = Form1.Height
-        Dim btnW As Integer = 200
-        Dim btnH As Integer = 50
-        Dim spacing As Integer = 40
-        Dim btnY As Integer = screenH - 150
+        Dim scale As Single = game.GetUIElementScale()
+
+        Dim btnW As Integer = CInt(200 * scale)
+        Dim btnH As Integer = CInt(50 * scale)
+        Dim spacing As Integer = CInt(40 * scale)
+        Dim arrowSize As Integer = CInt(50 * scale)
+        Dim sideMargin As Integer = CInt(50 * scale)
+        Dim bottomMargin As Integer = CInt(150 * scale)
+        Dim btnY As Integer = screenH - bottomMargin
         Dim totalWidth As Integer = (btnW * 2) + spacing
         Dim startX As Integer = (screenW - totalWidth) \ 2
-
         Dim arrowY As Integer = CInt(screenH * 0.4)
 
         btnLeft = New UIButtonArrowLeft With {
-            .bounds = New Rectangle(50, arrowY, 50, 50),
+            .bounds = New Rectangle(sideMargin, arrowY, arrowSize, arrowSize),
             .onClick = Sub()
                            AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                            If currentIndex > 0 Then currentIndex -= 1
@@ -52,7 +57,7 @@ Public Class TutorialScreen
         buttons.Add(btnLeft)
 
         btnRight = New UIButtonArrowRight With {
-            .bounds = New Rectangle(screenW - 100, arrowY, 50, 50),
+            .bounds = New Rectangle(screenW - sideMargin - arrowSize, arrowY, arrowSize, arrowSize),
             .onClick = Sub()
                            AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                            If currentIndex < cards.Count - 1 Then currentIndex += 1
@@ -82,6 +87,9 @@ Public Class TutorialScreen
     Public Sub Draw(g As Graphics, world As World)
         g.Clear(Color.Black)
 
+        g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
+
         If imgTutorialBG IsNot Nothing Then
             Dim imgRatio As Single = imgTutorialBG.Width / imgTutorialBG.Height
             Dim formRatio As Single = Form1.Width / Form1.Height
@@ -103,7 +111,8 @@ Public Class TutorialScreen
         If cards.Count = 0 Then Return
 
         Dim currentCard = cards(currentIndex)
-        Dim scale As Single = 1.0F
+        Dim scale As Single = game.GetCardScale()
+
         Dim screenWidth = Form1.Width
         Dim screenHeight = Form1.Height
 

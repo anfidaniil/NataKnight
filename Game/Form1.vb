@@ -39,6 +39,7 @@
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Nata Knight"
+
         Me.KeyPreview = True
 
         input = New InputState(False, False, False, False, False, New Point(0, 0))
