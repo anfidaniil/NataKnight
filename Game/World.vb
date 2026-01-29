@@ -37,8 +37,6 @@ Public Class World
     Public CollisionLookupTable As New Dictionary(Of Point, List(Of Integer))
     Public EntityDestructionEvents As New HashSet(Of Integer)
 
-
-
     Private Systems As New List(Of ISystem)
 
     Public PlayerID As Integer = -1
@@ -228,7 +226,7 @@ Public Class World
         AudioTriggers.AddComponent(enemy, New AudioTriggerComponent With {.playRequested = False})
     End Sub
 
-    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer)
+    Public Sub CreateBullet(startPos As PointF, targetPos As PointF, entityType As Integer, v0 As PointF)
         Dim velocity = New PointF(
             targetPos.X - startPos.X,
             targetPos.Y - startPos.Y
@@ -236,8 +234,8 @@ Public Class World
 
         Dim norm = Utils.NormalisePointFVector(velocity)
         norm = New PointF(
-            norm.X * 400.0F,
-            norm.Y * 400.0F
+            norm.X * 600.0F + v0.X,
+            norm.Y * 600.0F + v0.Y
         )
 
         Dim bullet = EntityManager.CreateEntity()

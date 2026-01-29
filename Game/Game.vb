@@ -227,7 +227,7 @@ Public Class Game
             Next
         Next
 
-        If (Not loadedWithSuccess) Then
+        If (Not loadedWithSuccess Or world.Immovables.All.Count = 0) Then
             Dim T As Integer = World.TILE_SIZE
             Dim H As Integer = T \ 2
             CreateMapCollisionBox(
