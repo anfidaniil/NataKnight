@@ -49,6 +49,7 @@ Public Class Game
             world.CreatePlayerShootingSound()
             world.CreateCamera()
             CreateLevel()
+            world.Update(0.01F)
             loadedWithSuccess = True
 
         Catch ex As Exception
@@ -167,15 +168,6 @@ Public Class Game
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         tutorialScreen.BackAction = Sub() gameState = GameState.Menu
         gameState = GameState.Tutorial
-    End Sub
-
-    Public Sub CreateEnemiesAroundPoint(posX As Integer, posY As Integer, numEnemies As Integer)
-        For i = 1 To numEnemies
-            world.CreateEnemy(New PointF(
-                posX + Random.Shared.Next(-10, 10),
-                posY + Random.Shared.Next(-10, 10)
-            ))
-        Next
     End Sub
 
     Public Sub Update(dt As Single)

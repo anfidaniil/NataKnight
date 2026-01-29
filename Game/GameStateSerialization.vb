@@ -104,7 +104,7 @@ Public Module GameStateSerialization
 
             If game.world.Buffs.HasComponent(entityId) Then
                 Dim b = game.world.Buffs.GetComponent(entityId)
-                e.Components("Buffs") = JsonSerializer.SerializeToElement(New BuffSave With {
+                e.Components("Buffs") = JsonSerializer.SerializeToElement(New HealthBuff With {
                     .isConsumed = b.isConsumed,
                     .type = b.type
                 })
@@ -234,10 +234,11 @@ Public Module GameStateSerialization
             End If
 
             If c.ContainsKey("Buffs") Then
-                Dim b = JsonSerializer.Deserialize(Of BuffSave)(c("Buffs").GetRawText())
-                world.Buffs.AddComponent(id, New BuffComponent With {
+                Dim b = JsonSerializer.Deserialize(Of HealthBuff)(c("Buffs").GetRawText())
+                world.Buffs.AddComponent(id, New HealthBuff With {
                 .isConsumed = b.isConsumed,
-                .type = b.type
+                .type = b.type,
+                .healthRegen = b.healthRegen
             })
             End If
 

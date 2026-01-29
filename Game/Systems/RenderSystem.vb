@@ -52,12 +52,12 @@ Public Class RenderSystem
             Next
         Next
 
-        For Each kv In world.Transforms.All
+        For Each kv In world.Renders.All.ToArray
             Dim id = kv.Key
-            If world.Renders.HasComponent(id) Then
+            If world.Transforms.HasComponent(id) Then
 
-                Dim t = kv.Value
-                Dim r = world.Renders.GetComponent(id)
+                Dim t = world.Transforms.GetComponent(id)
+                Dim r = kv.Value
 
                 Dim screenX = CInt(t.pos.X - r.size / 2)
                 Dim screenY = CInt(t.pos.Y - r.size / 2)

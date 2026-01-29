@@ -13,6 +13,9 @@
     Private isSpaceDown As Boolean = False
     Private isMouseDown As Boolean = False
 
+    Private gameThread As Threading.Thread
+    Private running As Boolean = False
+
     Private Sub UpdateFireState()
         If input IsNot Nothing Then
             input.fire = (isSpaceDown OrElse isMouseDown)
@@ -32,40 +35,58 @@
     End Sub
 
     Public Sub OnClose() Handles Me.Closed
+        running = False
+        gameThread?.Join()
         GameStateSerialization.SaveToFile(game, "data.json")
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Nata Knight"
         Me.KeyPreview = True
+
         input = New InputState(False, False, False, False, False, New Point(0, 0))
+
         Me.SetStyle(
-            ControlStyles.AllPaintingInWmPaint Or
-            ControlStyles.UserPaint Or
-            ControlStyles.OptimizedDoubleBuffer,
-            True
-        )
-        Me.UpdateStyles()
+        ControlStyles.AllPaintingInWmPaint Or
+        ControlStyles.UserPaint Or
+        ControlStyles.OptimizedDoubleBuffer,
+        True
+    )
+
         game = New Game(input)
         lastTime = DateTime.Now
-        Timer1.Interval = 10
-        Timer1.Start()
+
+        running = True
+        gameThread = New Threading.Thread(AddressOf GameLoop)
+        gameThread.IsBackground = True
+        gameThread.Start()
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        Dim now = DateTime.Now
-        Dim frameTime = (now - lastTime).TotalSeconds
-        lastTime = now
+    Private Sub GameLoop()
+        Dim stopwatch As New Diagnostics.Stopwatch()
+        stopwatch.Start()
 
-        ' Prevent spiral of death
-        If frameTime > 0.1 Then frameTime = 0.1
+        Dim lastTimeSeconds As Double = stopwatch.Elapsed.TotalSeconds
 
-        accumulator += frameTime
+        While running
+            Dim nowSeconds = stopwatch.Elapsed.TotalSeconds
+            Dim frameTime = nowSeconds - lastTimeSeconds
+            lastTimeSeconds = nowSeconds
 
-        While accumulator >= FIXED_DT
-            game.Update(CSng(FIXED_DT))
-            accumulator -= FIXED_DT
+            If frameTime > 0.1 Then frameTime = 0.1
+
+            accumulator += frameTime
+
+            While accumulator >= FIXED_DT
+                game.Update(CSng(FIXED_DT))
+                accumulator -= FIXED_DT
+            End While
+
+            ' Request repaint on UI thread
+            Me.BeginInvoke(Sub() Me.Invalidate())
+
+            ' Yield CPU (important!)
+            Threading.Thread.Sleep(1)
         End While
-        Me.Invalidate()
     End Sub
 
     Private Sub Form1_KeyDown(sender As Object, e As KeyEventArgs) Handles Me.KeyDown
