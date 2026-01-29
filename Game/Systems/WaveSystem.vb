@@ -21,35 +21,31 @@ Public Class WaveSystem
     Private Const SPAWN_DELAY As Single = 0.5F
 
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
-        Dim wd = world.WaveData.All.First().Key
+        Dim wdID = world.WaveData.All.First().Key
+        Dim wd = world.WaveData.GetComponent(wdID)
 
-        Dim currentState As WaveState = world.WaveData.GetComponent(wd).State
-
-        Dim roundNumber As Integer = world.WaveData.GetComponent(wd).RoundNumber
-        Dim enemiesSpawnedInThisRound As Integer = world.WaveData.GetComponent(wd).EnemiesSpawned
-
-        Select Case currentState
+        Select Case wd.State
 
             Case WaveState.FadingIn
                 opacity += fadeSpeed * dt
                 If opacity >= 1.0F Then
                     opacity = 1.0F
-                    currentState = WaveState.Holding
+                    wd.State = WaveState.Holding
                     holdTimer = holdDuration
                 End If
 
             Case WaveState.Holding
                 holdTimer -= dt
                 If holdTimer <= 0 Then
-                    currentState = WaveState.FadingOut
+                    wd.State = WaveState.FadingOut
                 End If
 
             Case WaveState.FadingOut
                 opacity -= fadeSpeed * dt
                 If opacity <= 0.0F Then
                     opacity = 0.0F
-                    currentState = WaveState.Spawning
-                    enemiesSpawnedInThisRound = 0
+                    wd.State = WaveState.Spawning
+                    wd.EnemiesSpawned = 0
                     spawnTimer = 0
                 End If
 
@@ -57,14 +53,14 @@ Public Class WaveSystem
                 spawnTimer -= dt
 
                 If spawnTimer <= 0 Then
-                    If enemiesSpawnedInThisRound < targetEnemies Then
+                    If wd.EnemiesSpawned < targetEnemies Then
                         If world.Players.HasComponent(world.PlayerID) AndAlso world.Transforms.HasComponent(world.PlayerID) Then
 
                             Dim playerPos = world.Transforms.GetComponent(world.PlayerID).pos
                             Dim spawnPos = GetRandomSpawnPos(playerPos)
                             world.CreateEnemy(spawnPos)
 
-                            enemiesSpawnedInThisRound += 1
+                            wd.EnemiesSpawned += 1
                             spawnTimer = SPAWN_DELAY
                         Else
                             Return
@@ -72,7 +68,7 @@ Public Class WaveSystem
                         End If
 
                     Else
-                        currentState = WaveState.Playing
+                        wd.State = WaveState.Playing
                     End If
                 End If
 
