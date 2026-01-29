@@ -13,7 +13,6 @@
     Private isSpaceDown As Boolean = False
     Private isMouseDown As Boolean = False
 
-    Private gameThread As Threading.Thread
     Private running As Boolean = False
 
     Private Sub UpdateFireState()
@@ -36,7 +35,6 @@
 
     Public Sub OnClose() Handles Me.Closed
         running = False
-        gameThread?.Join()
         GameStateSerialization.SaveToFile(game, "data.json")
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -53,27 +51,26 @@
     )
 
         game = New Game(input)
+
         lastTime = DateTime.Now
 
         running = True
-        gameThread = New Threading.Thread(AddressOf GameLoop)
-        gameThread.IsBackground = True
-        gameThread.Start()
+        BeginInvoke(New Action(AddressOf GameLoop))
     End Sub
 
     Private Sub GameLoop()
-        Dim stopwatch As New Diagnostics.Stopwatch()
-        stopwatch.Start()
-
-        Dim lastTimeSeconds As Double = stopwatch.Elapsed.TotalSeconds
+        Dim lastTime = DateTime.Now
+        Dim accumulator As Double = 0.0
+        Const FIXED_DT As Double = 0.01 ' 100 Hz
 
         While running
-            Dim nowSeconds = stopwatch.Elapsed.TotalSeconds
-            Dim frameTime = nowSeconds - lastTimeSeconds
-            lastTimeSeconds = nowSeconds
+            Application.DoEvents()
+
+            Dim now = DateTime.Now
+            Dim frameTime = (now - lastTime).TotalSeconds
+            lastTime = now
 
             If frameTime > 0.1 Then frameTime = 0.1
-
             accumulator += frameTime
 
             While accumulator >= FIXED_DT
@@ -81,10 +78,9 @@
                 accumulator -= FIXED_DT
             End While
 
-            ' Request repaint on UI thread
-            Me.BeginInvoke(Sub() Me.Invalidate())
+            Invalidate()
+            Update()
 
-            ' Yield CPU (important!)
             Threading.Thread.Sleep(1)
         End While
     End Sub

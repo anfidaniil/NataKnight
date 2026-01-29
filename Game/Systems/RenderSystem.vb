@@ -52,7 +52,8 @@ Public Class RenderSystem
             Next
         Next
 
-        For Each kv In world.Renders.All.ToArray
+        Dim renderables = world.Renders.All
+        For Each kv In renderables
             Dim id = kv.Key
             If world.Transforms.HasComponent(id) Then
 
