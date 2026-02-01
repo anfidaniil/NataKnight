@@ -60,10 +60,6 @@
     End Sub
 
     Private Sub GameLoop()
-        Dim lastTime = DateTime.Now
-        Dim accumulator As Double = 0.0
-        Const FIXED_DT As Double = 0.01 ' 100 Hz
-
         While running
             Application.DoEvents()
 
