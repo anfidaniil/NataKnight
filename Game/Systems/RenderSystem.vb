@@ -64,9 +64,9 @@ Public Class RenderSystem
                 Dim screenY = CInt(t.pos.Y - r.size / 2)
 
                 Dim src As New Rectangle(r.spriteX * 32, r.spriteY * 32, 32, 32)
-                Dim dst As New Rectangle(screenX, screenY, 64, 64)
+                Dim dst As New Rectangle(screenX, screenY, r.size, r.size)
 
-                If Not world.Immovables.HasComponent(id) Then
+                If Not world.Immovables.HasComponent(id) Or world.Buffs.HasComponent(id) Then
                     g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
                 End If
             End If

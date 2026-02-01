@@ -8,7 +8,7 @@
     Private fps As Integer = 0
     Private lastCheck As Date
     Private accumulator As Double = 0
-    Private Const FIXED_DT As Double = 0.01 ' 100 Hz
+    Private Const FIXED_DT As Double = 0.02 ' 100 Hz
 
     Private isSpaceDown As Boolean = False
     Private isMouseDown As Boolean = False
@@ -60,10 +60,6 @@
     End Sub
 
     Private Sub GameLoop()
-        Dim lastTime = DateTime.Now
-        Dim accumulator As Double = 0.0
-        Const FIXED_DT As Double = 0.01 ' 100 Hz
-
         While running
             Application.DoEvents()
 

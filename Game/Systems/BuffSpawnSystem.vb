@@ -32,7 +32,7 @@
         })
 
         world.Renders.AddComponent(entity, New RenderComponent With {
-            .size = 32,
+            .size = 64,
             .spriteX = 0,
             .spriteY = 3
         })
@@ -45,6 +45,7 @@
         world.Buffs.AddComponent(entity, New HealthBuff With {
             .healthRegen = 25
         })
+        world.Immovables.AddComponent(entity, New ImmovableComponent)
     End Sub
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw
