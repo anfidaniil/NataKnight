@@ -198,7 +198,7 @@ Public Class World
         Renders.AddComponent(enemy, New RenderComponent With {
             .size = 64,
             .spriteX = 3,
-            .spriteY = 1
+            .spriteY = 3
         })
         Colliders.AddComponent(enemy, New RectangleCollider With {
             .sA = 64,
@@ -250,7 +250,7 @@ Public Class World
         Renders.AddComponent(bullet, New RenderComponent With {
             .size = 64,
             .spriteX = 2 + 3 * entityType,
-            .spriteY = 2
+            .spriteY = 5
         })
         Colliders.AddComponent(bullet, New RectangleCollider With {
             .sA = 16,
