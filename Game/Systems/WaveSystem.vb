@@ -5,8 +5,8 @@ Imports System.Drawing.Drawing2D
 Public Class WaveSystem
     Implements ISystem
 
-    Private Const SAFE_MIN As Integer = 1300
-    Private Const SAFE_MAX As Integer = 2800
+    Private Const SAFE_MIN As Integer = 300
+    Private Const SAFE_MAX As Integer = 1600
 
     Private targetEnemies As Integer = 5
 

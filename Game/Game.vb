@@ -224,8 +224,8 @@ Public Class Game
     End Sub
 
     Private Function GetTileFromPosition(x As Integer, y As Integer) As Bitmap
-        Dim sprite As New Rectangle(128 * x, 128 * y, 128, 128)
-        Dim tileSize As Integer = 256
+        Dim sprite As New Rectangle(World.TILE_SIZE * x, World.TILE_SIZE * y, World.TILE_SIZE, World.TILE_SIZE)
+        Dim tileSize As Integer = World.TILE_SIZE
 
         Dim tile As New Bitmap(tileSize, tileSize, Imaging.PixelFormat.Format32bppArgb)
 
@@ -240,64 +240,64 @@ Public Class Game
 
     End Function
     Public Sub CreateLevel()
-        For i = 0 To 15
-            For j = 0 To 15
+        For i = 0 To 3
+            For j = 0 To 3
                 level(New Point(i, j)) = GetTileFromPosition(i, j)
             Next
         Next
 
         If (Not loadedWithSuccess Or world.Immovables.All.Count = 0) Then
-            Dim T As Integer = World.TILE_SIZE
-            Dim H As Integer = T \ 2
+            Dim T As Integer = World.TILE_SIZE / 4
+            Dim H As Integer = T \ 8
             CreateMapCollisionBox(
             New PointF(
                 T + H,                 ' center X = left wall column
                 T * 4 + (T * 9) / 2    ' center Y
             ),
-            New Point(T, T * 9)
+            New Point(T, T * 13)
             )
             CreateMapCollisionBox(
                 New PointF(
                     T * 15 - H,
                     T * 4 + (T * 9) / 2
                 ),
-                New Point(T, T * 9)
+                New Point(T, T * 13)
             )
             CreateMapCollisionBox(
                 New PointF(
                     T * 4 + (T * 9) / 2,
                     T + H
                 ),
-                New Point(T * 9, T)
+                New Point(T * 13, T)
             )
             CreateMapCollisionBox(
                 New PointF(
                     T * 4 + (T * 9) / 2,
                     T * 15 - H
                 ),
-                New Point(T * 9, T)
+                New Point(T * 13, T)
             )
 
-            'Left-Upper Corner
-            CreateMapCollisionBox(New Point(576, 960), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(704, 832), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(832, 704), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(960, 576), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            'Right-Upper Corner
-            CreateMapCollisionBox(New Point(3520, 960), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(3392, 832), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(3264, 704), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(3136, 576), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            'Left-Down Corner
-            CreateMapCollisionBox(New Point(960, 3520), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(832, 3392), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(704, 3264), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(576, 3136), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            'Right-Down Corner
-            CreateMapCollisionBox(New Point(3136, 3520), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(3264, 3392), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(3392, 3264), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
-            CreateMapCollisionBox(New Point(3520, 3136), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            ''Left-Upper Corner
+            'CreateMapCollisionBox(New Point(576, 960), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(704, 832), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(832, 704), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(960, 576), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            ''Right-Upper Corner
+            'CreateMapCollisionBox(New Point(3520, 960), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(3392, 832), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(3264, 704), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(3136, 576), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            ''Left-Down Corner
+            'CreateMapCollisionBox(New Point(960, 3520), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(832, 3392), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(704, 3264), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(576, 3136), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            ''Right-Down Corner
+            'CreateMapCollisionBox(New Point(3136, 3520), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(3264, 3392), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(3392, 3264), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
+            'CreateMapCollisionBox(New Point(3520, 3136), New Point(World.TILE_SIZE / 2, World.TILE_SIZE / 2))
         End If
     End Sub
 End Class

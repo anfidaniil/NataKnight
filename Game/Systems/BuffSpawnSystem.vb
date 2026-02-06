@@ -6,8 +6,8 @@
     Private maxBuffs As Integer = 5
     Private rng As New Random()
 
-    Private Const SAFE_MIN As Integer = 1300
-    Private Const SAFE_MAX As Integer = 2800
+    Private Const SAFE_MIN As Integer = 300
+    Private Const SAFE_MAX As Integer = 1600
 
     Public Sub Update(world As World, dt As Single) Implements ISystem.Update
         spawnTimer -= dt
@@ -34,7 +34,7 @@
         world.Renders.AddComponent(entity, New RenderComponent With {
             .size = 64,
             .spriteX = 0,
-            .spriteY = 3
+            .spriteY = 6
         })
 
         world.Colliders.AddComponent(entity, New RectangleCollider With {

@@ -49,7 +49,7 @@ Public Class World
     Public Const IFRAMES_DURATION = 0.1F
     Public DEFAULT_POSITION = New PointF(0, 0)
 
-    Public Const TILE_SIZE As Integer = 256
+    Public Const TILE_SIZE As Integer = 512
     Public Const GAME_NAME = "NATA KNIGHT"
 
     Public Const MIN_AUDIO_DIST = 50.0F
@@ -128,7 +128,7 @@ Public Class World
             PlayerID = player
 
             Transforms.AddComponent(player, New TransformComponent With {
-                .pos = New PointF(2020, 2020)
+                .pos = New PointF(1010, 1010)
             })
 
             Movements.AddComponent(player, New MovementComponent With {
