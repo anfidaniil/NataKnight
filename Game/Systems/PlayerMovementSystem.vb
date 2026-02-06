@@ -85,7 +85,7 @@
 
         If r.cooldown <= 0 Then
             r.cooldown = 0.1F
-            If r.spriteY + 1 > 2 Then
+            If r.spriteY + 1 > 1 Then
                 r.spriteY = 0
             Else
                 r.spriteY += 1
