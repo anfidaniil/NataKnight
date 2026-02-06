@@ -12,9 +12,11 @@ Public Class Game
     Public gameState As GameState
 
     Public level As New Dictionary(Of Point, Bitmap)
+    Public levelRenderLast As New Dictionary(Of Point, Bitmap)
     Public bgc As New Bitmap(My.Resources.GameResources.MAINmenu)
 
     Public level1 As New Bitmap(My.Resources.GameResources.level1_map)
+    Public bottomGate As New Bitmap(My.Resources.GameResources.zabornijnyy)
     Public wallPositions As New List(Of Point)
     Public charSprites As New Bitmap(My.Resources.GameResources.character_sprites)
     Public score As Integer = 0
@@ -223,7 +225,7 @@ Public Class Game
         End Select
     End Sub
 
-    Private Function GetTileFromPosition(x As Integer, y As Integer) As Bitmap
+    Private Function GetTileFromPosition(x As Integer, y As Integer, map As Bitmap) As Bitmap
         Dim sprite As New Rectangle(World.TILE_SIZE * x, World.TILE_SIZE * y, World.TILE_SIZE, World.TILE_SIZE)
         Dim tileSize As Integer = World.TILE_SIZE
 
@@ -233,7 +235,7 @@ Public Class Game
             g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
             g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
 
-            g.DrawImage(level1, New Rectangle(0, 0, tileSize, tileSize), sprite, GraphicsUnit.Pixel)
+            g.DrawImage(map, New Rectangle(0, 0, tileSize, tileSize), sprite, GraphicsUnit.Pixel)
         End Using
 
         Return tile
@@ -242,7 +244,8 @@ Public Class Game
     Public Sub CreateLevel()
         For i = 0 To 3
             For j = 0 To 3
-                level(New Point(i, j)) = GetTileFromPosition(i, j)
+                level(New Point(i, j)) = GetTileFromPosition(i, j, level1)
+                levelRenderLast(New Point(i, j)) = GetTileFromPosition(i, j, bottomGate)
             Next
         Next
 

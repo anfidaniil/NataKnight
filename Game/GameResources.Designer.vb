@@ -438,16 +438,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property tiles() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("tiles", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
         Friend Shared ReadOnly Property tiroCART() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("tiroCART", resourceCulture)
@@ -461,16 +451,6 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ui_click_1() As System.IO.UnmanagedMemoryStream
             Get
                 Return ResourceManager.GetStream("ui-click-1", resourceCulture)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
-        Friend Shared ReadOnly Property worldTile128() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("worldTile128", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

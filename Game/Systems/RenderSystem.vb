@@ -72,6 +72,17 @@ Public Class RenderSystem
             End If
         Next
 
+
+        For ty = firstTileY To lastTileY
+            For tx = firstTileX To lastTileX
+                Dim tileKey As New Point(tx, ty)
+                If world.game.levelRenderLast.ContainsKey(tileKey) Then
+                    Dim bmp = world.game.levelRenderLast(tileKey)
+                    g.DrawImageUnscaled(bmp, tx * World.TILE_SIZE, ty * World.TILE_SIZE)
+                End If
+            Next
+        Next
+
         g.ResetClip()
         g.ResetTransform()
 

@@ -8,7 +8,7 @@
     Private fps As Integer = 0
     Private lastCheck As Date
     Private accumulator As Double = 0
-    Private Const FIXED_DT As Double = 0.02 ' 100 Hz
+    Private Const FIXED_DT As Double = 0.02 ' 5Hz
 
     Private isSpaceDown As Boolean = False
     Private isMouseDown As Boolean = False
