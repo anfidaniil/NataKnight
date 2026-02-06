@@ -142,7 +142,8 @@ Public Class World
             Renders.AddComponent(player, New RenderComponent With {
                 .size = 64,
                 .spriteX = 3,
-                .spriteY = 0
+                .spriteY = 0,
+                .cooldown = 0.1F
             })
             Colliders.AddComponent(player, New RectangleCollider With {
                 .sA = 64,
