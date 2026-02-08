@@ -31,7 +31,7 @@ Public Module GameStateSerialization
 
     Public Function SaveWorld(game As Game) As GameSaveData
         Dim save As New GameSaveData With {
-        .GameState = game.gameState,
+        .GameState = game.previousState,
         .Score = game.score,
         .PlayerID = game.world.PlayerID,
         .Entities = New List(Of EntitySaveData)

@@ -182,6 +182,7 @@ Public Class Game
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         previousState = gameState
         gameState = GameState.ExitConfirmation
+        GameStateSerialization.SaveToFile(Me, "data.json")
     End Sub
 
     Public Sub CancelExit()

@@ -48,7 +48,6 @@ Public Class Form1
 
     Public Sub OnClose() Handles Me.Closed
         running = False
-        GameStateSerialization.SaveToFile(game, "data.json")
     End Sub
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Nata Knight"
