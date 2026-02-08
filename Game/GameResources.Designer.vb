@@ -133,6 +133,13 @@ Namespace My.Resources
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
+  
+        Friend Shared ReadOnly Property btnTUTORIAL() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("btnTUTORIAL", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
         
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
@@ -140,6 +147,13 @@ Namespace My.Resources
         Friend Shared ReadOnly Property btnTUTORIAL() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("btnTUTORIAL", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+              End Get
+        End Property
+      
+        Friend Shared ReadOnly Property btnVOLTAR() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("btnVOLTAR", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -458,16 +472,6 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property tiles() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("tiles", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  Looks up a localized resource of type System.Drawing.Bitmap.
-        '''</summary>
         Friend Shared ReadOnly Property tiroCART() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("tiroCART", resourceCulture)
@@ -487,9 +491,9 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
-        Friend Shared ReadOnly Property worldTile128() As System.Drawing.Bitmap
+        Friend Shared ReadOnly Property zabornijnyy() As System.Drawing.Bitmap
             Get
-                Dim obj As Object = ResourceManager.GetObject("worldTile128", resourceCulture)
+                Dim obj As Object = ResourceManager.GetObject("zabornijnyy", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

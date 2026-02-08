@@ -60,16 +60,30 @@ Public Class RenderSystem
                 Dim t = world.Transforms.GetComponent(id)
                 Dim r = kv.Value
 
-                Dim screenX = CInt(t.pos.X - r.size / 2)
-                Dim screenY = CInt(t.pos.Y - r.size / 2)
+                If Not world.Immovables.HasComponent(id) Or world.Buffs.HasComponent(id) Then
+                    Dim screenX = CInt(t.pos.X - r.size / 2)
+                    Dim screenY = CInt(t.pos.Y - r.size / 2)
 
-                Dim src As New Rectangle(r.spriteX * 32, r.spriteY * 32, 32, 32)
-                Dim dst As New Rectangle(screenX, screenY, 64, 64)
-
-                If Not world.Immovables.HasComponent(id) Then
+                    Dim src As New Rectangle(r.spriteX * 32, r.spriteY * 32, 32, 32)
+                    Dim dst As New Rectangle(screenX, screenY, r.size, r.size)
                     g.DrawImage(world.game.charSprites, dst, src, GraphicsUnit.Pixel)
+                Else
+                    'Dim screenX = CInt(t.pos.X - r.spriteX / 2)
+                    'Dim screenY = CInt(t.pos.Y - r.spriteY / 2)
+                    'g.DrawRectangle(New Pen(Color.Red, 4), screenX, screenY, r.spriteX, r.spriteY)
                 End If
             End If
+        Next
+
+
+        For ty = firstTileY To lastTileY
+            For tx = firstTileX To lastTileX
+                Dim tileKey As New Point(tx, ty)
+                If world.game.levelRenderLast.ContainsKey(tileKey) Then
+                    Dim bmp = world.game.levelRenderLast(tileKey)
+                    g.DrawImageUnscaled(bmp, tx * World.TILE_SIZE, ty * World.TILE_SIZE)
+                End If
+            Next
         Next
 
         g.ResetClip()

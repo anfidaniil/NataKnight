@@ -128,7 +128,7 @@ Public Class World
             PlayerID = player
 
             Transforms.AddComponent(player, New TransformComponent With {
-                .pos = New PointF(2020, 2020)
+                .pos = New PointF(1010, 1010)
             })
 
             Movements.AddComponent(player, New MovementComponent With {
@@ -142,7 +142,8 @@ Public Class World
             Renders.AddComponent(player, New RenderComponent With {
                 .size = 64,
                 .spriteX = 3,
-                .spriteY = 0
+                .spriteY = 0,
+                .cooldown = 0.1F
             })
             Colliders.AddComponent(player, New RectangleCollider With {
                 .sA = 64,
@@ -198,7 +199,7 @@ Public Class World
         Renders.AddComponent(enemy, New RenderComponent With {
             .size = 64,
             .spriteX = 3,
-            .spriteY = 1
+            .spriteY = 3
         })
         Colliders.AddComponent(enemy, New RectangleCollider With {
             .sA = 64,
@@ -250,7 +251,7 @@ Public Class World
         Renders.AddComponent(bullet, New RenderComponent With {
             .size = 64,
             .spriteX = 2 + 3 * entityType,
-            .spriteY = 2
+            .spriteY = 5
         })
         Colliders.AddComponent(bullet, New RectangleCollider With {
             .sA = 16,
@@ -277,9 +278,11 @@ Public Class World
             .sA = size.X,
             .sB = size.Y
         })
-        'Renders.AddComponent(wall, New RenderComponent With {
-        '   .size = size.X
-        '})
+        Renders.AddComponent(wall, New RenderComponent With {
+           .size = size.X,
+           .spriteX = size.X,
+           .spriteY = size.Y
+        })
         Immovables.AddComponent(wall, New ImmovableComponent)
 
     End Sub

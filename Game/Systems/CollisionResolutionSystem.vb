@@ -48,20 +48,37 @@
             Dim overlapY = (s1b + s2b) / 2 - Math.Abs(dy)
 
             If world.Immovables.HasComponent(ev.entityA) Then
+
                 If overlapX < overlapY Then
                     Dim push = overlapX
                     tB.pos = New PointF(posB.X - Math.Sign(dx) * push, posB.Y)
+                    If (world.Movements.HasComponent(ev.entityB)) Then
+                        Dim mA = world.Movements.GetComponent(ev.entityB)
+                        mA.velocity.X = 0
+                    End If
                 ElseIf overlapY > 0 Then
                     Dim push = overlapY
                     tB.pos = New PointF(posB.X, posB.Y - Math.Sign(dy) * push)
+                    If (world.Movements.HasComponent(ev.entityB)) Then
+                        Dim mA = world.Movements.GetComponent(ev.entityB)
+                        mA.velocity.Y = 0
+                    End If
                 End If
             ElseIf world.Immovables.HasComponent(ev.entityB) Then
                 If overlapX < overlapY Then
                     Dim push = overlapX
                     tA.pos = New PointF(posA.X + Math.Sign(dx) * push, posA.Y)
+                    If (world.Movements.HasComponent(ev.entityA)) Then
+                        Dim mA = world.Movements.GetComponent(ev.entityA)
+                        mA.velocity.X = 0
+                    End If
                 ElseIf overlapY > 0 Then
                     Dim push = overlapY
                     tA.pos = New PointF(posA.X, posA.Y + Math.Sign(dy) * push)
+                    If (world.Movements.HasComponent(ev.entityA)) Then
+                        Dim mA = world.Movements.GetComponent(ev.entityA)
+                        mA.velocity.Y = 0
+                    End If
                 End If
             Else
                 If overlapX < overlapY Then
