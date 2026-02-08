@@ -176,9 +176,10 @@ Public Class Game
     End Sub
 
     Public Sub Quit()
+        If gameState = GameState.ExitConfirmation Then Exit Sub
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         previousState = gameState
-        gameState = gameState.ExitConfirmation
+        gameState = GameState.ExitConfirmation
     End Sub
 
     Public Sub CancelExit()
@@ -190,6 +191,7 @@ Public Class Game
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         Me.gameState = GameState.Starting
         GameStateSerialization.SaveToFile(Me, "data.json")
+        Form1.allowClose = True
         Form1.Close()
     End Sub
 
@@ -236,8 +238,24 @@ Public Class Game
             Case GameState.Tutorial
                 tutorialScreen.Draw(g, world)
             Case GameState.ExitConfirmation
-                exitScreen.Draw(g, world)
+                Select Case previousState
+                    Case GameState.Tutorial
+                        tutorialScreen.Draw(g, world)
 
+                    Case GameState.Playing
+                        world.Draw(g)
+                    Case GameState.Menu
+                        world.Draw(g)
+                        menuScreen.Draw(g, world)
+                    Case GameState.Starting
+                        startingMenuScreen.Draw(g, world)
+                    Case GameState.GameOver
+                        world.Draw(g)
+                        gameOverUI.Draw(g, world)
+                    Case Else
+                        world.Draw(g)
+                End Select
+                exitScreen.Draw(g, world)
         End Select
     End Sub
 
