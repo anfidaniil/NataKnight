@@ -86,6 +86,16 @@ Public Class Game
         End Try
         CreateScreens()
     End Sub
+
+    Public Sub ContinueGame()
+        If loadedWithSuccess Then
+            AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+            gameState = GameState.Playing
+        Else
+            AudioEngine.PlayOneShot("button_ui_2", 1.0F)
+        End If
+    End Sub
+
     Public Sub CreateScreens(Optional savedPage As Integer = 0)
         Me.tutorialScreen = New TutorialScreen(Me, savedPage)
 
@@ -100,12 +110,13 @@ Public Class Game
         startingMenuScreen = New StartScreen(
             Me,
             Sub() StartNewGame(),
-            Sub() Quit(),
+            Sub() ContinueGame(),
             Sub()
                 AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                 tutorialScreen.BackAction = Sub() gameState = GameState.Starting
                 gameState = GameState.Tutorial
-            End Sub
+            End Sub,
+            Sub() Quit()
         )
 
         gameOverUI = New GameOverScreen(
@@ -169,6 +180,7 @@ Public Class Game
         Me.world.WaveData.AddComponent(waveDataId, New WaveComponent())
         CreateTestWorld()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+        loadedWithSuccess = False
         Debug.WriteLine("Starting New Game")
     End Sub
 
@@ -200,9 +212,16 @@ Public Class Game
 
     Public Sub GoToStartingScreen()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
-        gameState = GameState.Starting
+        If gameState = GameState.Menu Or gameState = GameState.Playing Then
+            gameState = GameState.Starting
+            loadedWithSuccess = True
+            GameStateSerialization.SaveToFile(Me, "data.json")
+        Else
+            gameState = GameState.Starting
+        End If
+        CreateScreens()
     End Sub
-                                        
+
     Public Sub GoBackFromTutorialToGame()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         tutorialScreen.BackAction = Sub() gameState = GameState.Menu

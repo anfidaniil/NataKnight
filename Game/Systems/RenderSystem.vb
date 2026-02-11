@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Reflection.Emit
+Imports System.Drawing.Drawing2D
 
 Public Class RenderSystem
     Implements ISystem
@@ -93,7 +94,7 @@ Public Class RenderSystem
         Using font As New Font("Arial", 16, FontStyle.Bold)
             Dim text = "Score: " & score
             Dim size = g.MeasureString(text, font)
-            g.DrawString(text, font, Brushes.Gray, (Form1.Width - size.Width) - 40, 20)
+            g.DrawString(text, font, Brushes.White, (Form1.Width - size.Width) - 40, 20)
         End Using
 
         If world.HealthBars.HasComponent(world.PlayerID) Then
