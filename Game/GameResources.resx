@@ -250,6 +250,9 @@
   <data name="zabornijnyy" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Assets\zabornijny2y.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ancientTUALETNAYAbumaga" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\ancientTUALETNAYAbumaga.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="btnACERCA-export" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Assets\btnACERCA-export.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
