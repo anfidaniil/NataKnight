@@ -152,6 +152,8 @@ Public Class Form1
                 game.startingMenuScreen.HandleMouseClick(e.Location)
             Case GameState.Tutorial
                 game.tutorialScreen.HandleClick(e.Location)
+            Case GameState.About
+                game.aboutScreen.HandleClick(e.Location)
             Case GameState.ExitConfirmation
                 If game.exitScreen IsNot Nothing Then
                     game.exitScreen.HandleMouseClick(e.Location)

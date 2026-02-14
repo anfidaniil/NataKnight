@@ -9,6 +9,7 @@ Public Class Game
     Public menuScreen As MenuScreen
     Public startingMenuScreen As StartScreen
     Public tutorialScreen As TutorialScreen
+    Public aboutScreen As AcercaScreen
 
     Public exitScreen As ExitScreen
     Public previousState As GameState
@@ -96,8 +97,16 @@ Public Class Game
         End If
     End Sub
 
+    Public Sub GoToAboutScreen()
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+        aboutScreen.BackAction = Sub() gameState = GameState.Starting
+        gameState = GameState.About
+    End Sub
+
     Public Sub CreateScreens(Optional savedPage As Integer = 0)
         Me.tutorialScreen = New TutorialScreen(Me, savedPage)
+
+        Me.aboutScreen = New AcercaScreen(Me)
 
         menuScreen = New MenuScreen(
             Me,
@@ -116,6 +125,7 @@ Public Class Game
                 tutorialScreen.BackAction = Sub() gameState = GameState.Starting
                 gameState = GameState.Tutorial
             End Sub,
+            Sub() GoToAboutScreen(),
             Sub() Quit()
         )
 
@@ -243,6 +253,8 @@ Public Class Game
 
             Case GameState.Tutorial
 
+            Case GameState.About
+
             Case GameState.Playing
                 world.Update(dt)
                 world.CollisionEvents.Clear()
@@ -268,11 +280,14 @@ Public Class Game
                 gameOverUI.Draw(g, world)
             Case GameState.Tutorial
                 tutorialScreen.Draw(g, world)
+            Case GameState.About
+                aboutScreen.Draw(g, world)
             Case GameState.ExitConfirmation
                 Select Case previousState
                     Case GameState.Tutorial
                         tutorialScreen.Draw(g, world)
-
+                    Case GameState.About
+                        aboutScreen.Draw(g, world)
                     Case GameState.Playing
                         world.Draw(g)
                     Case GameState.Menu

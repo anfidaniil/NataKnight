@@ -5,7 +5,7 @@ Public Class StartScreen
     Public buttons As New List(Of UIButton)
     Private game As Game
 
-    Public Sub New(gameInstance As Game, restart As Action, continueAction As Action, tutorial As Action, quit As Action)
+    Public Sub New(gameInstance As Game, restart As Action, continueAction As Action, tutorial As Action, aboutAction As Action, quit As Action)
         Me.game = gameInstance
 
         Dim screenW As Integer = Form1.Width
@@ -63,9 +63,7 @@ Public Class StartScreen
         buttons.Add(New UIButtonAcerca With {
             .bounds = New Rectangle(row2StartX, row2Y, buttonWidth, buttonHeight),
             .text = "",
-            .onClick = Sub()
-                           AudioEngine.PlayOneShot("button_ui_2", 1.0F)
-                       End Sub
+            .onClick = aboutAction
         })
 
         buttons.Add(New UIButtonQuit With {
