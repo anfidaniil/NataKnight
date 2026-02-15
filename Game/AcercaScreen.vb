@@ -103,21 +103,21 @@ Public Class AcercaScreen
                        End Sub
         })
 
-        Dim vertArrowSize As Integer = CInt(40 * scale)
+        Dim vertArrowSize As Integer = CInt(30 * scale)
         Dim paddingRight As Integer = CInt(130 * scale)
-        Dim paddingBottom As Integer = CInt(120 * scale)
+        Dim paddingBottom As Integer = CInt(70 * scale)
         Dim vertArrowX As Integer = scrollRightEdge - paddingRight - vertArrowSize
         Dim vertArrowY As Integer = scrollBottomEdge - paddingBottom - vertArrowSize
 
         Dim btnUp As New UIButtonArrowUp()
-        btnUp.bounds = New Rectangle(vertArrowX, vertArrowY - arrowSize, arrowSize, arrowSize)
+        btnUp.bounds = New Rectangle(vertArrowX, vertArrowY - vertArrowSize, vertArrowSize, vertArrowSize)
         btnUp.onClick = Sub()
                             AudioEngine.PlayOneShot("button_ui_2", 1.0F) ' Placeholder
                         End Sub
         buttons.Add(btnUp)
 
         Dim btnDown As New UIButtonArrowDown()
-        btnDown.bounds = New Rectangle(vertArrowX, vertArrowY, arrowSize, arrowSize)
+        btnDown.bounds = New Rectangle(vertArrowX, vertArrowY, vertArrowSize, vertArrowSize)
         btnDown.onClick = Sub()
                               AudioEngine.PlayOneShot("button_ui_2", 1.0F) ' Placeholder
                           End Sub
@@ -184,10 +184,10 @@ Public Class AcercaScreen
     End Sub
 
     Private Sub DrawCreditsText(g As Graphics, rect As Rectangle)
-        Dim fontSizeTitle As Single = 22.0F
-        Dim fontSizeName As Single = 20.0F
-        Dim fontSizeRole As Single = 14.0F
-        Dim fontSizeSmall As Single = 11.0F
+        Dim fontSizeTitle As Single = 26.0F
+        Dim fontSizeName As Single = 24.0F
+        Dim fontSizeRole As Single = 18.0F
+        Dim fontSizeSmall As Single = 10.0F
 
         Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
               nameFont As New Font("Courier New", fontSizeName, FontStyle.Bold),
@@ -201,7 +201,7 @@ Public Class AcercaScreen
             Dim spacing As Single = 30.0F
 
             DrawCenteredText(g, "EQUIPA DE COZINHEIROS", titleFont, brush, centerX, currentY)
-            currentY += spacing * 3.0
+            currentY += spacing * 5.4
 
             Dim member = members(currentMemberIndex)
 
@@ -212,10 +212,7 @@ Public Class AcercaScreen
             currentY += spacing * 1.2
 
             DrawCenteredText(g, member.Note, italicFont, brush, centerX, currentY)
-            currentY += spacing * 4.0
 
-            Dim quote As String = "Nota: Nenhum pixel foi queimado" & vbCrLf & "durante a produção deste jogo."
-            DrawCenteredText(g, quote, italicFont, brush, centerX, currentY)
 
         End Using
     End Sub
