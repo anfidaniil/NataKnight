@@ -1,4 +1,5 @@
 ﻿Imports System.Drawing
+Imports System.Drawing.Imaging
 Imports Windows.Win32.UI.Input
 
 Public Class AcercaScreen
@@ -20,6 +21,13 @@ Public Class AcercaScreen
 
     Private members As New List(Of MemberData)
     Private currentMemberIndex As Integer = 0
+
+    Private currentPage As PageState = PageState.Team
+
+    Private btnUp As UIButtonArrowUp
+    Private btnDown As UIButtonArrowDown
+    Private btnLeft As UIButtonArrowLeft
+    Private btnRight As UIButtonArrowRight
 
     Public Sub New(gameInstance As Game)
         Me.game = gameInstance
@@ -88,18 +96,22 @@ Public Class AcercaScreen
         buttons.Add(New UIButtonArrowLeft With {
             .bounds = New Rectangle((screenW \ 2) - hMargin - arrowSize, centerYtext - (arrowSize \ 2), arrowSize, arrowSize),
             .onClick = Sub()
-                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
-                           currentMemberIndex -= 1
-                           If currentMemberIndex < 0 Then currentMemberIndex = members.Count - 1
+                           If currentPage = PageState.Team Then
+                               AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                               currentMemberIndex -= 1
+                               If currentMemberIndex < 0 Then currentMemberIndex = members.Count - 1
+                           End If
                        End Sub
         })
 
         buttons.Add(New UIButtonArrowRight With {
             .bounds = New Rectangle((screenW \ 2) + hMargin, centerYtext - (arrowSize \ 2), arrowSize, arrowSize),
             .onClick = Sub()
-                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
-                           currentMemberIndex += 1
-                           If currentMemberIndex >= members.Count Then currentMemberIndex = 0
+                           If currentPage = PageState.Team Then
+                               AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                               currentMemberIndex += 1
+                               If currentMemberIndex >= members.Count Then currentMemberIndex = 0
+                           End If
                        End Sub
         })
 
@@ -112,14 +124,24 @@ Public Class AcercaScreen
         Dim btnUp As New UIButtonArrowUp()
         btnUp.bounds = New Rectangle(vertArrowX, vertArrowY - vertArrowSize, vertArrowSize, vertArrowSize)
         btnUp.onClick = Sub()
-                            AudioEngine.PlayOneShot("button_ui_2", 1.0F) ' Placeholder
+                            AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                            If currentPage = PageState.Team Then
+                                currentPage = PageState.Credits
+                            Else
+                                currentPage = PageState.Team
+                            End If
                         End Sub
         buttons.Add(btnUp)
 
         Dim btnDown As New UIButtonArrowDown()
         btnDown.bounds = New Rectangle(vertArrowX, vertArrowY, vertArrowSize, vertArrowSize)
         btnDown.onClick = Sub()
-                              AudioEngine.PlayOneShot("button_ui_2", 1.0F) ' Placeholder
+                              AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                              If currentPage = PageState.Team Then
+                                  currentPage = PageState.Credits
+                              Else
+                                  currentPage = PageState.Team
+                              End If
                           End Sub
         buttons.Add(btnDown)
     End Sub
@@ -172,18 +194,31 @@ Public Class AcercaScreen
         g.DrawImage(currentCard.sprite, currRect)
 
 
-        DrawCreditsText(g, currRect)
+        If currentPage = PageState.Team Then
+            DrawTeamText(g, currRect)
+        Else
+            DrawCreditsPage(g, currRect)
+        End If
+
         For Each btn In buttons
-            If (btn.sprite IsNot Nothing) Then
-                g.DrawImage(btn.sprite, btn.bounds)
-            Else
-                g.FillRectangle(Brushes.DarkGray, btn.bounds)
-                g.DrawRectangle(Pens.White, btn.bounds)
+            Dim isVisible As Boolean = True
+
+            If btn Is btnLeft Or btn Is btnRight Then
+                If currentPage = PageState.Credits Then isVisible = False
+            End If
+
+            If isVisible Then
+                If (btn.sprite IsNot Nothing) Then
+                    g.DrawImage(btn.sprite, btn.bounds)
+                Else
+                    g.FillRectangle(Brushes.DarkGray, btn.bounds)
+                    g.DrawRectangle(Pens.White, btn.bounds)
+                End If
             End If
         Next
     End Sub
 
-    Private Sub DrawCreditsText(g As Graphics, rect As Rectangle)
+    Private Sub DrawTeamText(g As Graphics, rect As Rectangle)
         Dim fontSizeTitle As Single = 26.0F
         Dim fontSizeName As Single = 24.0F
         Dim fontSizeRole As Single = 18.0F
@@ -217,6 +252,37 @@ Public Class AcercaScreen
         End Using
     End Sub
 
+    Private Sub DrawCreditsPage(g As Graphics, rect As Rectangle)
+        Dim fontSizeTitle As Single = 26.0F
+        Dim fontSizeHeader As Single = 18.0F
+        Dim fontSizeBody As Single = 14.0F
+
+        Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
+              headerFont As New Font("Courier New", fontSizeHeader, FontStyle.Bold),
+              bodyFont As New Font("Courier New", fontSizeBody, FontStyle.Regular)
+
+            Dim brush As Brush = Brushes.Black
+            Dim centerX As Single = rect.X + (rect.Width / 2)
+            Dim currentY As Single = rect.Y + (rect.Height * 0.15F)
+            Dim spacing As Single = 30.0F
+
+            DrawCenteredText(g, "CRÉDITOS", titleFont, brush, centerX, currentY)
+            currentY += spacing * 3.0
+
+            DrawCenteredText(g, "Tecnologia:", headerFont, brush, centerX, currentY)
+            currentY += spacing
+            DrawCenteredText(g, "VB.NET & SharpDX", bodyFont, brush, centerX, currentY)
+            currentY += spacing * 2.0
+
+            DrawCenteredText(g, "Agradecimentos:", headerFont, brush, centerX, currentY)
+            currentY += spacing
+            DrawCenteredText(g, "Professor & Colegas", bodyFont, brush, centerX, currentY)
+
+            currentY += spacing * 4.0
+            DrawCenteredText(g, "Obrigado por jogares!", headerFont, brush, centerX, currentY)
+        End Using
+    End Sub
+
     Private Sub DrawCenteredText(g As Graphics, text As String, font As Font, brush As Brush, centerX As Single, y As Single)
         Dim size = g.MeasureString(text, font)
         g.DrawString(text, font, brush, centerX - (size.Width / 2), y)
@@ -224,6 +290,8 @@ Public Class AcercaScreen
 
     Public Sub HandleClick(mousePos As Point)
         For Each btn In buttons
+            If (btn Is btnLeft Or btn Is btnRight) AndAlso currentPage = PageState.Credits Then Continue For
+
             If btn.bounds.Contains(mousePos) Then
                 btn.onClick?.Invoke()
             End If
