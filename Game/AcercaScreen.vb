@@ -224,11 +224,13 @@ Public Class AcercaScreen
     End Sub
 
     Private Sub DrawTeamText(g As Graphics, rect As Rectangle)
-        Dim fontSizeTitle As Single = 26.0F
-        Dim fontSizeName As Single = 24.0F
-        Dim fontSizeRole As Single = 18.0F
-        Dim fontSizeSmall As Single = 10.0F
-        Dim fontSizeLink As Single = 15.0F
+        Dim uiScale As Single = game.GetUIElementScale()
+
+        Dim fontSizeTitle As Single = 26.0F * uiScale
+        Dim fontSizeName As Single = 24.0F * uiScale
+        Dim fontSizeRole As Single = 18.0F * uiScale
+        Dim fontSizeSmall As Single = 10.0F * uiScale
+        Dim fontSizeLink As Single = 15.0F * uiScale
 
         Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
               nameFont As New Font("Courier New", fontSizeName, FontStyle.Bold),
@@ -240,7 +242,7 @@ Public Class AcercaScreen
             Dim centerX As Single = rect.X + (rect.Width / 2)
 
             Dim currentY As Single = rect.Y + (rect.Height * 0.15F)
-            Dim spacing As Single = 30.0F
+            Dim spacing As Single = 30.0F * uiScale
 
             DrawCenteredText(g, "EQUIPA DE COZINHEIROS", titleFont, brush, centerX, currentY)
             currentY += spacing * 5.4
@@ -269,9 +271,11 @@ Public Class AcercaScreen
     End Sub
 
     Private Sub DrawCreditsPage(g As Graphics, rect As Rectangle)
-        Dim fontSizeTitle As Single = 26.0F
-        Dim fontSizeHeader As Single = 18.0F
-        Dim fontSizeBody As Single = 14.0F
+        Dim uiScale As Single = game.GetUIElementScale()
+
+        Dim fontSizeTitle As Single = 26.0F * uiScale
+        Dim fontSizeHeader As Single = 18.0F * uiScale
+        Dim fontSizeBody As Single = 14.0F * uiScale
 
         Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
               headerFont As New Font("Courier New", fontSizeHeader, FontStyle.Bold),
@@ -280,7 +284,7 @@ Public Class AcercaScreen
             Dim brush As Brush = Brushes.Black
             Dim centerX As Single = rect.X + (rect.Width / 2)
             Dim currentY As Single = rect.Y + (rect.Height * 0.15F)
-            Dim spacing As Single = 30.0F
+            Dim spacing As Single = 30.0F * uiScale
 
             DrawCenteredText(g, "CRÉDITOS", titleFont, brush, centerX, currentY)
             currentY += spacing * 3.0
