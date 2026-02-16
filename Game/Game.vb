@@ -145,10 +145,12 @@ Public Class Game
     End Sub
 
     Public Sub ChangeCameraView()
-        Dim id = world.Cameras.All.First.Key
-        Dim cam = world.Cameras.GetComponent(id)
-        cam.viewHeight = Form1.Height
-        cam.viewWidth = Form1.Width
+        If world IsNot Nothing AndAlso world.Cameras.All.Count > 0 Then
+            Dim id = world.Cameras.All.First.Key
+            Dim cam = world.Cameras.GetComponent(id)
+            cam.viewHeight = Form1.Height
+            cam.viewWidth = Form1.Width
+        End If
 
         Dim savedPage As Integer = 0
         If Me.tutorialScreen IsNot Nothing Then
