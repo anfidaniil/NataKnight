@@ -42,6 +42,14 @@ Public Class AcercaScreen
         InitializeButtons()
     End Sub
 
+    Private Function GetLocalScale() As Single
+        If Form1.Width < 480 Then
+            Return 0.5F
+        Else
+            Return Form1.Height / 720.0F
+        End If
+    End Function
+
     Private Sub LoadResources()
         imgBackground = My.Resources.GameResources.MAINmenu
         cards.Add(New UICard(My.Resources.GameResources.ancientTUALETNAYAbumaga))
@@ -57,7 +65,7 @@ Public Class AcercaScreen
         buttons.Clear()
         Dim screenW As Integer = Form1.Width
         Dim screenH As Integer = Form1.Height
-        Dim scale As Single = game.GetUIElementScale()
+        Dim scale As Single = GetLocalScale()
 
         Dim btnW As Integer = CInt(200 * scale)
         Dim btnH As Integer = CInt(50 * scale)
@@ -224,7 +232,7 @@ Public Class AcercaScreen
     End Sub
 
     Private Sub DrawTeamText(g As Graphics, rect As Rectangle)
-        Dim uiScale As Single = game.GetUIElementScale()
+        Dim uiScale As Single = GetLocalScale()
 
         Dim fontSizeTitle As Single = 26.0F * uiScale
         Dim fontSizeName As Single = 24.0F * uiScale
@@ -271,7 +279,7 @@ Public Class AcercaScreen
     End Sub
 
     Private Sub DrawCreditsPage(g As Graphics, rect As Rectangle)
-        Dim uiScale As Single = game.GetUIElementScale()
+        Dim uiScale As Single = GetLocalScale()
 
         Dim fontSizeTitle As Single = 26.0F * uiScale
         Dim fontSizeHeader As Single = 18.0F * uiScale
