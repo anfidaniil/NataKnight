@@ -1,5 +1,6 @@
 ﻿Imports System.Drawing
 Imports System.Drawing.Imaging
+Imports System.Diagnostics
 Imports Windows.Win32.UI.Input
 
 Public Class AcercaScreen
@@ -28,6 +29,8 @@ Public Class AcercaScreen
     Private btnDown As UIButtonArrowDown
     Private btnLeft As UIButtonArrowLeft
     Private btnRight As UIButtonArrowRight
+
+    Private linkRect As Rectangle
 
     Public Sub New(gameInstance As Game)
         Me.game = gameInstance
@@ -225,11 +228,13 @@ Public Class AcercaScreen
         Dim fontSizeName As Single = 24.0F
         Dim fontSizeRole As Single = 18.0F
         Dim fontSizeSmall As Single = 10.0F
+        Dim fontSizeLink As Single = 15.0F
 
         Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
               nameFont As New Font("Courier New", fontSizeName, FontStyle.Bold),
               roleFont As New Font("Courier New", fontSizeRole, FontStyle.Regular),
-              italicFont As New Font("Courier New", fontSizeSmall, FontStyle.Italic)
+              italicFont As New Font("Courier New", fontSizeSmall, FontStyle.Italic),
+            linkFont As New Font("Courier New", fontSizeLink, FontStyle.Underline)
 
             Dim brush As Brush = Brushes.Black
             Dim centerX As Single = rect.X + (rect.Width / 2)
@@ -249,7 +254,16 @@ Public Class AcercaScreen
             currentY += spacing * 1.2
 
             DrawCenteredText(g, member.Note, italicFont, brush, centerX, currentY)
+            currentY += spacing * 3.0
 
+            Dim linkText As String = "Para mais detalhes clique AQUI"
+
+            Dim linkSize = g.MeasureString(linkText, linkFont)
+            Dim linkX As Single = centerX - (linkSize.Width / 2)
+
+            g.DrawString(linkText, linkFont, Brushes.Navy, linkX, currentY)
+
+            linkRect = New Rectangle(CInt(linkX), CInt(currentY), CInt(linkSize.Width), CInt(linkSize.Height))
 
         End Using
     End Sub
@@ -293,6 +307,18 @@ Public Class AcercaScreen
     End Sub
 
     Public Sub HandleClick(mousePos As Point)
+        If currentPage = PageState.Team AndAlso linkRect.Contains(mousePos) Then
+            Try
+                Dim psi As New ProcessStartInfo
+                psi.UseShellExecute = True
+                psi.FileName = "https://github.com/anfidaniil/NataKnight/releases"
+                Process.Start(psi)
+            Catch ex As Exception
+                Debug.WriteLine("Erro ao abrir link: " & ex.Message)
+            End Try
+            Return
+        End If
+
         For Each btn In buttons
             If (btn Is btnLeft Or btn Is btnRight) AndAlso currentPage = PageState.Credits Then Continue For
 
