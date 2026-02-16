@@ -89,11 +89,11 @@ Public Class AcercaScreen
         Dim scrollRightEdge As Integer = scrollX + cardW
         Dim scrollBottomEdge As Integer = scrollY + cardH
 
-        Dim arrowSize As Integer = CInt(50 * scale)
+        Dim arrowSize As Integer = CInt(37.5 * scale)
         Dim centerYtext As Integer = CInt(screenH * 0.45)
         Dim hMargin As Integer = CInt(250 * scale)
 
-        buttons.Add(New UIButtonArrowLeft With {
+        btnLeft = New UIButtonArrowLeft With {
             .bounds = New Rectangle((screenW \ 2) - hMargin - arrowSize, centerYtext - (arrowSize \ 2), arrowSize, arrowSize),
             .onClick = Sub()
                            If currentPage = PageState.Team Then
@@ -102,9 +102,10 @@ Public Class AcercaScreen
                                If currentMemberIndex < 0 Then currentMemberIndex = members.Count - 1
                            End If
                        End Sub
-        })
+        }
+        buttons.Add(btnLeft)
 
-        buttons.Add(New UIButtonArrowRight With {
+        btnRight = New UIButtonArrowRight With {
             .bounds = New Rectangle((screenW \ 2) + hMargin, centerYtext - (arrowSize \ 2), arrowSize, arrowSize),
             .onClick = Sub()
                            If currentPage = PageState.Team Then
@@ -113,7 +114,8 @@ Public Class AcercaScreen
                                If currentMemberIndex >= members.Count Then currentMemberIndex = 0
                            End If
                        End Sub
-        })
+        }
+        buttons.Add(btnRight)
 
         Dim vertArrowSize As Integer = CInt(30 * scale)
         Dim paddingRight As Integer = CInt(130 * scale)
@@ -121,7 +123,7 @@ Public Class AcercaScreen
         Dim vertArrowX As Integer = scrollRightEdge - paddingRight - vertArrowSize
         Dim vertArrowY As Integer = scrollBottomEdge - paddingBottom - vertArrowSize
 
-        Dim btnUp As New UIButtonArrowUp()
+        btnUp = New UIButtonArrowUp()
         btnUp.bounds = New Rectangle(vertArrowX, vertArrowY - vertArrowSize, vertArrowSize, vertArrowSize)
         btnUp.onClick = Sub()
                             AudioEngine.PlayOneShot("button_ui_1", 1.0F)
@@ -133,7 +135,7 @@ Public Class AcercaScreen
                         End Sub
         buttons.Add(btnUp)
 
-        Dim btnDown As New UIButtonArrowDown()
+        btnDown = New UIButtonArrowDown()
         btnDown.bounds = New Rectangle(vertArrowX, vertArrowY, vertArrowSize, vertArrowSize)
         btnDown.onClick = Sub()
                               AudioEngine.PlayOneShot("button_ui_1", 1.0F)
@@ -269,17 +271,19 @@ Public Class AcercaScreen
             DrawCenteredText(g, "CRÉDITOS", titleFont, brush, centerX, currentY)
             currentY += spacing * 3.0
 
-            DrawCenteredText(g, "Tecnologia:", headerFont, brush, centerX, currentY)
+            DrawCenteredText(g, "Áudio:", headerFont, brush, centerX, currentY)
             currentY += spacing
-            DrawCenteredText(g, "VB.NET & SharpDX", bodyFont, brush, centerX, currentY)
+            DrawCenteredText(g, "Música produzida por Iurii Meleshkin 11CT2", bodyFont, brush, centerX, currentY)
+            currentY += spacing
+            DrawCenteredText(g, "Efeitos Sonoros fornecidos por Pixabay", bodyFont, brush, centerX, currentY)
             currentY += spacing * 2.0
 
-            DrawCenteredText(g, "Agradecimentos:", headerFont, brush, centerX, currentY)
+            DrawCenteredText(g, "Imagens:", headerFont, brush, centerX, currentY)
             currentY += spacing
-            DrawCenteredText(g, "Professor & Colegas", bodyFont, brush, centerX, currentY)
+            DrawCenteredText(g, "Imagens produzidas por Shamin", bodyFont, brush, centerX, currentY)
 
             currentY += spacing * 4.0
-            DrawCenteredText(g, "Obrigado por jogares!", headerFont, brush, centerX, currentY)
+            DrawCenteredText(g, "Obrigado por jogar!", headerFont, brush, centerX, currentY)
         End Using
     End Sub
 
