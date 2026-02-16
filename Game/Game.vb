@@ -9,6 +9,7 @@ Public Class Game
     Public menuScreen As MenuScreen
     Public startingMenuScreen As StartScreen
     Public tutorialScreen As TutorialScreen
+    Public aboutScreen As AcercaScreen
 
     Public exitScreen As ExitScreen
     Public previousState As GameState
@@ -86,8 +87,26 @@ Public Class Game
         End Try
         CreateScreens()
     End Sub
+
+    Public Sub ContinueGame()
+        If loadedWithSuccess Then
+            AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+            gameState = GameState.Playing
+        Else
+            AudioEngine.PlayOneShot("button_ui_2", 1.0F)
+        End If
+    End Sub
+
+    Public Sub GoToAboutScreen()
+        AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+        aboutScreen.BackAction = Sub() gameState = GameState.Starting
+        gameState = GameState.About
+    End Sub
+
     Public Sub CreateScreens(Optional savedPage As Integer = 0)
         Me.tutorialScreen = New TutorialScreen(Me, savedPage)
+
+        Me.aboutScreen = New AcercaScreen(Me)
 
         menuScreen = New MenuScreen(
             Me,
@@ -100,12 +119,14 @@ Public Class Game
         startingMenuScreen = New StartScreen(
             Me,
             Sub() StartNewGame(),
-            Sub() Quit(),
+            Sub() ContinueGame(),
             Sub()
                 AudioEngine.PlayOneShot("button_ui_1", 1.0F)
                 tutorialScreen.BackAction = Sub() gameState = GameState.Starting
                 gameState = GameState.Tutorial
-            End Sub
+            End Sub,
+            Sub() GoToAboutScreen(),
+            Sub() Quit()
         )
 
         gameOverUI = New GameOverScreen(
@@ -124,10 +145,12 @@ Public Class Game
     End Sub
 
     Public Sub ChangeCameraView()
-        Dim id = world.Cameras.All.First.Key
-        Dim cam = world.Cameras.GetComponent(id)
-        cam.viewHeight = Form1.Height
-        cam.viewWidth = Form1.Width
+        If world IsNot Nothing AndAlso world.Cameras.All.Count > 0 Then
+            Dim id = world.Cameras.All.First.Key
+            Dim cam = world.Cameras.GetComponent(id)
+            cam.viewHeight = Form1.Height
+            cam.viewWidth = Form1.Width
+        End If
 
         Dim savedPage As Integer = 0
         If Me.tutorialScreen IsNot Nothing Then
@@ -169,6 +192,7 @@ Public Class Game
         Me.world.WaveData.AddComponent(waveDataId, New WaveComponent())
         CreateTestWorld()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+        loadedWithSuccess = False
         Debug.WriteLine("Starting New Game")
     End Sub
 
@@ -200,9 +224,25 @@ Public Class Game
 
     Public Sub GoToStartingScreen()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+        If gameState = GameState.Menu Or gameState = GameState.Playing Then
+            GameStateSerialization.SaveToFile(Me, "data.json")
+            loadedWithSuccess = True
+
+        Else
+            loadedWithSuccess = False
+
+            Try
+                If System.IO.File.Exists("data.json") Then
+                    System.IO.File.Delete("data.json")
+                End If
+            Catch ex As Exception
+                Debug.WriteLine("Erro ao apagar save: " & ex.Message)
+            End Try
+        End If
         gameState = GameState.Starting
+            CreateScreens()
     End Sub
-                                        
+
     Public Sub GoBackFromTutorialToGame()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         tutorialScreen.BackAction = Sub() gameState = GameState.Menu
@@ -214,6 +254,8 @@ Public Class Game
             Case GameState.Menu
 
             Case GameState.Tutorial
+
+            Case GameState.About
 
             Case GameState.Playing
                 world.Update(dt)
@@ -240,11 +282,14 @@ Public Class Game
                 gameOverUI.Draw(g, world)
             Case GameState.Tutorial
                 tutorialScreen.Draw(g, world)
+            Case GameState.About
+                aboutScreen.Draw(g, world)
             Case GameState.ExitConfirmation
                 Select Case previousState
                     Case GameState.Tutorial
                         tutorialScreen.Draw(g, world)
-
+                    Case GameState.About
+                        aboutScreen.Draw(g, world)
                     Case GameState.Playing
                         world.Draw(g)
                     Case GameState.Menu

@@ -5,4 +5,5 @@
     GameOver
     Tutorial
     ExitConfirmation
+    About
 End Enum

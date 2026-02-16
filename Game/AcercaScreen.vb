@@ -1,0 +1,342 @@
+﻿Imports System.Drawing
+Imports System.Drawing.Imaging
+Imports System.Diagnostics
+Imports Windows.Win32.UI.Input
+
+Public Class AcercaScreen
+    Private game As Game
+
+    Private cards As New List(Of UICard)
+    Public buttons As New List(Of UIButton)
+
+
+    Public BackAction As Action
+
+    Private imgBackground As Bitmap
+
+    Private Structure MemberData
+        Public Name As String
+        Public Role As String
+        Public Note As String
+    End Structure
+
+    Private members As New List(Of MemberData)
+    Private currentMemberIndex As Integer = 0
+
+    Private currentPage As PageState = PageState.Team
+
+    Private btnUp As UIButtonArrowUp
+    Private btnDown As UIButtonArrowDown
+    Private btnLeft As UIButtonArrowLeft
+    Private btnRight As UIButtonArrowRight
+
+    Private linkRect As Rectangle
+
+    Public Sub New(gameInstance As Game)
+        Me.game = gameInstance
+
+        BackAction = Sub() game.gameState = GameState.Starting
+
+        LoadResources()
+        InitializeTeamData()
+        InitializeButtons()
+    End Sub
+
+    Private Function GetLocalScale() As Single
+        If Form1.Width < 480 Then
+            Return 0.5F
+        Else
+            Return Form1.Height / 720.0F
+        End If
+    End Function
+
+    Private Sub LoadResources()
+        imgBackground = My.Resources.GameResources.MAINmenu
+        cards.Add(New UICard(My.Resources.GameResources.ancientTUALETNAYAbumaga))
+    End Sub
+
+    Private Sub InitializeTeamData()
+        members.Add(New MemberData With {.Name = "Daniil", .Role = "Low Level Code", .Note = "A Massa Folhada (Fez a base para o jogo não se desfazer)"})
+        members.Add(New MemberData With {.Name = "Francisco", .Role = "High Level Code", .Note = "O Creme (Deu sabor à lógica e à jogabilidade)"})
+        members.Add(New MemberData With {.Name = "Shamin", .Role = "Designer", .Note = "A Canela (A única razão disto ter bom aspeto)"})
+    End Sub
+
+    Private Sub InitializeButtons()
+        buttons.Clear()
+        Dim screenW As Integer = Form1.Width
+        Dim screenH As Integer = Form1.Height
+        Dim scale As Single = GetLocalScale()
+
+        Dim btnW As Integer = CInt(200 * scale)
+        Dim btnH As Integer = CInt(50 * scale)
+        Dim bottomMargin As Integer = CInt(120 * scale)
+
+        Dim btnY As Integer = screenH - bottomMargin
+
+        Dim startX As Integer = (screenW - btnW) \ 2
+
+        buttons.Add(New UIButtonGoBack With {
+            .bounds = New Rectangle(startX, btnY, btnW, btnH),
+            .text = "",
+            .onClick = Sub()
+                           AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                           BackAction?.Invoke()
+                       End Sub
+        })
+
+        Dim currentCard = cards(0)
+        Dim scrollScale As Single = game.GetCardScale() * 1.2F
+
+        If currentCard.sprite.Width * scrollScale > screenW * 0.8 Then
+            scrollScale = (screenW * 0.8) / currentCard.sprite.Width
+        End If
+
+        Dim cardW As Integer = CInt(currentCard.sprite.Width * scrollScale)
+        Dim cardH As Integer = CInt(currentCard.sprite.Height * scrollScale)
+
+        Dim scrollX As Integer = (screenW - cardW) \ 2
+        Dim scrollY As Integer = CInt(screenH * 0.05)
+
+        Dim scrollRightEdge As Integer = scrollX + cardW
+        Dim scrollBottomEdge As Integer = scrollY + cardH
+
+        Dim arrowSize As Integer = CInt(37.5 * scale)
+        Dim centerYtext As Integer = CInt(screenH * 0.45)
+        Dim hMargin As Integer = CInt(250 * scale)
+
+        btnLeft = New UIButtonArrowLeft With {
+            .bounds = New Rectangle((screenW \ 2) - hMargin - arrowSize, centerYtext - (arrowSize \ 2), arrowSize, arrowSize),
+            .onClick = Sub()
+                           If currentPage = PageState.Team Then
+                               AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                               currentMemberIndex -= 1
+                               If currentMemberIndex < 0 Then currentMemberIndex = members.Count - 1
+                           End If
+                       End Sub
+        }
+        buttons.Add(btnLeft)
+
+        btnRight = New UIButtonArrowRight With {
+            .bounds = New Rectangle((screenW \ 2) + hMargin, centerYtext - (arrowSize \ 2), arrowSize, arrowSize),
+            .onClick = Sub()
+                           If currentPage = PageState.Team Then
+                               AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                               currentMemberIndex += 1
+                               If currentMemberIndex >= members.Count Then currentMemberIndex = 0
+                           End If
+                       End Sub
+        }
+        buttons.Add(btnRight)
+
+        Dim vertArrowSize As Integer = CInt(30 * scale)
+        Dim paddingRight As Integer = CInt(130 * scale)
+        Dim paddingBottom As Integer = CInt(70 * scale)
+        Dim vertArrowX As Integer = scrollRightEdge - paddingRight - vertArrowSize
+        Dim vertArrowY As Integer = scrollBottomEdge - paddingBottom - vertArrowSize
+
+        btnUp = New UIButtonArrowUp()
+        btnUp.bounds = New Rectangle(vertArrowX, vertArrowY - vertArrowSize, vertArrowSize, vertArrowSize)
+        btnUp.onClick = Sub()
+                            AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                            If currentPage = PageState.Team Then
+                                currentPage = PageState.Credits
+                            Else
+                                currentPage = PageState.Team
+                            End If
+                        End Sub
+        buttons.Add(btnUp)
+
+        btnDown = New UIButtonArrowDown()
+        btnDown.bounds = New Rectangle(vertArrowX, vertArrowY, vertArrowSize, vertArrowSize)
+        btnDown.onClick = Sub()
+                              AudioEngine.PlayOneShot("button_ui_1", 1.0F)
+                              If currentPage = PageState.Team Then
+                                  currentPage = PageState.Credits
+                              Else
+                                  currentPage = PageState.Team
+                              End If
+                          End Sub
+        buttons.Add(btnDown)
+    End Sub
+
+
+    Public Sub Draw(g As Graphics, world As World)
+        g.Clear(Color.Black)
+
+        g.InterpolationMode = Drawing2D.InterpolationMode.NearestNeighbor
+        g.PixelOffsetMode = Drawing2D.PixelOffsetMode.Half
+
+        If imgBackground IsNot Nothing Then
+            Dim imgRatio As Single = imgBackground.Width / imgBackground.Height
+            Dim formRatio As Single = Form1.Width / Form1.Height
+            Dim drawW, drawH As Integer
+
+            If formRatio > imgRatio Then
+                drawH = Form1.Height
+                drawW = CInt(Form1.Height * imgRatio)
+            Else
+                drawW = Form1.Width
+                drawH = CInt(Form1.Width / imgRatio)
+            End If
+
+            Dim x As Integer = (Form1.Width - drawW) \ 2
+            Dim y As Integer = (Form1.Height - drawH) \ 2
+            g.DrawImage(imgBackground, x, y, drawW, drawH)
+        End If
+
+        If cards.Count = 0 Then Return
+
+        Dim currentCard = cards(0)
+
+        Dim scale As Single = game.GetCardScale() * 1.2F
+
+        Dim screenWidth = Form1.Width
+        Dim screenHeight = Form1.Height
+
+        If currentCard.sprite.Width * scale > screenWidth * 0.8 Then
+            scale = (screenWidth * 0.8) / currentCard.sprite.Width
+        End If
+
+        Dim cardW As Integer = CInt(currentCard.sprite.Width * scale)
+        Dim cardH As Integer = CInt(currentCard.sprite.Height * scale)
+        Dim centerX As Integer = (screenWidth - cardW) \ 2
+        Dim centerY As Integer = CInt(screenHeight * 0.05)
+
+        Dim currRect As New Rectangle(centerX, centerY, cardW, cardH)
+
+        g.DrawImage(currentCard.sprite, currRect)
+
+
+        If currentPage = PageState.Team Then
+            DrawTeamText(g, currRect)
+        Else
+            DrawCreditsPage(g, currRect)
+        End If
+
+        For Each btn In buttons
+            Dim isVisible As Boolean = True
+
+            If btn Is btnLeft Or btn Is btnRight Then
+                If currentPage = PageState.Credits Then isVisible = False
+            End If
+
+            If isVisible Then
+                If (btn.sprite IsNot Nothing) Then
+                    g.DrawImage(btn.sprite, btn.bounds)
+                Else
+                    g.FillRectangle(Brushes.DarkGray, btn.bounds)
+                    g.DrawRectangle(Pens.White, btn.bounds)
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Sub DrawTeamText(g As Graphics, rect As Rectangle)
+        Dim uiScale As Single = GetLocalScale()
+
+        Dim fontSizeTitle As Single = 26.0F * uiScale
+        Dim fontSizeName As Single = 24.0F * uiScale
+        Dim fontSizeRole As Single = 18.0F * uiScale
+        Dim fontSizeSmall As Single = 10.0F * uiScale
+        Dim fontSizeLink As Single = 15.0F * uiScale
+
+        Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
+              nameFont As New Font("Courier New", fontSizeName, FontStyle.Bold),
+              roleFont As New Font("Courier New", fontSizeRole, FontStyle.Regular),
+              italicFont As New Font("Courier New", fontSizeSmall, FontStyle.Italic),
+            linkFont As New Font("Courier New", fontSizeLink, FontStyle.Underline)
+
+            Dim brush As Brush = Brushes.Black
+            Dim centerX As Single = rect.X + (rect.Width / 2)
+
+            Dim currentY As Single = rect.Y + (rect.Height * 0.15F)
+            Dim spacing As Single = 30.0F * uiScale
+
+            DrawCenteredText(g, "EQUIPA DE COZINHEIROS", titleFont, brush, centerX, currentY)
+            currentY += spacing * 5.4
+
+            Dim member = members(currentMemberIndex)
+
+            DrawCenteredText(g, member.Name, nameFont, brush, centerX, currentY)
+            currentY += spacing * 1.2
+
+            DrawCenteredText(g, member.Role, roleFont, brush, centerX, currentY)
+            currentY += spacing * 1.2
+
+            DrawCenteredText(g, member.Note, italicFont, brush, centerX, currentY)
+            currentY += spacing * 3.0
+
+            Dim linkText As String = "Para mais detalhes clique AQUI"
+
+            Dim linkSize = g.MeasureString(linkText, linkFont)
+            Dim linkX As Single = centerX - (linkSize.Width / 2)
+
+            g.DrawString(linkText, linkFont, Brushes.Navy, linkX, currentY)
+
+            linkRect = New Rectangle(CInt(linkX), CInt(currentY), CInt(linkSize.Width), CInt(linkSize.Height))
+
+        End Using
+    End Sub
+
+    Private Sub DrawCreditsPage(g As Graphics, rect As Rectangle)
+        Dim uiScale As Single = GetLocalScale()
+
+        Dim fontSizeTitle As Single = 26.0F * uiScale
+        Dim fontSizeHeader As Single = 18.0F * uiScale
+        Dim fontSizeBody As Single = 14.0F * uiScale
+
+        Using titleFont As New Font("Courier New", fontSizeTitle, FontStyle.Bold),
+              headerFont As New Font("Courier New", fontSizeHeader, FontStyle.Bold),
+              bodyFont As New Font("Courier New", fontSizeBody, FontStyle.Regular)
+
+            Dim brush As Brush = Brushes.Black
+            Dim centerX As Single = rect.X + (rect.Width / 2)
+            Dim currentY As Single = rect.Y + (rect.Height * 0.15F)
+            Dim spacing As Single = 30.0F * uiScale
+
+            DrawCenteredText(g, "CRÉDITOS", titleFont, brush, centerX, currentY)
+            currentY += spacing * 3.0
+
+            DrawCenteredText(g, "Áudio:", headerFont, brush, centerX, currentY)
+            currentY += spacing
+            DrawCenteredText(g, "Música produzida por Iurii Meleshkin 11CT2", bodyFont, brush, centerX, currentY)
+            currentY += spacing
+            DrawCenteredText(g, "Efeitos Sonoros fornecidos por Pixabay", bodyFont, brush, centerX, currentY)
+            currentY += spacing * 2.0
+
+            DrawCenteredText(g, "Imagens:", headerFont, brush, centerX, currentY)
+            currentY += spacing
+            DrawCenteredText(g, "Imagens produzidas por Shamin", bodyFont, brush, centerX, currentY)
+
+            currentY += spacing * 4.0
+            DrawCenteredText(g, "Obrigado por jogar!", headerFont, brush, centerX, currentY)
+        End Using
+    End Sub
+
+    Private Sub DrawCenteredText(g As Graphics, text As String, font As Font, brush As Brush, centerX As Single, y As Single)
+        Dim size = g.MeasureString(text, font)
+        g.DrawString(text, font, brush, centerX - (size.Width / 2), y)
+    End Sub
+
+    Public Sub HandleClick(mousePos As Point)
+        If currentPage = PageState.Team AndAlso linkRect.Contains(mousePos) Then
+            Try
+                Dim psi As New ProcessStartInfo
+                psi.UseShellExecute = True
+                psi.FileName = "https://github.com/anfidaniil/NataKnight/releases"
+                Process.Start(psi)
+            Catch ex As Exception
+                Debug.WriteLine("Erro ao abrir link: " & ex.Message)
+            End Try
+            Return
+        End If
+
+        For Each btn In buttons
+            If (btn Is btnLeft Or btn Is btnRight) AndAlso currentPage = PageState.Credits Then Continue For
+
+            If btn.bounds.Contains(mousePos) Then
+                btn.onClick?.Invoke()
+            End If
+        Next
+    End Sub
+End Class

@@ -26,14 +26,12 @@ Partial Class Form1
         Timer1 = New Timer(components)
         SuspendLayout()
         ' 
-        ' Timer1
-        ' 
-        ' 
         ' Form1
         ' 
-        AutoScaleDimensions = New SizeF(7F, 15F)
+        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
         AutoScaleMode = AutoScaleMode.Font
         ClientSize = New Size(1264, 681)
+        FormBorderStyle = FormBorderStyle.FixedDialog
         Name = "Form1"
         StartPosition = FormStartPosition.CenterScreen
         Text = "Game"
