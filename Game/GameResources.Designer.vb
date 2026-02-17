@@ -70,11 +70,13 @@ Namespace My.Resources
         Friend Shared ReadOnly Property ancientTUALETNAYAbumaga() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ancientTUALETNAYAbumaga", resourceCulture)
-                      Return CType(obj,System.Drawing.Bitmap)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
-  
-  
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend Shared ReadOnly Property btnACERCA_export() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("btnACERCA-export", resourceCulture)
@@ -415,6 +417,15 @@ Namespace My.Resources
             Get
                 Dim obj As Object = ResourceManager.GetObject("movementCART", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend Shared ReadOnly Property NataKnightOst() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("NataKnightOst", resourceCulture)
             End Get
         End Property
         

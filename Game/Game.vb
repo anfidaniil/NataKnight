@@ -43,8 +43,8 @@ Public Class Game
         AudioEngine.LoadSound("shoot2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot2))
         AudioEngine.LoadSound("shoot3", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot3))
         AudioEngine.LoadSound("shoot4", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot4))
-        'AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.guitar_0001))
-        'AudioEngine.PlayLoop("music", 1.0F)
+        AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.NataKnightOst))
+        AudioEngine.PlayLoop("music", 0.25F)
     End Sub
 
     Public Function GetCardScale() As Single
@@ -240,7 +240,7 @@ Public Class Game
             End Try
         End If
         gameState = GameState.Starting
-            CreateScreens()
+        CreateScreens()
     End Sub
 
     Public Sub GoBackFromTutorialToGame()
