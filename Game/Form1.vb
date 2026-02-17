@@ -71,6 +71,22 @@ Public Class Form1
         BeginInvoke(New Action(AddressOf GameLoop))
     End Sub
 
+    Private Sub OnFocusLoss() Handles Me.LostFocus
+        If Not game Is Nothing Then
+            If game.music_id = -1 Then
+                Return
+            End If
+            AudioEngine.PauseLoop(game.music_id)
+        End If
+    End Sub
+
+    Private Sub OnFocusGained() Handles Me.GotFocus
+        If Not game Is Nothing Then
+            If AudioEngine.VoiceExists(game.music_id) Then
+                AudioEngine.ContinueLoop(game.music_id)
+            End If
+        End If
+    End Sub
     Private Sub GameLoop()
         While running
             Application.DoEvents()
@@ -110,8 +126,11 @@ Public Class Form1
                 End If
                 If game.gameState = GameState.Playing Then
                     game.gameState = GameState.Menu
+
+                    AudioEngine.ChangeVolume(game.music_id, 0.25F)
                 ElseIf game.gameState = GameState.Menu Then
                     game.gameState = GameState.Playing
+                    AudioEngine.ChangeVolume(game.music_id, 0.1F)
                 End If
             Case Keys.Escape
                 If game.gameState = GameState.GameOver Then
@@ -119,8 +138,10 @@ Public Class Form1
                 End If
                 If game.gameState = GameState.Playing Then
                     game.gameState = GameState.Menu
+                    AudioEngine.ChangeVolume(game.music_id, 0.25F)
                 ElseIf game.gameState = GameState.Menu Then
                     game.gameState = GameState.Playing
+                    AudioEngine.ChangeVolume(game.music_id, 0.1F)
                 End If
         End Select
     End Sub

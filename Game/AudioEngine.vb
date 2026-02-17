@@ -60,6 +60,28 @@ Public Module AudioEngine
         End If
     End Sub
 
+    Public Sub PauseLoop(handle As Integer)
+        If activeVoices.ContainsKey(handle) Then
+            activeVoices(handle).Stop(0)
+        End If
+    End Sub
+
+    Public Sub ContinueLoop(handle As Integer)
+        If activeVoices.ContainsKey(handle) Then
+            activeVoices(handle).Start(0)
+        End If
+    End Sub
+    Public Function VoiceExists(handle As Integer) As Boolean
+        Return activeVoices.ContainsKey(handle)
+    End Function
+
+    Public Sub ChangeVolume(id As Integer, newVolume As Single)
+        If Not VoiceExists(id) Then
+            Return
+        End If
+        activeVoices(id).SetVolume(newVolume)
+    End Sub
+
 
 End Module
 

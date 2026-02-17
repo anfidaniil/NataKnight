@@ -27,6 +27,7 @@ Public Class Game
     Public score As Integer = 0
 
     Public loadedWithSuccess = False
+    Public music_id = -1
 
     Private Sub InitializeSounds()
         AudioEngine.Initialize()
@@ -43,8 +44,8 @@ Public Class Game
         AudioEngine.LoadSound("shoot2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot2))
         AudioEngine.LoadSound("shoot3", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot3))
         AudioEngine.LoadSound("shoot4", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot4))
-        'AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.guitar_0001))
-        'AudioEngine.PlayLoop("music", 1.0F)
+        AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.NataKnightOst))
+        music_id = AudioEngine.PlayLoop("music", 0.25F)
     End Sub
 
     Public Function GetCardScale() As Single
@@ -95,12 +96,16 @@ Public Class Game
         Else
             AudioEngine.PlayOneShot("button_ui_2", 1.0F)
         End If
+
+        AudioEngine.ChangeVolume(music_id, 0.1F)
     End Sub
 
     Public Sub GoToAboutScreen()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         aboutScreen.BackAction = Sub() gameState = GameState.Starting
         gameState = GameState.About
+
+        AudioEngine.ChangeVolume(music_id, 0.25F)
     End Sub
 
     Public Sub CreateScreens(Optional savedPage As Integer = 0)
@@ -194,11 +199,15 @@ Public Class Game
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         loadedWithSuccess = False
         Debug.WriteLine("Starting New Game")
+
+        AudioEngine.ChangeVolume(music_id, 0.1F)
     End Sub
 
     Public Sub Restart()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         gameState = GameState.Playing
+
+        AudioEngine.ChangeVolume(music_id, 0.1F)
     End Sub
 
     Public Sub Quit()
@@ -240,13 +249,17 @@ Public Class Game
             End Try
         End If
         gameState = GameState.Starting
-            CreateScreens()
+
+        AudioEngine.ChangeVolume(music_id, 0.25F)
+        CreateScreens()
     End Sub
 
     Public Sub GoBackFromTutorialToGame()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         tutorialScreen.BackAction = Sub() gameState = GameState.Menu
         gameState = GameState.Tutorial
+
+        AudioEngine.ChangeVolume(music_id, 0.25F)
     End Sub
 
     Public Sub Update(dt As Single)
