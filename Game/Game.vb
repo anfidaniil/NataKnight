@@ -202,7 +202,7 @@ Public Class Game
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         gameState = GameState.Starting
     End Sub
-                                        
+
     Public Sub GoBackFromTutorialToGame()
         AudioEngine.PlayOneShot("button_ui_1", 1.0F)
         tutorialScreen.BackAction = Sub() gameState = GameState.Menu

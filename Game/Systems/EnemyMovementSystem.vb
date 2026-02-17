@@ -40,22 +40,25 @@
 
                     UpdateSprite(CInt(dx), CInt(dy), r)
 
-                    Dim safeDistance As Single = 400.0F
+                    Dim safeDistance As Single = 200.0F
                     Dim margin As Single = 50.0F
+
+                    Dim distError = distance - safeDistance
+
+                    Dim accelFactor As Single = Math.Min(1.0F, Math.Abs(distError) / 100.0F)
 
                     If distance > (safeDistance + margin) Then
                         m.acceleration = New PointF(
-                            dirX * m.max_acceleration,
-                            dirY * m.max_acceleration
+                            dirX * m.max_acceleration * accelFactor,
+                            dirY * m.max_acceleration * accelFactor
                         )
                     ElseIf distance < (safeDistance - margin) Then
                         m.acceleration = New PointF(
-                            -dirX * m.max_acceleration,
-                            -dirY * m.max_acceleration
+                            -dirX * m.max_acceleration * accelFactor,
+                            -dirY * m.max_acceleration * accelFactor
                         )
                     Else
                         m.acceleration = New PointF(0, 0)
-                        m.velocity = New PointF(m.velocity.X * 0.9F, m.velocity.Y * 0.9F)
                     End If
 
                 End If
