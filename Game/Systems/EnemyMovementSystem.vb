@@ -11,12 +11,12 @@
 
                 If world.Enemies.HasComponent(id) Then
                     Dim playerPos = world.Transforms.GetComponent(world.PlayerID)
-                    Dim x = playerPos.pos.X
-                    Dim y = playerPos.pos.Y
+
+                    Dim px = playerPos.pos.X
+                    Dim py = playerPos.pos.Y
 
                     If world.AudioTriggers.HasComponent(id) Then
                         Dim trig = world.AudioTriggers.GetComponent(id)
-
                         If trig.cooldown <= 0F Then
                             trig.playRequested = True
                             trig.cooldown = 0.2F
@@ -25,19 +25,42 @@
                         End If
                     End If
 
-                    Dim a = New PointF(
-                        x - t.pos.X,
-                        y - t.pos.Y
-                    )
-                    If Math.Abs(a.X) < 0.1F Then a.X = 0
-                    If Math.Abs(a.Y) < 0.1F Then a.Y = 0
+                    Dim dx As Single = px - t.pos.X
+                    Dim dy As Single = py - t.pos.Y
 
-                    Dim norm = NormalisePointFVector(a)
-                    UpdateSprite(norm.X, norm.Y, r)
-                    m.acceleration = New PointF(
-                        norm.X * m.max_acceleration,
-                        norm.Y * m.max_acceleration
-                    )
+                    Dim distance As Single = Math.Sqrt(dx * dx + dy * dy)
+
+                    Dim dirX As Single = 0
+                    Dim dirY As Single = 0
+
+                    If distance > 0 Then
+                        dirX = dx / distance
+                        dirY = dy / distance
+                    End If
+
+                    UpdateSprite(CInt(dx), CInt(dy), r)
+
+                    Dim safeDistance As Single = 200.0F
+                    Dim margin As Single = 50.0F
+
+                    Dim distError = distance - safeDistance
+
+                    Dim accelFactor As Single = Math.Min(1.0F, Math.Abs(distError) / 100.0F)
+
+                    If distance > (safeDistance + margin) Then
+                        m.acceleration = New PointF(
+                            dirX * m.max_acceleration * accelFactor,
+                            dirY * m.max_acceleration * accelFactor
+                        )
+                    ElseIf distance < (safeDistance - margin) Then
+                        m.acceleration = New PointF(
+                            -dirX * m.max_acceleration * accelFactor,
+                            -dirY * m.max_acceleration * accelFactor
+                        )
+                    Else
+                        m.acceleration = New PointF(0, 0)
+                    End If
+
                 End If
 
             End If
@@ -45,7 +68,6 @@
     End Sub
 
     Private Sub UpdateSprite(dx As Integer, dy As Integer, r As RenderComponent)
-
         If (Math.Abs(dx) >= Math.Abs(dy)) Then
             If (dx > 0) Then
                 r.spriteX = 4
@@ -57,7 +79,6 @@
             If (dy < 0) Then
                 r.spriteX = 10
             End If
-
             If (dy > 0) Then
                 r.spriteX = 3
             End If
@@ -65,6 +86,5 @@
     End Sub
 
     Public Sub Draw(world As World, g As Graphics) Implements ISystem.Draw
-
     End Sub
 End Class
