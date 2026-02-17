@@ -6,6 +6,9 @@
             If world.Immovables.HasComponent(ev.entityA) And world.Immovables.HasComponent(ev.entityB) Then
                 Continue For
             End If
+            If world.Buffs.HasComponent(ev.entityA) And world.Players.HasComponent(ev.entityB) OrElse world.Players.HasComponent(ev.entityA) And world.Buffs.HasComponent(ev.entityB) Then
+                Continue For
+            End If
 
             If world.Projectiles.HasComponent(ev.entityA) Then
                 If world.Projectiles.GetComponent(ev.entityA).entityType = 0 And world.Enemies.HasComponent(ev.entityB) Then
