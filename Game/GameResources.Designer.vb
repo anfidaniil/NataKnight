@@ -65,6 +65,24 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend Shared ReadOnly Property _90s_game_ui_3_185096() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("90s-game-ui-3-185096", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        '''</summary>
+        Friend Shared ReadOnly Property _90s_game_ui_7_185100() As System.IO.UnmanagedMemoryStream
+            Get
+                Return ResourceManager.GetStream("90s-game-ui-7-185100", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
         Friend Shared ReadOnly Property ancientTUALETNAYAbumaga() As System.Drawing.Bitmap
@@ -481,6 +499,16 @@ Namespace My.Resources
         Friend Shared ReadOnly Property shoot4() As System.IO.UnmanagedMemoryStream
             Get
                 Return ResourceManager.GetStream("shoot4", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend Shared ReadOnly Property Sprite_0001() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Sprite-0001", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         
