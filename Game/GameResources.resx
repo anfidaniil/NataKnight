@@ -259,4 +259,13 @@
   <data name="NataKnightOst" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Assets\Sounds\NataKnightOst.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="Sprite-0001" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sprite-0001.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="90s-game-ui-3-185096" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\90s-game-ui-3-185096.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="90s-game-ui-7-185100" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Assets\Sounds\90s-game-ui-7-185100.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
