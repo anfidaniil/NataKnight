@@ -44,6 +44,10 @@ Public Class Game
         AudioEngine.LoadSound("shoot2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot2))
         AudioEngine.LoadSound("shoot3", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot3))
         AudioEngine.LoadSound("shoot4", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.shoot4))
+
+        AudioEngine.LoadSound("buff1", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources._90s_game_ui_3_185096))
+        AudioEngine.LoadSound("buff2", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources._90s_game_ui_7_185100))
+
         AudioEngine.LoadSound("music", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.NataKnightOst))
         music_id = AudioEngine.PlayLoop("music", 0.25F)
     End Sub

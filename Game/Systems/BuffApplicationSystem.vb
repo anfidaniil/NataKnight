@@ -56,6 +56,9 @@
                 world.UpdatePlayerHealthBar()
         End Select
 
+        Dim randomSound = If(Rnd() > 0.5, "buff1", "buff2")
+        AudioEngine.PlayOneShot(randomSound, 0.3)
+
         buff.isConsumed = True
         world.EntityDestructionEvents.Add(buffID)
     End Sub
