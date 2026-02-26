@@ -29,6 +29,8 @@ Public Class Game
     Public loadedWithSuccess = False
     Public music_id = -1
 
+    Private closing = False
+
     Private Sub InitializeSounds()
         AudioEngine.Initialize()
         AudioEngine.LoadSound("bulletImpact1", New SharpDX.Multimedia.SoundStream(My.Resources.GameResources.bulletimpact1))
